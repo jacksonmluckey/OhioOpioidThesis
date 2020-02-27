@@ -71,7 +71,9 @@ household_income_age_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>
 household_income_age_tall <- get_census_table("B19037", 2018) %>%
   left_join(household_income_age_var_labels)
 household_income_age_wide <- make_census_table_wide(household_income_age_tall)
-
+# remove intermediate dfs
+rm(household_income_age_var_labels)
+rm(household_income_age_tall)
 
 # disability
 # load the variable labels so I can actually figure out what the columns mean
@@ -102,27 +104,32 @@ disability_wide <- disability_wide %>%
 # drop the original columns
 disability <- disability_wide %>%
   select(GEOID, county, year, starts_with("disability"))
+# remove intermediate dfs
+rm(disability_tall)
+rm(disability_tall)
+rm(disability_var_labels)
 
 # race
 # load all of the data
 race_tall <- get_census_table_multiple_years("B02001", 2010:2018)
-
 # load the variable labels so I can actually figure out what the columns mean
 race_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
   filter(stringr::str_detect(name, "B02001_")) %>%
   rename(variable = name)
-
 # make race wide
 race_wide <- race_tall %>%
   left_join(race_var_labels) %>%
   make_census_table_wide()
-
 # reduce down to only percent white and percent black
 # because the census data that can differentiate latino and white is complicated
 race <- race_wide %>%
   mutate(percent_white = estimate_B02001_002 / estimate_B02001_001,
          percent_black = estimate_B02001_003 / estimate_B02001_001) %>%
   select(GEOID, county, year, percent_white, percent_black)
+# remove intermediate dfs
+rm(race_wide)
+rm(race_tall)
+rm(race_var_labels)
 
 # income
 income_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
@@ -136,6 +143,7 @@ income_wide <- income_tall %>%
 income_individual <- income_wide %>%
   rename(income_pc_individual = estimate_B06011_001) %>%
   select(GEOID, county, year, income_pc_individual)
+# remove intermediate dfs
 rm(income_var_labels)
 rm(income_tall)
 rm(income_wide)
@@ -156,7 +164,10 @@ education <- education_wide %>%
          education_percent_college = estimate_C15003_015 / estimate_C15003_001,
          education_percent_graduate = (estimate_C15003_016 + estimate_C15003_017 + estimate_C15003_018) / estimate_C15003_001) %>%
   select(GEOID, county, year, starts_with("education"))
-
+# remove intermediate dfs
+rm(education_var_labels)
+rm(education_tall)
+rm(education_wide)
 
 #############
 # finish up #
@@ -166,7 +177,7 @@ education <- education_wide %>%
 # might be able to get better data directly from CDC?
 # GET DEATHS INTO RATE
 # BRING IN DESCRIPTIVE/SUMMARY statistics
-deaths <- read_csv(here("Data", "CSV", "OverdoseDeathsTall.csv")) %>%
+deaths <- read_csv("Data/OverdoseDeathsTall.csv") %>%
   rename(county = County)
 
 # prepare final df
