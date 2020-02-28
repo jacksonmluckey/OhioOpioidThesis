@@ -3,6 +3,11 @@ library(tidyverse)
 library(tidycensus)
 library(stringr)
 
+# income - B19013
+# population
+# occupation
+# combining ACS1 and others? -> would love to go before 2010/2011
+
 ####################
 # census functions #
 ####################
@@ -65,6 +70,7 @@ get_census_table_multiple_years <- function(table, years) {
 # household_income
 # B19037 is household income by age of householder
 # not sure if this is the right table to work with
+# NOT INCLUDED IN FINAL DF
 household_income_age_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
   filter(str_detect(name, "B19037_")) %>%
   rename(variable = name)
@@ -157,13 +163,14 @@ education_wide <- education_tall %>%
   left_join(education_var_labels) %>%
   make_census_table_wide()
 education <- education_wide %>%
-  mutate(education_percent_less_than_highschool = (estimate_C15003_002 + estimate_C15003_003 + estimate_C15003_004 + estimate_C15003_005 + estimate_C15003_006 + estimate_C15003_007 + estimate_C15003_008 + estimate_C15003_009) / estimate_C15003_001,
+  mutate(population = estimate_C15003_001,
+         education_percent_less_than_highschool = (estimate_C15003_002 + estimate_C15003_003 + estimate_C15003_004 + estimate_C15003_005 + estimate_C15003_006 + estimate_C15003_007 + estimate_C15003_008 + estimate_C15003_009) / estimate_C15003_001,
          education_percent_highschool = estimate_C15003_010 / estimate_C15003_001,
          education_percent_ged = estimate_C15003_011 / estimate_C15003_001,
          education_percent_some_college = (estimate_C15003_012 + estimate_C15003_013 + estimate_C15003_014) / estimate_C15003_001,
          education_percent_college = estimate_C15003_015 / estimate_C15003_001,
          education_percent_graduate = (estimate_C15003_016 + estimate_C15003_017 + estimate_C15003_018) / estimate_C15003_001) %>%
-  select(GEOID, county, year, starts_with("education"))
+  select(GEOID, county, year, population, starts_with("education"))
 # remove intermediate dfs
 rm(education_var_labels)
 rm(education_tall)
@@ -185,3 +192,7 @@ df <- left_join(disability, race) %>%
   left_join(deaths) %>%
   left_join(education) %>%
   left_join(income_individual)
+
+# convert OD raw to OD rate
+df <- df %>%
+  mutate(OD_rate = deaths / population)
