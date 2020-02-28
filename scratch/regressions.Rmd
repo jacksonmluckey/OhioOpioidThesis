@@ -1,0 +1,28 @@
+---
+title: "Regressions"
+author: "Jackson M Luckey"
+date: "2/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_df}
+load("data/df.Rda")
+```
+
+```{r}
+lm(OD_rate ~ disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male, df) %>%
+  summary()
+```
+
+As predicted in the literature, disability rates among 18 to 34 year old men do help explain OD rates
+
+```{r}
+lm(OD_rate ~ income_pc_individual, df) %>%
+  summary()
+```
+
+On its own, income per capita for individuals with reported income does not help explain the variations in OD rates.
