@@ -26,3 +26,19 @@ lm(OD_rate ~ income_pc_individual, df) %>%
 ```
 
 On its own, income per capita for individuals with reported income does not help explain the variations in OD rates.
+
+```{r}
+lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + education_percent_college, df) %>%
+  summary()
+```
+
+As expected, higher education levels reduce overdose rates, while higher disability rates bring higher overdose rates. Altogether, however, they provide relatively low explanatory value.
+
+Does adding income increase the R-sq?
+
+```{r}
+lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + education_percent_college + income_pc_individual, df) %>%
+  summary()
+```
+
+Yes, it does so significantly.
