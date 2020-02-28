@@ -196,3 +196,6 @@ df <- left_join(disability, race) %>%
 # convert OD raw to OD rate
 df <- df %>%
   mutate(OD_rate = deaths / population)
+
+# save the final df as RDA file
+save(df, file  = "data/df.Rda")
