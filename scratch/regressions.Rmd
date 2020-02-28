@@ -25,7 +25,7 @@ lm(OD_rate ~ income_pc_individual, df) %>%
   summary()
 ```
 
-On its own, income per capita for individuals with reported income does not help explain the variations in OD rates.
+On its own, income per capita for individuals with reported income does not help explain the variations in OD rates. Interestingly, it appears that OD rates go up as income goes up, which goes against the deaths of despair argument and supports the access to heroin argument.
 
 ```{r}
 lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + education_percent_college, df) %>%
@@ -42,3 +42,21 @@ lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + edu
 ```
 
 Yes, it does so significantly.
+
+N.B: should I merge some of the education bins?
+
+```{r}
+lm(OD_rate ~ percent_black, df) %>%
+  summary()
+```
+
+As expected, OD rates increase as the percentage of the county that is black increases (because these counties were often historical heroin markets)
+
+Let's try adding it to the "master" regression
+
+```{r}
+lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + education_percent_college + income_pc_individual + percent_black, df) %>%
+  summary()
+```
+
+Suprisingly, this significantly improves the R-squared while making  disability statistically insignificant.
