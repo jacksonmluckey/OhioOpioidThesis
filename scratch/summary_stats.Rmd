@@ -34,7 +34,7 @@ df %>%
                           func == 3 ~ "mean",
                           func == 4 ~ "sd")) %>%
   mutate(name = str_remove(name, "_fn[1-4]")) %>% # strips the suffix which was turned into func
-  pivot_wider(names_from = func, values_from = "value") %>%
+  pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
   as.data.frame()
 ```
 
