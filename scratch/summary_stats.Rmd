@@ -1,0 +1,44 @@
+---
+title: "Summary Stats"
+author: "Jackson M Luckey"
+date: "2/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load_df}
+library(tidyverse)
+library(here)
+load(here("data", "df.Rda"))
+```
+
+```{r summary_dependent_var}
+df %>%
+  select(OD_rate) %>%
+  summarize(mean_OD_rate = mean(OD_rate, na.rm = TRUE),
+            sd_OD_rate = sd(OD_rate, na.rm = TRUE)) %>%
+  as.data.frame()
+```
+
+```{r}
+df %>%
+  select(-GEOID, -county, -year) %>%
+  summarize_all(list(min, max, mean, sd), na.rm = TRUE) %>%
+  pivot_longer(everything()) %>% # turns into a 2 column df
+  mutate(func = str_match(name, "_fn([1-4])")[,2]) %>% # func identifies which transformation was used
+  mutate(func = case_when(func == 1 ~ "min", # converts func into a meaninful label
+                          func == 2 ~ "max",
+                          func == 3 ~ "mean",
+                          func == 4 ~ "sd")) %>%
+  mutate(name = str_remove(name, "_fn[1-4]")) %>% # strips the suffix which was turned into func
+  pivot_wider(names_from = func, values_from = "value") %>%
+  as.data.frame()
+```
+
+[ ] create summary stats of all variables
+[ ] create a few more regressions:
+  [ ] one without Cuyahoga
+  [ ] 

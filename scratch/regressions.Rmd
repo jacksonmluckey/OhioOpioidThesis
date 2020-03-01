@@ -14,7 +14,7 @@ load("data/df.Rda")
 ```
 
 ```{r}
-lm(OD_rate ~ disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male, df) %>%
+lm(OD_rate ~ disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female + percent_black + education_percent_highschool + education_percent_college, df) %>%
   summary()
 ```
 
@@ -26,6 +26,8 @@ lm(OD_rate ~ income_pc_individual, df) %>%
 ```
 
 On its own, income per capita for individuals with reported income does not help explain the variations in OD rates. Interestingly, it appears that OD rates go up as income goes up, which goes against the deaths of despair argument and supports the access to heroin argument.
+
+Will want to also run with household income
 
 ```{r}
 lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + education_percent_college, df) %>%
@@ -60,3 +62,4 @@ lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + edu
 ```
 
 Suprisingly, this significantly improves the R-squared while making  disability statistically insignificant.
+
