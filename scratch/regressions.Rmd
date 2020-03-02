@@ -62,4 +62,15 @@ lm(OD_rate ~ disability_percent_18to34_male + education_percent_highschool + edu
 ```
 
 Suprisingly, this significantly improves the R-squared while making  disability statistically insignificant.
+(Denise said not to do this because it looks like cherrypicking)
 
+Let's try to treat the big regression at the top as our "base" regression
+
+```{r}
+df_without_cle <- df %>%
+  filter(county != "Cuyahoga")
+lm(OD_rate ~ disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female + percent_black + education_percent_highschool + education_percent_college, df_without_cle) %>%
+  summary()
+```
+
+If I'm reading the above regression correctly, excluding Cuyahoga county increased the influence of percent_black on the OD rate, rather than decreased it. This is a surprise to me.
