@@ -37,8 +37,3 @@ df %>%
   pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
   as.data.frame()
 ```
-
-[ ] create summary stats of all variables
-[ ] create a few more regressions:
-  [ ] one without Cuyahoga
-  [ ] 
