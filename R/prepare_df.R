@@ -174,7 +174,7 @@ education <- education_wide %>%
          education_s_percent_graduate = (estimate_C15003_016 + estimate_C15003_017 + estimate_C15003_018) / population) %>%
   # create the big education bins (_b_), which won't add up to one because some college is excluded
   mutate(education_b_percent_highschool_or_less = education_s_percent_less_than_highschool + education_s_percent_highschool + education_s_percent_ged,
-         education_b_college_or_more = education_s_percent_college + education_s_percent_graduate) %>%
+         education_b_percent_college_or_more = education_s_percent_college + education_s_percent_graduate) %>%
   select(GEOID, county, year, population, starts_with("education"))
 # remove intermediate dfs
 rm(education_var_labels)
