@@ -18,10 +18,14 @@ add_suffix <- function(string, suffix) {
 }
 
 # create male, female, and unified disability variable ordering list
+# and then turn them back into usable vectors
+# instead of lists (to avoid the [[]] nonsense and ambiguity with tidyselect)
 male_disability_ordering <- base_disability_list %>%
-  map(add_suffix, "_male")
+  map(add_suffix, "_male") %>%
+  as.character()
 female_disability_ordering <- base_disability_list %>%
-  map(add_suffix, "_female")
+  map(add_suffix, "_female") %>%
+  as.character()
 disability_ordering <- c(male_disability_ordering, female_disability_ordering)
 ```
 
