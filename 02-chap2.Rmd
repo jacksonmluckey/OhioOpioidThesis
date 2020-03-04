@@ -61,3 +61,16 @@ df %>%
   pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
   as.data.frame()
 ```
+
+```{r OD_rate_distribution}
+df %>%
+  select(OD_rate) %>%
+  filter(!is.na(OD_rate)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
+  ggplot(aes(x = OD_rate)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() +
+  ggtitle("Distribution of Overdose Rate") +
+  labs(y = "", x = "Overdose Rate")
+```
+
+Consider tobit (sp?) model due to censoring.
