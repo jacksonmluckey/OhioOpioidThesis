@@ -49,7 +49,7 @@ master_variable_ordering <- c(misc_variable_ordering, education_ordering, disabi
 ```{r summary_stats_all_variables}
 df %>%
   select(-GEOID, -county, -year) %>%
-  select(master_variable_ordering) %>%
+  select(all_of(master_variable_ordering)) %>%
   summarize_all(list(min, max, mean, sd), na.rm = TRUE) %>%
   pivot_longer(everything()) %>% # turns into a 2 column df
   mutate(func = str_match(name, "_fn([1-4])")[,2]) %>% # func identifies which transformation was used
@@ -67,7 +67,7 @@ df %>%
   select(OD_rate) %>%
   filter(!is.na(OD_rate)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
   ggplot(aes(x = OD_rate)) +
-  geom_histogram(bins = 20) +
+  geom_histogram(bins = 25) +
   theme_minimal() +
   ggtitle("Distribution of Overdose Rate") +
   labs(y = "", x = "Overdose Rate (Deaths per 10,000)")
