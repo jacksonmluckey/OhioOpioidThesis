@@ -36,9 +36,28 @@ load(here("data", "df.Rda"))
 
 ## Basic Model With All Counties Included in Data
 ```{r}
-lm(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female, df) %>%
-  tidy() %>%
+basic_model <- lm(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female, df)
+
+glance(basic_model) %>%
+  kable()
+
+tidy(basic_model) %>%
+  mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
   kable()
 ```
 
 ## Basic Model Excluding Cleveland
+
+```{r}
+df_no_cle <- df %>%
+  filter(county != "Cuyahoga")
+
+basic_model_no_cle <- lm(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female, df_no_cle)
+
+glance(basic_model_no_cle) %>%
+  kable
+
+tidy(basic_model_no_cle) %>%
+  mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
+  kable()
+```
