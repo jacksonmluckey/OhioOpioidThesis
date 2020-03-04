@@ -7,6 +7,24 @@ library(here)
 load(here("data", "df.Rda"))
 ```
 
+```{r variable_ordering}
+base_disability_list <- c("disability_percent_under5", "disability_percent_5to17", "disability_percent_18to34", "disability_percent_35to64", "disability_percent_65to74", "disability_percent_75andup")
+
+# adds a suffix to a string
+# used for generating the male and female disability lists
+add_suffix <- function(string, suffix) {
+  string <- paste0(string, suffix)
+  string
+}
+
+# create male, female, and unified disability variable ordering list
+male_disability_ordering <- base_disability_list %>%
+  map(add_suffix, "_male")
+female_disability_ordering <- base_disability_list %>%
+  map(add_suffix, "_female")
+disability_ordering <- c(male_disability_ordering, female_disability_ordering)
+```
+
 ```{r summary_stats_all_variables}
 df %>%
   select(-GEOID, -county, -year) %>%
