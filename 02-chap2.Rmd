@@ -1,4 +1,10 @@
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+library(citr)
+```
+
 # Data and Methods
 
 ```{r load_packages_and_df}
@@ -80,7 +86,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-Consider tobit (sp?) model due to censoring.
+Consider tobit model due to censoring.
 
 ```{r county_racial_distribution}
 df %>%
