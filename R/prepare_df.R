@@ -163,13 +163,18 @@ education_wide <- education_tall %>%
   left_join(education_var_labels) %>%
   make_census_table_wide()
 education <- education_wide %>%
-  mutate(population = estimate_C15003_001,
-         education_percent_less_than_highschool = (estimate_C15003_002 + estimate_C15003_003 + estimate_C15003_004 + estimate_C15003_005 + estimate_C15003_006 + estimate_C15003_007 + estimate_C15003_008 + estimate_C15003_009) / estimate_C15003_001,
-         education_percent_highschool = estimate_C15003_010 / estimate_C15003_001,
-         education_percent_ged = estimate_C15003_011 / estimate_C15003_001,
-         education_percent_some_college = (estimate_C15003_012 + estimate_C15003_013 + estimate_C15003_014) / estimate_C15003_001,
-         education_percent_college = estimate_C15003_015 / estimate_C15003_001,
-         education_percent_graduate = (estimate_C15003_016 + estimate_C15003_017 + estimate_C15003_018) / estimate_C15003_001) %>%
+  # rename the population variable
+  rename(population = estimate_C15003_001) %>%
+  # create the small education bins (_s_), which should add up to one
+  mutate(education_s_percent_less_than_highschool = (estimate_C15003_002 + estimate_C15003_003 + estimate_C15003_004 + estimate_C15003_005 + estimate_C15003_006 + estimate_C15003_007 + estimate_C15003_008 + estimate_C15003_009) / population,
+         education_s_percent_highschool = estimate_C15003_010 / population,
+         education_s_percent_ged = estimate_C15003_011 / population,
+         education_s_percent_some_college = (estimate_C15003_012 + estimate_C15003_013 + estimate_C15003_014) / population,
+         education_s_percent_college = estimate_C15003_015 / population,
+         education_s_percent_graduate = (estimate_C15003_016 + estimate_C15003_017 + estimate_C15003_018) / population) %>%
+  # create the big education bins (_b_), which won't add up to one because some college is excluded
+  mutate(education_b_percent_highschool_or_less = education_s_percent_less_than_highschool + education_s_percent_highschool + education_s_percent_ged,
+         education_b_college_or_more = education_s_percent_college + education_s_percent_graduate) %>%
   select(GEOID, county, year, population, starts_with("education"))
 # remove intermediate dfs
 rm(education_var_labels)
