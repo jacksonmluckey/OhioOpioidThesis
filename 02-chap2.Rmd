@@ -70,13 +70,26 @@ df %>%
 
 ```{r OD_rate_distribution}
 df %>%
-  select(OD_rate) %>%
   filter(!is.na(OD_rate)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
   ggplot(aes(x = OD_rate)) +
   geom_histogram(bins = 25) +
   theme_minimal() +
   ggtitle("Distribution of Overdose Rate") +
-  labs(y = "", x = "Overdose Rate (Deaths per 10,000)")
+  labs(y = "", x = "Overdose Rate (Deaths per 10,000)") +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5))
 ```
 
 Consider tobit (sp?) model due to censoring.
+
+```{r county_racial_distribution}
+df %>%
+  ggplot(aes(x = percent_black)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() +
+  ggtitle("Distribution of Percent Black") +
+  labs(x = "Percent Black", y = "") +
+  scale_x_continuous(labels = function(x) paste0(x, "%")) + # adds percentage signs; scales::percent assumes .XXX format, while I have XX.X
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5))
+```
