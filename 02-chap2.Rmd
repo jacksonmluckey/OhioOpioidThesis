@@ -8,6 +8,9 @@ load(here("data", "df.Rda"))
 ```
 
 ```{r variable_ordering}
+################################
+# Disability Variable Ordering #
+################################
 base_disability_list <- c("disability_percent_under5", "disability_percent_5to17", "disability_percent_18to34", "disability_percent_35to64", "disability_percent_65to74", "disability_percent_75andup")
 
 # adds a suffix to a string
@@ -27,18 +30,33 @@ female_disability_ordering <- base_disability_list %>%
   map(add_suffix, "_female") %>%
   as.character()
 disability_ordering <- c(male_disability_ordering, female_disability_ordering)
+
+###############################
+# Education Variable Ordering #
+###############################
+education_ordering <- c("education_b_percent_highschool_or_less", "education_b_percent_college_or_more",
+                        "education_s_percent_less_than_highschool", "education_s_percent_highschool",
+                        "education_s_percent_ged", "education_s_percent_some_college", "education_s_percent_college",
+                        "education_s_percent_graduate")
+
+############################
+# Master Variable Ordering #
+############################
+misc_variable_ordering <- c("OD_rate", "income_pc_individual", "percent_white", "percent_black", "population", "deaths")
+master_variable_ordering <- c(misc_variable_ordering, education_ordering, disability_ordering)
 ```
 
 ```{r summary_stats_all_variables}
 df %>%
   select(-GEOID, -county, -year) %>%
+  select(master_variable_ordering) %>%
   summarize_all(list(min, max, mean, sd), na.rm = TRUE) %>%
   pivot_longer(everything()) %>% # turns into a 2 column df
   mutate(func = str_match(name, "_fn([1-4])")[,2]) %>% # func identifies which transformation was used
-  mutate(func = case_when(func == 1 ~ "min", # converts func into a meaninful label
-                          func == 2 ~ "max",
-                          func == 3 ~ "mean",
-                          func == 4 ~ "sd")) %>%
+  mutate(func = case_when(func == 1 ~ "Min", # converts func into a meaninful label
+                          func == 2 ~ "Max",
+                          func == 3 ~ "Mean",
+                          func == 4 ~ "Standard Deviation")) %>%
   mutate(name = str_remove(name, "_fn[1-4]")) %>% # strips the suffix which was turned into func
   pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
   as.data.frame()
