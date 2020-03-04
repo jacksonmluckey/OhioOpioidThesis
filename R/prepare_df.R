@@ -202,5 +202,13 @@ df <- left_join(disability, race) %>%
 df <- df %>%
   mutate(OD_rate = deaths / population)
 
+# change OD rate to be deaths per 10,000 pop
+df <- df %>%
+  mutate(OD_rate = OD_rate * 10000)
+
+# convert percentages to be XX.X instead of .XXX
+df <- df %>%
+  mutate_at(vars(contains("percent")), ~ .x * 100)
+
 # save the final df as RDA file
 save(df, file  = "data/df.Rda")
