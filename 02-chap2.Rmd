@@ -4,6 +4,7 @@
 ```{r load_packages_and_df}
 library(tidyverse)
 library(here)
+library(knitr) # for kable
 load(here("data", "df.Rda"))
 ```
 
@@ -46,7 +47,7 @@ misc_variable_ordering <- c("OD_rate", "income_pc_individual", "percent_white", 
 master_variable_ordering <- c(misc_variable_ordering, education_ordering, disability_ordering)
 ```
 
-```{r summary_stats_all_variables}
+```{r summary_stats_all_variables, results="asis"}
 df %>%
   select(-GEOID, -county, -year) %>%
   select(all_of(master_variable_ordering)) %>%
@@ -59,7 +60,12 @@ df %>%
                           func == 4 ~ "Standard Deviation")) %>%
   mutate(name = str_remove(name, "_fn[1-4]")) %>% # strips the suffix which was turned into func
   pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
-  as.data.frame()
+  mutate(`Variable Name` = name, # make the variable name label better
+         name = NULL) %>%
+  select(`Variable Name`, everything()) %>% # gets the variable name in front
+  kable(caption = "Summary statistics of all variables used in analysis",
+        format.args = list(scientific = FALSE,
+                           big.mark = ","))
 ```
 
 ```{r OD_rate_distribution}
