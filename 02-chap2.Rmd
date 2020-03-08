@@ -5,12 +5,12 @@ knitr::opts_chunk$set(warning = FALSE)
 library(citr)
 ```
 
-# Data and Methods
-
 ```{r load_packages_and_df}
+# Load the libraries and data used in this Rmd file
 library(tidyverse)
 library(here)
 library(knitr) # for kable
+library(tidycensus)
 load(here("data", "df.Rda"))
 ```
 
@@ -52,6 +52,32 @@ education_ordering <- c("education_b_percent_highschool_or_less", "education_b_p
 misc_variable_ordering <- c("OD_rate", "income_pc_individual", "percent_white", "percent_black", "population", "deaths")
 master_variable_ordering <- c(misc_variable_ordering, education_ordering, disability_ordering)
 ```
+
+```{r grab_county_geometry}
+base_map <- get_acs("county",
+                    state = "OH",
+                    table = "B02001",
+                    geometry = TRUE,
+                    output = "wide")
+# reduce down to GEOID and geometry
+base_map <- base_map %>%
+  select(GEOID, geometry)
+# combine with df to create a df for mapping
+map_df <- left_join(df, base_map, by = c("GEOID" = "GEOID"))
+```
+
+# Data
+
+The majority of my independent variables were sourced from the census Annual Community Survey.
+
+## Sample Size
+
+```{r included_counties_map}
+```
+
+## Variable Summary Statistics
+
+For the education variables, "_b_" refers to big bins (e.g. college or more, high school or less), while "_s_" refers to small bins (e.g. some college, college, graduate school).
 
 ```{r summary_stats_all_variables, results="asis"}
 df %>%
@@ -99,3 +125,20 @@ df %>%
   theme(axis.text.y = element_blank(),
         plot.title = element_text(hjust = 0.5))
 ```
+
+## Maps
+
+Let's draw some maps.
+
+```{r percent_black_maps}
+map_df %>%
+  filter(year == 2015) %>%
+  select(-year) %>%
+  #group_by(county, GEOID) %>%
+  #summarize_all(mean) %>%
+  ggplot(aes(fill = percent_black, geometry = geometry)) +
+  geom_sf() +
+  
+```
+
+# Methods
