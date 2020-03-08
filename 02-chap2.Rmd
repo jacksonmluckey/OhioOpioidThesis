@@ -72,7 +72,21 @@ The majority of my independent variables were sourced from the census Annual Com
 
 ## Sample Size
 
+Unfortunately, not all counties in Ohio are included in the Annual Community Survey.
+
 ```{r included_counties_map}
+df %>%
+  group_by(county, GEOID) %>%
+  summarize(population = mean(population)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+  mutate(included = !is.na(population)) %>%
+  ggplot(aes(geometry = geometry, fill = included)) +
+  geom_sf() +
+  labs(fill = "Included in Sample?",
+       title = "Counties included in sample",
+       x = "",
+       y = "") +
+  theme_minimal()
 ```
 
 ## Variable Summary Statistics
