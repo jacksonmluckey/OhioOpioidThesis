@@ -1,5 +1,5 @@
 
-```{r setup, include=FALSE}
+```{r setup}
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
 library(citr)
@@ -62,8 +62,6 @@ base_map <- get_acs("county",
 # reduce down to GEOID and geometry
 base_map <- base_map %>%
   select(GEOID, geometry)
-# combine with df to create a df for mapping
-map_df <- left_join(df, base_map, by = c("GEOID" = "GEOID"))
 ```
 
 ```{r map_theme}
@@ -101,7 +99,8 @@ df %>%
        title = "Counties included in sample",
        x = "",
        y = "") +
-  theme_map
+  theme_map +
+  scale_fill_viridis_d()
 ```
 
 ```{r check_if_excluded_counties_have_higher_od_rate}
@@ -168,15 +167,20 @@ df %>%
 Let's draw some maps.
 
 ```{r percent_black_maps}
-map_df %>%
-  filter(year == 2015) %>%
-  select(-year) %>%
-  #group_by(county, GEOID) %>%
-  #summarize_all(mean) %>%
+df %>%
+  group_by(county, GEOID) %>%
+  summarize(percent_black = mean(percent_black)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
   ggplot(aes(fill = percent_black, geometry = geometry)) +
   geom_sf() +
-  theme_map
+  theme_map +
+  scale_fill_viridis_c() +
+  labs(subtitle = "Grey means excluded from sample",
+       title = "Percent Black by County",
+       fill = "% Black")
 ```
+
+The yellow county is Cuyahoga County, which contains the city of Cleveland.
 
 # Methods
 
