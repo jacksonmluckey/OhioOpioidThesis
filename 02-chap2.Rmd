@@ -79,11 +79,11 @@ theme_map <- theme_minimal() +
 
 # Data
 
-The majority of my independent variables were sourced from the census Annual Community Survey.
+The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level [@GeographicAreasCovered2020].
 
 ## Sample Size
 
-Unfortunately, not all counties in Ohio are included in the Annual Community Survey.
+Unfortunately, not all counties in Ohio are included in the Annual Community Survey. Only counties with a population of 65,000 or greater are included in the one year Annual Community Survey [@GeographicAreasCovered2020]. In total, the sample includes 39 out of Ohio's 88 counties.
 
 ```{r included_counties_map}
 df %>%
@@ -98,6 +98,12 @@ df %>%
        x = "",
        y = "") +
   theme_map
+```
+
+```{r check_if_excluded_counties_have_higher_od_rate}
+# do something here
+```
+
 ```
 
 ## Variable Summary Statistics
