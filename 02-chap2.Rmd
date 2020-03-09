@@ -180,7 +180,7 @@ df %>%
        fill = "% Black")
 ```
 
-The yellow county is Cuyahoga County, which contains the city of Cleveland.
+The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only part of Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
 
 # Methods
 
