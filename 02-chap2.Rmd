@@ -1,7 +1,8 @@
 
 ```{r setup}
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(warnings = FALSE)
+knitr::opts_chunk$set(messages = FALSE)
 library(citr)
 ```
 
