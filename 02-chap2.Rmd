@@ -109,11 +109,13 @@ df %>%
 
 ## Variable Summary Statistics
 
-For the education variables, "_b_" refers to big bins (e.g. college or more, high school or less), while "_s_" refers to small bins (e.g. some college, college, graduate school). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education.
+For the education variables, "_b_" refers to big bins (e.g. college or more, high school or less), while "_s_" refers to small bins (e.g. some college, college, graduate school). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree.
 
 Race is included as the variable "percent_black". Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, "percent_black" seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998].
 
-Disability is 
+Disability is broken into age and sex bins. These bins are kept small due to complications in aggregating them.
+
+The majority of variables are in percentage form. These variables, excluding "OD_rate", have the term "percentage" in their name. Percentages are calculated using the raw population for that year, and are stored in the format XX.X%, rather than .XXX%. Percentage, or per capita, form is used to isolate the role of county population on the fatal drug overdose rate.
 
 ```{r summary_stats_all_variables, results="asis"}
 df %>%
@@ -148,7 +150,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-Consider tobit model due to censoring.
+The distribution of the fatal drug overdose rate between counties suggests that censoring is occuring from the bottom. This is the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019].
 
 ```{r county_racial_distribution}
 df %>%
@@ -194,5 +196,5 @@ Plots, graphs, and maps that appear within this thesis were produced using ggplo
 
 Initial regressions were performed using simple linear regression.
 
-In addition to the simple linear regression models, a model with a censored dependent variable is also used. This model, referred to as a Tobit model, is used when there is censoring of the dependent variable. Censoring is when all values above or below a particular value are recorded as one value. For example, income data where all incomes over $100,000 a year are coded as $100,000 is censored from above.
+In addition to the simple linear regression models, a model with a censored dependent variable is also used. This model, referred to as a Tobit model, is used when there is censoring of the dependent variable [@hareThesisMeetings2019]. Censoring is when all values above or below a particular value are recorded as one value. For example, income data where all incomes over $100,000 a year are coded as $100,000 is censored from above.
 
