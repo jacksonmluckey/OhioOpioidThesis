@@ -210,5 +210,22 @@ df <- df %>%
 df <- df %>%
   mutate_at(vars(contains("percent")), ~ .x * 100)
 
+# add CDC overdose death rate
+# downloaded from https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/#data-tables
+OverdoseDeathRateCDC <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
+  filter(State == "Ohio") %>%
+  select(GEOID = FIPS,
+         county = County,
+         year = Year,
+         DeathRateCDC = `Model-based Death Rate`,
+         PopulationCDC = Population,
+         UrbanRural = `Urban/Rural Category`) %>%
+  mutate(county = str_remove(county, " County, OH")) %>%
+  mutate(GEOID = as.character(GEOID)) # to enable merging with DF
+  
+
+df <- left_join(df, OverdoseDeathRateCDC, by = c("GEOID" = "GEOID",
+                                                  "year" = "year",
+                                                  "county" = "county"))
 # save the final df as RDA file
 save(df, file  = "data/df.Rda")
