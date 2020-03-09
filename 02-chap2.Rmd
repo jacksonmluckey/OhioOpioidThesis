@@ -66,6 +66,17 @@ base_map <- base_map %>%
 map_df <- left_join(df, base_map, by = c("GEOID" = "GEOID"))
 ```
 
+```{r map_theme}
+theme_map <- theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank())
+```
+
 # Data
 
 The majority of my independent variables were sourced from the census Annual Community Survey.
@@ -86,7 +97,7 @@ df %>%
        title = "Counties included in sample",
        x = "",
        y = "") +
-  theme_minimal()
+  theme_map
 ```
 
 ## Variable Summary Statistics
