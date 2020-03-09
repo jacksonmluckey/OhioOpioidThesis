@@ -79,9 +79,9 @@ theme_map <- theme_minimal() +
 
 # Data
 
-The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level [@GeographicAreasCovered2020].
-
 Census data is stored by table, year, geography, and survey...
+
+The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level from the one-year survey [@GeographicAreasCovered2020]. Due to changes in the way that ACS data was collected in 2010, the dataset includes ACS data from the years 2012 to 2018. Tables are not necessarily consistent between years [@UnderstandingACSBasics2020].
 
 ## Sample Size
 
@@ -175,7 +175,10 @@ map_df %>%
   #summarize_all(mean) %>%
   ggplot(aes(fill = percent_black, geometry = geometry)) +
   geom_sf() +
-  
+  theme_map
 ```
 
 # Methods
+
+I used the R package Tidycensus to download census data. Tidycensus was created by Kyle Walker and is maintained by a community on GitHub. Tidycensus allows "R users to return Census and ACS data as tidyverse-ready data frames, and optionally returns a list-column with feature geometry for many geographies". The "list-column with feature geometry" allows the R user to easily draw maps using the downloaded census data and a ggplot2 one-liner. Dataframes can be downloaded in either a wide or tidy format, and brief descriptions of each variable are available. The package is an API wrapper for data.census.gov, and the API calls it creates can be accessed and manually ran using packages such as rvest [@walkerTidycensus]. 
+
