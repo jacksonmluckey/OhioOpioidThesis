@@ -1,8 +1,8 @@
 
 ```{r setup}
 knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(warnings = FALSE)
-knitr::opts_chunk$set(messages = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
 library(citr)
 ```
 
@@ -78,9 +78,11 @@ theme_map <- theme_minimal() +
 
 # Data
 
-Census data is stored by table, year, geography, and survey...
+Census data is stored by table, year, geography, and survey. Each survey has a different set of surveys, and surveys can differ from year to year [@UnderstandingACSBasics2020]. Surveys are only available for specific geographies, with broader, less frequent surveys covering a greater variety of geographies. Geographies include states, counties, census tracts, and school districts [@GeographicAreasCovered2020].
 
 The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level from the one-year survey [@GeographicAreasCovered2020]. Due to changes in the way that ACS data was collected in 2010, the dataset includes ACS data from the years 2012 to 2018. Tables are not necessarily consistent between years [@UnderstandingACSBasics2020].
+
+The variables "DeathRateCDC" and "UrbanRural" come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is age-adjusted. The data was paired with the census and overdose data using the FIPS code, which is a GEOID [@calgaryNCHSDrugPoisoning].
 
 ## Sample Size
 
@@ -110,11 +112,11 @@ df %>%
 
 ## Variable Summary Statistics
 
-For the education variables, "_b_" refers to big bins (e.g. college or more, high school or less), while "_s_" refers to small bins (e.g. some college, college, graduate school). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree.
+For the education variables, "_b_" refers to big bins (e.g. college or more, high school or less), while "_s_" refers to small bins (e.g. some college, college, graduate school). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree. The original data was provided as a raw count for each education level (i.e. number of people with an 11th grade education, number of people with a 12th grade education, and so on). To convert it into percentages, I divided each raw count by the total population of the county and assumed that all individuals would be included in one--and only one--column.
 
 Race is included as the variable "percent_black". Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, "percent_black" seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998].
 
-Disability is broken into age and sex bins. These bins are kept small due to complications in aggregating them.
+Disability is broken into age and sex bins. These bins are kept small because in order to aggregate them, I would need each county-year pair's population broken down into age and sex bins. The type of disability was ignored, as the literature suggested that painful, physical disabilities would have the greatest impact, and the census-provided disability bins only seperated out deafness and blindness.
 
 The majority of variables are in percentage form. These variables, excluding "OD_rate", have the term "percentage" in their name. Percentages are calculated using the raw population for that year, and are stored in the format XX.X%, rather than .XXX%. Percentage, or per capita, form is used to isolate the role of county population on the fatal drug overdose rate.
 
@@ -134,10 +136,14 @@ df %>%
   mutate(`Variable Name` = name, # make the variable name label better
          name = NULL) %>%
   select(`Variable Name`, everything()) %>% # gets the variable name in front
+  mutate(`Coefficient of Variation` = `Standard Deviation` / Mean) %>%
   kable(caption = "Summary statistics of all variables used in analysis",
         format.args = list(scientific = FALSE,
-                           big.mark = ","))
+                           big.mark = ",",
+                           digits = 5))
 ```
+
+
 
 ```{r OD_rate_distribution}
 df %>%
@@ -151,7 +157,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-The distribution of the fatal drug overdose rate between counties suggests that censoring is occuring from the bottom. This is the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019].
+The distribution of the fatal drug overdose rate between counties suggests that censoring is occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019].
 
 ```{r county_racial_distribution}
 df %>%
@@ -183,7 +189,7 @@ df %>%
        fill = "% Black")
 ```
 
-The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only part of Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
+The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only region in Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
 
 # Methods
 
