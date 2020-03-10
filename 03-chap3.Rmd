@@ -68,10 +68,12 @@ tidy(basic_model_no_cle) %>%
 ## Tobit Model
 
 ```{r}
-test <- tobit(basic_regression_formula, left = 1, data = df)
-#sum_test <- summary(test)
-#tidyTest <- sum_test$coefficients
-summary(test)
+#test <- tobit(basic_regression_formula, left = 1, data = df)
+#summary(test)
+#tobit_results <- VGAM::vglm(basic_regression_formula, VGAM::tobit(type.f = "cens"), data = df)
+#summary(tobit_results)
+tobit_results <- censReg::censReg(basic_regression_formula, left = 0.5066819, data = df)
+summary(tobit_results)
 ```
 
 if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue (if I understood Denise correctly).
