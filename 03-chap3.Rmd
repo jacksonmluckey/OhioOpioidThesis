@@ -68,12 +68,19 @@ tidy(basic_model_no_cle) %>%
 ## Tobit Model
 
 ```{r}
-#test <- tobit(basic_regression_formula, left = 1, data = df)
-#summary(test)
-#tobit_results <- VGAM::vglm(basic_regression_formula, VGAM::tobit(type.f = "cens"), data = df)
-#summary(tobit_results)
-tobit_results <- censReg::censReg(basic_regression_formula, left = 0.5066819, data = df)
-summary(tobit_results)
+
+tobit_results <- censReg::censReg(basic_regression_formula, left = 0.5066819, data = df, logLikOnly = FALSE)
+# summary(tobit_results)
+# turn into dataframe
+tidy_tobit_results <- data.frame(tobit_estimate = tobit_results$estimate)
+# add rownames as column
+tidy_tobit_results <- rownames_to_column(tidy_tobit_results, var = "variable")
+# add differences from base model to results
+tidy(basic_model) %>%
+  rename(variable = term) %>%
+  select(variable, estimate) %>%
+  right_join(tidy_tobit_results) %>%
+  mutate(percentDifferenceInEstimate = (abs(estimate - tobit_estimate) / abs(tobit_estimate) * 100))
 ```
 
-if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue (if I understood Denise correctly).
+For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. In the table above, "estimate" is sourced from the original simple linear regression, while "tobit_estimate" unsurprisingly comes from the Tobit model. "percentDifferenceInEstimate" is the absolute difference between the models divided by "tobit_estimate" and converted into a percentage in the form XX.X%.
