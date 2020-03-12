@@ -80,7 +80,13 @@ tidy(basic_model) %>%
   rename(variable = term) %>%
   select(variable, estimate) %>%
   right_join(tidy_tobit_results) %>%
-  mutate(percentDifferenceInEstimate = (abs(estimate - tobit_estimate) / abs(tobit_estimate) * 100))
+  mutate(percentDifferenceInEstimate = (abs(estimate - tobit_estimate) / abs(tobit_estimate) * 100)) %>%
+  # for some reason renaming anywhere before here causes "Error: object 'estimate' not found"
+  rename(Variable = variable,
+         `Tobit` = tobit_estimate,
+         `Percent Difference` = percentDifferenceInEstimate,
+         `OLS` = estimate) %>%
+  kable()
 ```
 
 For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. In the table above, "estimate" is sourced from the original simple linear regression, while "tobit_estimate" unsurprisingly comes from the Tobit model. "percentDifferenceInEstimate" is the absolute difference between the models divided by "tobit_estimate" and converted into a percentage in the form XX.X%.

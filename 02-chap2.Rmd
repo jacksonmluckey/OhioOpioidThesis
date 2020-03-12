@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 
 ```{r setup}
 knitr::opts_chunk$set(echo = FALSE)
@@ -54,7 +59,7 @@ misc_variable_ordering <- c("OD_rate", "income_pc_individual", "percent_white", 
 master_variable_ordering <- c(misc_variable_ordering, education_ordering, disability_ordering)
 ```
 
-```{r grab_county_geometry}
+```{r grab_county_geometry, echo=FALSE, message=FALSE, warning=FALSE}
 base_map <- get_acs("county",
                     state = "OH",
                     table = "B02001",
