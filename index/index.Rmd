@@ -4,8 +4,6 @@ date: 'May 2020'
 institution: 'Reed College'
 division: 'History and Social Sciences'
 advisor: 'Denise Hare'
-# If you have more two advisors, un-silence line 7
-#altadvisor: 'Your Other Advisor'
 department: 'Economics'
 degree: 'Bachelor of Arts'
 title: 'Ohio Opioid Thesis'

@@ -1,123 +1,101 @@
-# Mathematics and Science {#math-sci}
+```{r load_packages_and_df}
+# Load the libraries and data used in this Rmd file
+library(tidyverse)
+library(here)
+library(knitr) # for kable
+library(tidycensus)
+load(here("data", "df.Rda"))
+```
 
-<!-- Required to number equations in HTML files -->
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-  TeX: { equationNumbers: { autoNumber: "AMS" } }
-});
-</script>
+```{r variable_ordering}
+################################
+# Disability Variable Ordering #
+################################
+base_disability_list <- c("disability_percent_under5", "disability_percent_5to17", "disability_percent_18to34", "disability_percent_35to64", "disability_percent_65to74", "disability_percent_75andup")
 
-## Math
+# adds a suffix to a string
+# used for generating the male and female disability lists
+add_suffix <- function(string, suffix) {
+  string <- paste0(string, suffix)
+  string
+}
 
-\TeX\ is the best way to typeset mathematics. Donald Knuth designed \TeX\ when he got frustrated at how long it was taking the typesetters to finish his book, which contained a lot of mathematics.  One nice feature of _R Markdown_ is its ability to read LaTeX code directly.
+# create male, female, and unified disability variable ordering list
+# and then turn them back into usable vectors
+# instead of lists (to avoid the [[]] nonsense and ambiguity with tidyselect)
+male_disability_ordering <- base_disability_list %>%
+  map(add_suffix, "_male") %>%
+  as.character()
+female_disability_ordering <- base_disability_list %>%
+  map(add_suffix, "_female") %>%
+  as.character()
+disability_ordering <- c(male_disability_ordering, female_disability_ordering)
 
-If you are doing a thesis that will involve lots of math, you will want to read the following section which has been commented out. If you're not going to use math, skip over or delete this next commented section.
+###############################
+# Education Variable Ordering #
+###############################
+education_ordering <- c("education_b_percent_highschool_or_less", "education_b_percent_college_or_more",
+                        "education_s_percent_less_than_highschool", "education_s_percent_highschool",
+                        "education_s_percent_ged", "education_s_percent_some_college", "education_s_percent_college",
+                        "education_s_percent_graduate")
 
+############################
+# Master Variable Ordering #
+############################
+misc_variable_ordering <- c("OD_rate", "income_pc_individual", "percent_white", "percent_black", "population", "deaths")
+master_variable_ordering <- c(misc_variable_ordering, education_ordering, disability_ordering)
+```
 
-<!-- MATH and PHYSICS majors: Uncomment the following section -->
-<!--
-$$\sum_{j=1}^n (\delta\theta_j)^2 \leq {{\beta_i^2}\over{\delta_i^2 + \rho_i^2}}
-\left[ 2\rho_i^2 + {\delta_i^2\beta_i^2\over{\delta_i^2 + \rho_i^2}} \right] \equiv \omega_i^2
-$$
+```{r grab_county_geometry, echo=FALSE, message=FALSE, warning=FALSE}
+base_map <- get_acs("county",
+                    state = "OH",
+                    table = "B02001",
+                    geometry = TRUE,
+                    output = "wide")
+# reduce down to GEOID and geometry
+base_map <- base_map %>%
+  select(GEOID, geometry)
+```
 
-From Informational Dynamics, we have the following (Dave Braden):
+```{r map_theme}
+theme_map <- theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank())
+```
 
-After _n_ such encounters the posterior density for $\theta$ is
+# Data
 
-$$
-\pi(\theta|X_1< y_1,\dots,X_n<y_n) \varpropto \pi(\theta) \prod_{i=1}^n\int_{-\infty}^{y_i}
-   \exp\left(-{(x-\theta)^2\over{2\sigma^2}}\right)\ dx
-$$
+Census data is stored by table, year, geography, and survey. Each survey has a different set of tables, and surveys can differ from year to year [@UnderstandingACSBasics2020]. Surveys are only available for specific geographic regions, with broader, less frequent surveys covering a greater variety of geographies. Geographies include states, counties, census tracts, and school districts [@GeographicAreasCovered2020].
 
-Another equation:
+The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level from the one-year survey [@GeographicAreasCovered2020]. Due to changes in the way that ACS data were collected in 2010, the dataset includes ACS data from the years 2012 to 2018. Tables are not necessarily consistent between years [@UnderstandingACSBasics2020].
 
-$$\det\left|\,\begin{matrix}%
-c_0&c_1\hfill&c_2\hfill&\ldots&c_n\hfill\cr
-c_1&c_2\hfill&c_3\hfill&\ldots&c_{n+1}\hfill\cr
-c_2&c_3\hfill&c_4\hfill&\ldots&c_{n+2}\hfill\cr
-\,\vdots\hfill&\,\vdots\hfill&
-  \,\vdots\hfill&&\,\vdots\hfill\cr
-c_n&c_{n+1}\hfill&c_{n+2}\hfill&\ldots&c_{2n}\hfill\cr
-\end{matrix}\right|>0$$
+The variables "DeathRateCDC" and "UrbanRural" come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is age-adjusted. The data was paired with the census and overdose data using the FIPS code, which is a GEOID [@calgaryNCHSDrugPoisoning].
 
+## Sample Size
 
-Lapidus and Pindar, Numerical Solution of Partial Differential Equations in Science and
-Engineering.  Page 54
+Unfortunately, not all counties in Ohio are included in the Annual Community Survey. Only counties with a population of 65,000 or greater are included in the one year Annual Community Survey [@GeographicAreasCovered2020]. In total, the sample includes 39 out of Ohio's 88 counties. Since the census data is censored based on county population, there is selection bias in the sample. This means that my results may be an inaccurate reflection of reality if there is correlation between a county's population and the county's fatal drug overdose rate. Given that the literature suggests that rural areas have suffered from greater increases in overdose rates, it is likely that there is correlation between county population and the overdose rate, meaning that there is likely selection bias in the dataset.
 
-$$
-\int_t\left\{\sum_{j=1}^3 T_j \left({d\phi_j\over dt}+k\phi_j\right)-kT_e\right\}w_i(t)\ dt=0,
-   \qquad\quad i=1,2,3.
-$$
+Counties excluded in the one year Annual Community Survey are available in other U.S. Census Bureau datasets. Counties with at least a population of 20,000 are included in the one year Annual Community Survey supplemental estimates, which provide a more limited version of the tables included in the broader one year Annual Community Survey. Furthermore, the ACS five year estimates include many counties excluded from the one-year estimates, and the decennial survey includes all areas [@UnderstandingACSBasics2020].
 
-L\&P  Galerkin method weighting functions.  Page 55
-
-$$
-\sum_{j=1}^3 T_j\int_0^1\left\{{d\phi_j\over dt} + k\phi_j\right\} \phi_i\ dt
-   = \int_{0}^1k\,T_e\phi_idt, \qquad i=1,2,3 $$
-
-Another L\&P (p145)
-
-$$
-\int_{-1}^1\!\int_{-1}^1\!\int_{-1}^1 f\big(\xi,\eta,\zeta\big)
-   = \sum_{k=1}^n\sum_{j=1}^n\sum_{i=1}^n w_i w_j w_k f\big( \xi,\eta,\zeta\big).
-$$
-
-Another L\&P (p126)
-
-$$
-\int_{A_e} (\,\cdot\,) dx dy = \int_{-1}^1\!\int_{-1}^1 (\,\cdot\,) \det[J] d\xi d\eta.
-$$
--->
-
-## Chemistry 101: Symbols
-
-Chemical formulas will look best if they are not italicized. Get around math mode's automatic italicizing in LaTeX by using the argument `$\mathrm{formula here}$`, with your formula inside the curly brackets.  (Notice the use of the backticks here which enclose text that acts as code.)
-
-So, $\mathrm{Fe_2^{2+}Cr_2O_4}$ is written `$\mathrm{Fe_2^{2+}Cr_2O_4}$`.
-
-<!--
-The \noindent command below does what you'd expect:  it forces the current line/paragraph to not indent. This was done here to match the format of the LaTeX thesis PDF.
--->
-
-\noindent Exponent or Superscript: $\mathrm{O^-}$
-
-\noindent Subscript: $\mathrm{CH_4}$
-
-To stack numbers or letters as in $\mathrm{Fe_2^{2+}}$, the subscript is defined first, and then the superscript is defined.
-
-\noindent Bullet: CuCl $\bullet$ $\mathrm{7H_{2}O}$
-
-
-\noindent Delta: $\Delta$
-
-\noindent Reaction Arrows: $\longrightarrow$ or  $\xrightarrow{solution}$
-
-\noindent Resonance Arrows: $\leftrightarrow$
-
-\noindent Reversible Reaction Arrows: $\rightleftharpoons$
-
-### Typesetting reactions
-
-You may wish to put your reaction in an equation environment, which means that LaTeX will place the reaction where it fits and will number the equations for you. 
-
-\begin{equation}
-  \mathrm{C_6H_{12}O_6  + 6O_2} \longrightarrow \mathrm{6CO_2 + 6H_2O}
-  (\#eq:reaction)
-\end{equation}
-
-We can reference this combustion of glucose reaction via Equation \@ref(eq:reaction).
-
-### Other examples of reactions
-
-$\mathrm{NH_4Cl_{(s)}}$ $\rightleftharpoons$ $\mathrm{NH_{3(g)}+HCl_{(g)}}$
-
-\noindent $\mathrm{MeCH_2Br + Mg}$ $\xrightarrow[below]{above}$ $\mathrm{MeCH_2\bullet Mg \bullet Br}$
-
-## Physics
-
-Many of the symbols you will need can be found on the math page <http://web.reed.edu/cis/help/latex/math.html> and the Comprehensive LaTeX Symbol Guide (<http://mirror.utexas.edu/ctan/info/symbols/comprehensive/symbols-letter.pdf>).
-
-## Biology
-
-You will probably find the resources at <http://www.lecb.ncifcrf.gov/~toms/latex.html> helpful, particularly the links to bsts for various journals. You may also be interested in TeXShade for nucleotide typesetting (<http://homepages.uni-tuebingen.de/beitz/txe.html>).  Be sure to read the proceeding chapter on graphics and tables.
-
+```{r included_counties_map}
+# commented out because it broke at some point and I did not realize
+# uncomment once I get the whole thesis to knit
+# df %>%
+#   group_by(county, GEOID) %>%
+#   summarize(population = mean(population)) %>%
+#   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+#   mutate(included = !is.na(population)) %>%
+#   ggplot(aes(geometry = geometry, fill = included)) +
+#   geom_sf() +
+#   labs(fill = "Included in Sample?",
+#        title = "Counties included in sample",
+#        x = "",
+#        y = "") +
+#   theme_map +
+#   scale_fill_viridis_d()
+```
