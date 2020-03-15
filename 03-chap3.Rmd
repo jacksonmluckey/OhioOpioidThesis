@@ -96,6 +96,7 @@ tobit <- function(formula, left, data = df) {
   summary(censReg::censReg(formula, left = left, data = df, logLikOnly = FALSE))
 }
 
+# converts the output of tobit() into a tidy dataframe
 tobit_to_table <- function(tobitResults) {
   tobitResults$estimate %>%
     as.data.frame() %>%
