@@ -96,19 +96,21 @@ Unfortunately, not all counties in Ohio are included in the Annual Community Sur
 Counties excluded in the one year Annual Community Survey are available in other U.S. Census Bureau datasets. Counties with at least a population of 20,000 are included in the one year Annual Community Survey supplemental estimates, which provide a more limited version of the tables included in the broader one year Annual Community Survey. Furthermore, the ACS five year estimates include many counties excluded from the one-year estimates, and the decennial survey includes all areas [@UnderstandingACSBasics2020].
 
 ```{r included_counties_map}
-df %>%
-  group_by(county, GEOID) %>%
-  summarize(population = mean(population)) %>%
-  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
-  mutate(included = !is.na(population)) %>%
-  ggplot(aes(geometry = geometry, fill = included)) +
-  geom_sf() +
-  labs(fill = "Included in Sample?",
-       title = "Counties included in sample",
-       x = "",
-       y = "") +
-  theme_map +
-  scale_fill_viridis_d()
+# commented out because it broke at some point and I did not realize
+# uncomment once I get the whole thesis to knit
+# df %>%
+#   group_by(county, GEOID) %>%
+#   summarize(population = mean(population)) %>%
+#   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+#   mutate(included = !is.na(population)) %>%
+#   ggplot(aes(geometry = geometry, fill = included)) +
+#   geom_sf() +
+#   labs(fill = "Included in Sample?",
+#        title = "Counties included in sample",
+#        x = "",
+#        y = "") +
+#   theme_map +
+#   scale_fill_viridis_d()
 ```
 
 ```{r check_if_excluded_counties_have_higher_od_rate}
