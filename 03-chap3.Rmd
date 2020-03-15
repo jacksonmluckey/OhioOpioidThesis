@@ -69,7 +69,7 @@ tidy(basic_model_no_cle) %>%
 
 For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. In the table above, "estimate" is sourced from the original simple linear regression, while "tobit_estimate" unsurprisingly comes from the Tobit model. "percentDifferenceInEstimate" is the absolute difference between the models divided by "tobit_estimate" and converted into a percentage in the form XX.X%.
 
-```{r}
+```{r tobit_functions}
 tobit <- function(formula, left, data = df) {
   summary(censReg::censReg(formula, left = left, data = df, logLikOnly = FALSE))
 }
@@ -80,15 +80,21 @@ tobit_to_table <- function(tobitResults) {
     as.data.frame() %>%
     rownames_to_column(var = "variable")
 }
+```
 
+```{r tobit_all_counties}
 tobit(basic_regression_formula, left = 0.5066819) %>%
   tobit_to_table() %>%
   kable()
+```
 
+```{r tobit_no_cle}
 tobit(basic_regression_formula, left = 0.5066819, data = df_no_cle) %>%
   tobit_to_table() %>%
   kable()
+```
 
+```{r tobit_vs_ols}
 tobit(basic_regression_formula, left = 0.5066819) %>%
   tobit_to_table() %>%
   select(tobit_estimate = Estimate, variable) %>%
