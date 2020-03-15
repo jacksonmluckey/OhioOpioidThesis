@@ -83,9 +83,9 @@ theme_map <- theme_minimal() +
 
 # Data
 
-Census data is stored by table, year, geography, and survey. Each survey has a different set of surveys, and surveys can differ from year to year [@UnderstandingACSBasics2020]. Surveys are only available for specific geographies, with broader, less frequent surveys covering a greater variety of geographies. Geographies include states, counties, census tracts, and school districts [@GeographicAreasCovered2020].
+Census data is stored by table, year, geography, and survey. Each survey has a different set of tables, and surveys can differ from year to year [@UnderstandingACSBasics2020]. Surveys are only available for specific geographic regions, with broader, less frequent surveys covering a greater variety of geographies. Geographies include states, counties, census tracts, and school districts [@GeographicAreasCovered2020].
 
-The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level from the one-year survey [@GeographicAreasCovered2020]. Due to changes in the way that ACS data was collected in 2010, the dataset includes ACS data from the years 2012 to 2018. Tables are not necessarily consistent between years [@UnderstandingACSBasics2020].
+The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level from the one-year survey [@GeographicAreasCovered2020]. Due to changes in the way that ACS data were collected in 2010, the dataset includes ACS data from the years 2012 to 2018. Tables are not necessarily consistent between years [@UnderstandingACSBasics2020].
 
 The variables "DeathRateCDC" and "UrbanRural" come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is age-adjusted. The data was paired with the census and overdose data using the FIPS code, which is a GEOID [@calgaryNCHSDrugPoisoning].
 
@@ -117,7 +117,7 @@ df %>%
 
 ## Variable Summary Statistics
 
-For the education variables, "_b_" refers to big bins (e.g. college or more, high school or less), while "_s_" refers to small bins (e.g. some college, college, graduate school). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree. The original data was provided as a raw count for each education level (i.e. number of people with an 11th grade education, number of people with a 12th grade education, and so on). To convert it into percentages, I divided each raw count by the total population of the county and assumed that all individuals would be included in one--and only one--column.
+For the education variables, "_s_" refers to small bins (e.g. 11th grade education, 12th grade education), whereas "_b_" refers to the aggregation of multiple small bins (e.g. high school or less, college or more). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree. The original data was provided as a raw count for each education level (i.e. number of people with an 11th grade education, number of people with a 12th grade education, and so on). To convert it into percentages, I divided each raw count by the total population of the county and assumed that all individuals would be included in one--and only one--column.
 
 Race is included as the variable "percent_black". Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, "percent_black" seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998].
 
@@ -162,7 +162,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-The distribution of the fatal drug overdose rate between counties suggests that censoring is occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019].
+The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019].
 
 ```{r county_racial_distribution}
 df %>%
@@ -216,5 +216,5 @@ Plots, graphs, and maps that appear within this thesis were produced using ggplo
 
 Initial regressions were performed using simple linear regression.
 
-In addition to the simple linear regression models, a model with a censored dependent variable is also used. This model, referred to as a Tobit model, is used when there is censoring of the dependent variable [@hareThesisMeetings2019]. Censoring is when all values above or below a particular value are recorded as one value. For example, income data where all incomes over $100,000 a year are coded as $100,000 is censored from above.
+In addition to the simple linear regression models, a model with a censored dependent variable is also used. This model, referred to as a Tobit model, is used when there is censoring of the dependent variable [@hareThesisMeetings2019]. Censoring is when all values above or below a particular value are recorded as a single value. For example, income data where all incomes over $100,000 a year are coded as $100,000 is censored from above.
 
