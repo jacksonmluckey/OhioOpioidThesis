@@ -1,183 +1,113 @@
-<!--
-This is for including Chapter 1.  Notice that it's also good practice to name your chunk.  This will help you debug potential issues as you knit.  The chunk above is called intro and the one below is called chapter1.  Feel free to change the name of the Rmd file as you wish, but don't forget to change it here from chap1.Rmd.
--->
+# Introduction
 
-<!--
-The {#rmd-basics} text after the chapter declaration will allow us to link throughout the document back to the beginning of Chapter 1.  These labels will automatically be generated (if not specified) by changing the spaces to hyphens and capital letters to lowercase.  Look for the reference to this label at the beginning of Chapter 2.
--->
+According to the Center for Disease Control, the opioid epidemic is the worst drug epidemic in US history. While opioids are a legitimate medical treatment for acute pain, they are highly addictive and come with the risk of abuse, dependence, and fatal overdose [@aliprantisOpioidsLaborMarket2018]. Abuse of and dependence on opioids has serious consequences. Since 2016, drug overdoses have been the leading cause of accidental death in the United States [@maguireOpioidCrisisAppalachia2019]. Overdoses kill more people than gun violence, motor vehicle incidents, or the HIV/AIDS epidemic did at its peak [@quinonesDreamlandTrueTale2016; @ciccaroneFentanylUSHeroin2017; @alpertSupplySideDrugPolicy2017]. In fact, the scourge of opioid overdoses is so severe that it has lead to an increase in all-cause mortality for white Americans despite mortality decreasing for all other Americans and citizens of comparably developed countries [@caseMortalityMorbidity21st2017]. Reducing the number of deaths due to opioids is essential to reversing this trend, increasing the labor supply, and improving outcomes for millions of Americans.
 
-# R Markdown Basics {#rmd-basics}
+(will probably not be part of this chapter long-term)
 
-Here is a brief introduction into using _R Markdown_. _Markdown_ is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. _R Markdown_ provides the flexibility of _Markdown_ with the implementation of **R** input and output.  For more details on using _R Markdown_ see <http://rmarkdown.rstudio.com>.  
+# Rationality
 
-Be careful with your spacing in _Markdown_ documents.  While whitespace largely is ignored, it does at times give _Markdown_ signals as to how to proceed.  As a habit, try to keep everything left aligned whenever possible, especially as you type a new paragraph.  In other words, there is no need to indent basic text in the Rmd document (in fact, it might cause your text to do funny things if you do).
+## Definition of Rationality
 
-## Lists
+While there is significant evidence that consumers are not "rational", the economics discipline is founded upon the theory of consumer rationality [@arcidiaconoConsumerRationalityMultidisciplinary2011]. Rational consumers make choices based on a set of consistent preferences that are complete[^1], reflexive[^2], and transitive[^3] [@blackConsumerRationality2013].
 
-It's easy to create a list.  It can be unordered like
+(will be expanded and/or replaced)
 
-* Item 1
-* Item 2
+[^1]: Given any two goods X and Y, either X is preferred to Y, Y is preferred to X, or X and Y are preferred equally [@blackConsumerRationality2013].
 
-or it can be ordered like
+[^2]: Consumers are indifferent between two identical instances of the same good [@blackConsumerRationality2013].
 
-1. Item 1
-4. Item 2
+[^3]: If a consumer prefers X to Y, and prefers Y to Z, then they must prefer X to Z [@blackConsumerRationality2013].
 
-Notice that I intentionally mislabeled Item 2 as number 4.  _Markdown_ automatically figures this out!  You can put any numbers in the list and it will create the list.  Check it out below.
+## Addiction and Rationality
 
-To create a sublist, just indent the values a bit (at least four spaces or a tab).  (Here's one case where indentation is key!)
+Health economists study addiction using three types of models. Imperfectly rational models of addiction give consumers two incompatible yet internally consistent utility functions. For example, a consumer might have both a farsighted utility function used for making long-term decisions such as buying a house and a short-term utility function for making marginal decisions such as choosing to use heroin to stave off withdrawal [@culyerDictionaryHealthEconomics2005]. This model does a good job of explaining how heroin addicts living on the street can simultaneously express impressive plans for the future while injecting leftover drops of heroin from a dirty cotton using a used needle [@bourgoisRighteousDopefiend2009]. Myopic irrational models have addicts’ utility functions be exclusively shortsighted by using some combination of heavy discounting of future consequences and future consequences being unknown. For example, an addict may not care about long-term health consequences, and even if they do no individual substance user knows what consequences they will face in the future. Finally, there are theories of rational addiction, as exemplified by Becker and Murphy’s work [@culyerDictionaryHealthEconomics2005].
 
-1. Item 1
-1. Item 2
-1. Item 3
-    - Item 3a
-    - Item 3b
+## A Theory of Rational Addiction
 
-## Line breaks
+While “addictions would seem to be the antithesis of rational behavior”,  Becker and Murphy’s *A Theory of Rational Addiction* attempts to bridge the gap between homo economus and homo sapiens [-@beckerTheoryRationalAddiction1988]. According to the authors, "a good is potentially addictive if increases in past consumption raise current consumption" [@beckerTheoryRationalAddiction1988, 675]. This property is referred to as adjacent complementarity. The level of adjacent complementarity of a good determines the addictiveness of that good [@beckerTheoryRationalAddiction1988]. Given that opioid dependence has been known to occur after only a week of continuous use, and that opioid cravings are so extreme that long-term addicts are unable to "appreciate the intensity of craving when they are not currently experiencing it", opioids are extremely addictive under this definition [@meierPainKillerEmpire2018; @badgerAlteredStatesImpact2007, 685]. This is supported by the medical literature, which finds that heroin is significantly more addictive than any other substance [@nuttDevelopmentRationalScale2007].
 
-Make sure to add white space between lines if you'd like to start a new paragraph.  Look at what happens below in the outputted document if you don't:
+Harmful addictions usually feature tolerance and reinforcement. Tolerance means that current consumption is less satisfying when past consumption is greater, while reinforcement means that greater current consumption increases future consumption [@beckerTheoryRationalAddiction1988]. Opioid tolerance makes any given level of consumption less satisfying because it decreases the duration and intensity of euphoria, sedation, and analgesia that opioids induce, which encourages users to increase their consumption over time [@collettOpioidToleranceClinical1998; @morganAnalysisOpioidEfficacy2011]. From a clinical perspective, opioid tolerance occurs through three mechanisms: changes in the body’s metabolism of the drug, changes in the body’s receptors for a drug, and changes in the brain’s response to the stimulus from the drug [@collettOpioidToleranceClinical1998]. The most famous reinforcement mechanism for opioids is withdrawal. Withdrawal is a common term for the symptoms that chronic opioid users feel when they discontinue use [@collettOpioidToleranceClinical1998; @morganAnalysisOpioidEfficacy2011]. These symptoms are deeply unpleasant, and the "fear of withdrawal has been considered to be one of the major forces behind persistent drug abuse in addicts" [@collettOpioidToleranceClinical1998, 62].
 
-Here is the first sentence.  Here is another sentence.  Here is the last sentence to end the paragraph.
-This should be a new paragraph.
+# History of the Opioid Epidemic
 
-*Now for the correct way:* 
+## What are Opioids?
 
-Here is the first sentence.  Here is another sentence.  Here is the last sentence to end the paragraph.
+Opioids are a group of powerful analgesic drugs [@kastinHandbookBiologicallyActive2013]. They both alleviate pain and create intense euphoria, and are considered highly addictive [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Opioids generate this effects via activating opioid receptors [@kastinHandbookBiologicallyActive2013]. Opium--the original opioid--is processed liquid from opium poppies, and has been used for pleasure, pain alleviation, and controlling dysentry for thousands of years. In the early 1800s, opium was first purified into morphine, which was later transformed into heroin in the 1870s. More opium derivatives, as well as fully synthetic opioids, were developed in the 1900s. Today, the family of opioids includes heroin, morphine, fentanyl, oxycodone, hydrocodone, buprenorphine, and methadone. Unfortunately, these new stronger opioids increased the risk of overdose, which is when a high dose of opioids causes respiratory failure among other things. While opioids are highly addictive and considered dangerous, they remain uniquely effective at treating severe pain [@brummettManagingPainEssentials2013; @rastegarAmericanSocietyAddiction2015].
 
-This should be a new paragraph.
+## America's First Opioid Epidemic
 
-## R chunks
+Opium and its derivatives have been consumed in the United States since the nations founding [@trickeyStoryAmerica19thCentury2018]. During the American Civil War, injured soldiers were given morphine to treat their pain [@arabloueiHistoryOpioidsAmerica2019]. At the time, morphine was relatively new, and was considered almost a miraculous panacea. While some physicians noticed and warned others about the dangers of morphine as early as the late 1860s, it was prescribed heavily by doctors until approximately 1900 due to demand from patients and inadequate medical education [@arabloueiHistoryOpioidsAmerica2019; @trickeyStoryAmerica19thCentury2018]. By 1895, approximately 0.5% of Americans were addicted to morphine and other opioids, with addiction being more prevalent among middle and upper class whites, especially white women [@trickeyStoryAmerica19thCentury2018; @whiteSlayingDragonHistory1998]1. Eventually, a combination of medical education, changing social norms, and regulation convinced doctors to cut back their opioid prescriptions, ending the epidemic[@ciccaroneFentanylUSHeroin2017; @quinonesDreamlandTrueTale2016; @trickeyStoryAmerica19thCentury2018]. Afterwards, opioid usage became associated with poor people of color--specifically opium with Chinese immigrants and heroin with African Americans--setting the stage for the demonization of opioids that lasted until quite recently [@trickeyStoryAmerica19thCentury2018].
 
-When you click the **Knit** button above a document will be generated that includes both content as well as the output of any embedded **R** code chunks within the document. You can embed an **R** code chunk like this (`cars` is a built-in **R** dataset):
+There are many similarities between the current opioid epidemic and the one that ended 120 years ago. Both epidemics were driven by iatrogenic addiction, meaning that users first started with opioids that were legitimately prescribed to them by a physician [@meierPainKillerEmpire2018; @mustoIatrogenicAddictionProblem1985; @quinonesDreamlandTrueTale2016; @trickeyStoryAmerica19thCentury2018]. Both epidemics primarily affected wealthier white Americans [@quinonesDreamlandTrueTale2016; @trickeyStoryAmerica19thCentury2018]. In both cases, doctors were incentivized to acquiesce to demands for opioids from wealthier patients, despite evidence suggesting that it was not a proper or safe treatment [@meierPainKillerEmpire2018; @trickeyStoryAmerica19thCentury2018]. Both epidemics were worsened by new supposedly non-addictive opioids--morphine and heroin in the 19th century and OxyContin in the 21st [@ciccaroneFentanylUSHeroin2017; @quinonesDreamlandTrueTale2016; @trickeyStoryAmerica19thCentury2018]. Finally, in both epidemics addiction was treated as a medical issue, which is in sharp contrast to how opioid addiction was treated during the era in which it primarily affected impoverished people of color [@trickeyStoryAmerica19thCentury2018].
 
-```{r cars}
-summary(cars)
+## Changes in Pain Treatment
+
+The current opioid epidemic was ushered in by changing physician attitudes towards pain alleviation. After the first American opioid epidemic, physicians had an extremely negative outlook on opioids. They were rarely prescribed, even to terminally ill patients in hospital [@quinonesDreamlandTrueTale2016]. During this time period, chronic pain was considered out of scope for most physicians. Patients went to specialized multidisciplinary pain centers, where they received a variety of non-opioid treatments before opioids were even considered. If doctors elected to prescribe opioids, they used low strength pills that were combined with less addictive painkillers, such as acetaminophen, which made them difficult to abuse. By the 1980s, the last physicians who had dealt with widespread iatrogrenic addiction had died off, and stigma towards opioids began to fade [@meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016].
+
+The change in physicians' attitudes towards opioids was accelerated by several factors. Insurance companies seeking to cut costs reduced payments to or stopped reimbursing entirely providers of multidisciplinary pain care due to its relatively high sticker price compared to medication-based treatment. More generally, insurance companies pressured doctors to spend less time with patients, and there is no better way to quickly end a visit than breaking out a prescription pad [@meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016; @vanzeePromotionMarketingOxyContin2009]. Simultaneously, hospitals began prioritizing patient satisfaction, creating an incentive structure that rewarded handing out opioid prescriptions to anyone who demanded them, including suspected addicts [@quinonesDreamlandTrueTale2016]. Finally, the introduction and marketing of OxyContin further quelled fears of iatrogenic addiction and made opioids prescriptions seem as routine as antibiotics or statins [@meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016; @vanzeePromotionMarketingOxyContin2009]. By 1995, physician attitudes toward pain had shifted so much that pain became the fifth vital sign, leading to changes in treatment guidelines that encouraged opioid prescriptions for non-cancer chronic pain [@alpertSupplySideDrugPolicy2017; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016].
+
+## The Introduction of OxyContin
+
+OxyContin is a prescription opioid painkiller brought to market by Purdue Pharmaceuticals in 1996 [@alpertSupplySideDrugPolicy2017; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. It is made from oxycodone, a derivative of opium, and can rival morphine in strength [@meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. OxyContin was unlike previous prescription painkillers in several aspects. In contrast to previous medications such as Vicodin, OxyContin was not blended with additional substances such as acetaminophen, which made it much easier to snort and inject. Furthermore, it was available in up to 160 milligram doses, whereas previous painkillers were capped at five to ten milligrams [@quinonesDreamlandTrueTale2016]. Finally, OxyContin featured a time-delay release mechanism, which the FDA allowed Purdue to market as an abuse deterrent, leading to the perception that OxyContin was non-addictive despite a complete lack of clinical studies demonstrating that this was the case [@alpertSupplySideDrugPolicy2017; @eschHowOneSentence2017; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016; @vanzeePromotionMarketingOxyContin2009].
+
+More specifically, OxyContin's original label stated "Delayed absorption as provided by OxyContin tablets, is believed to reduce the abuse liability of a drug" [@eschHowOneSentence2017; @quinonesDreamlandTrueTale2016, 27]. In addition to encouraging more prescriptions from physicians, this label quelled the concerns of pharmacists seeing a huge uptake in opioid prescriptions in the late 1990s. Furthermore, Purdue Pharmaceuticals sponsored continuing medical education for physicians that minimized the risk of opioid addiction. The seminars lauded a supposed study by Porter and Jick, claiming that it demonstrated that less than one percent of patients could become addicted to opioids[^4]. In reality, the "study" was a brief letter that simply provided summary statistics on opioid use from a database that only covered inpatient care, but the gambit was effective at encouraging wanton prescribing of OxyContin [@haneyDoctorWhoWrote; @meierPainKillerEmpire2018; @porterAddictionRarePatients1980; @quinonesDreamlandTrueTale2016; @vanzeePromotionMarketingOxyContin2009; @zhangOneParagraphLetter19802017]. By the turn of the century, however, some activists, physicians, and pharmacists had noticed a major rise in opioid addictions in their communities, and began to warn others [@meierPainKillerEmpire2018].
+
+[^4]: In reality, the only thing that Porter and Jick's letter demonstrated was that opioid dependence can occur after a brief period of use even when used exclusively under medical supervision while in hospital.
+
+```{r appalachia_map}
+"[map of Appalachia goes here"
 ```
 
-## Inline code
+Warning signs of the current opioid crisis first arose in Appalachia, where physicians such as Dr. Art Van Zee observed a huge rise in opioid addictions following the introduction of OxyContin [@meierPainKillerEmpire2018; @vanzeePromotionMarketingOxyContin2009; @quinonesDreamlandTrueTale2016]. Communities that had previously only faced alcoholism suddenly had large number of opioid addicts, who were usually much younger--high schools in inpatient rehabilitation was not unheard of. Anecdotally, Dr. Art Van Zee noticed addicts seeking OxyContin by name within one month of it arriving in local pharmacies [@meierPainKillerEmpire2018]. Addicts weren’t the only ones to notice the Purdue’s blockbuster drug—it was the first drug the DEA targeted for monitoring by brand name [@alpertSupplySideDrugPolicy2017]. By the early 2000s, there was an organized coalition based in Appalachia seeking to reformulate or recall OxyContin. The movement failed, however, due to clever legal and political maneuvering by Purdue [@meierPainKillerEmpire2018].
 
-If you'd like to put the results of your analysis directly into your discussion, add inline code like this:
-
-> The `cos` of $2 \pi$ is `r cos(2*pi)`. 
-
-Another example would be the direct calculation of the standard deviation:
-
-> The standard deviation of `speed` in `cars` is `r sd(cars$speed)`.
-
-One last neat feature is the use of the `ifelse` conditional statement which can be used to output text depending on the result of an **R** calculation:
-
-> `r ifelse(sd(cars$speed) < 6, "The standard deviation is less than 6.", "The standard deviation is equal to or greater than 6.")`
-
-Note the use of `>` here, which signifies a quotation environment that will be indented.
-
-As you see with `$2 \pi$` above, mathematics can be added by surrounding the mathematical text with dollar signs.  More examples of this are in [Mathematics and Science] if you uncomment the code in [Math].  
-
-## Including plots
-
-You can also embed plots.  For example, here is a way to use the base **R** graphics package to produce a plot using the built-in `pressure` dataset:
-
-```{r pressure, echo=FALSE, cache=TRUE}
-plot(pressure)
+```{r opioid_prescription_timeseries}
+"[timeseries graph of opioid overdoses goes here"
 ```
 
-Note that the `echo=FALSE` parameter was added to the code chunk to prevent printing of the **R** code that generated the plot.  There are plenty of other ways to add chunk options.  More information is available at <http://yihui.name/knitr/options/>.  
+Despite the warnings, opioid prescriptions continued to rise throughout the 2000s and early 2010s [@macyDopesickDealersDoctors2018; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. In total, there was a 356% increase in prescriptions from 1999 to 2015 [@kruegerWhereHaveAll2017]. In fact, some communities received more prescription painkillers than there were people who could use them, which highlights the high level of diversion of prescription opioids for non-medical use during this period [@alpertSupplySideDrugPolicy2017; @quinonesDreamlandTrueTale2016]. While many doctors treated OxyContin and similar prescription painkillers as routine pharmaceuticals, their impact on patients was more similar to heroin than statins. Approximately one in every 550 patients started on opioid therapy dies from an opioid-related cause, with most deaths occurring within three years of the initial prescription [@friedenReducingRisksRelief2016; @kruegerWhereHaveAll2017]. Furthermore, prescription painkillers often lead to heroin use; approximately 75% of heroin users first misused prescription opioids [@odonnellTrendsDeathsInvolving2017]. OxyContin's devastation would continue unrestrained until its reformulation in the early 2010s [@quinonesDreamlandTrueTale2016].
 
-Another useful chunk option is the setting of `cache=TRUE` as you see here.  If document rendering becomes time consuming due to long computations or plots that are expensive to generate you can use knitr caching to improve performance.  Later in this file, you'll see a way to reference plots created in **R** or external figures.
+## OxyContin Reformulation
 
-## Loading and exploring data
+In 2010, OxyContin was reformulated. The reformulation made it difficult to grind up and snort or inject, which made it less useful for recreational use [@alpertSupplySideDrugPolicy2017; @macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Medical studies find that the formulation decreased recreational Oxycontin abuse between 30 and 50 percent, and decreased overdoses by up to two-thirds [@ciceroEffectAbuseDeterrentFormulation2012; @coplanEffectAbusedeterrentOpioid2016]. This led to the first decrease in prescription opioid and overdose deaths since 1990. Unfortunately, this decrease coincided with an unprecedented rise in heroin overdoses and deaths [@alpertSupplySideDrugPolicy2017].
 
-Included in this template is a file called `flights.csv`.  This file includes a subset of the larger dataset of information about all flights that departed from Seattle and Portland in 2014.  More information about this dataset and its **R** package is available at <http://github.com/ismayc/pnwflights14>.  This subset includes only Portland flights and only rows that were complete with no missing values.  Merges were also done with the `airports` and `airlines` data sets in the `pnwflights14` package to get more descriptive airport and airline names.
+## The Introduction of Black Tar Heroin
 
-We can load in this data set using the following command:
+Prior to the 1980s, the US heroin market was dominated by white powder heroin trafficked from Asia into the US through New York City. This heroin was heavily adulterated, expensive, and almost exclusively available in impoverished neighborhoods of major metropolitan areas in the Northeast. In the early 1980s, however, black tar heroin started to trickle into Los Angeles from the Mexican state of Nayarit. The "Xalisco Boys"--young men from the town of Xalisco in Nayarit--would migrate to the US with a small quantity of heroin, sell it, and return home. Unlike traditional heroin markets, which operated out of abandoned buildings in major cities, the Xalisco Boys delivered heroin to suburban buyers after arranging purchases through a network of pagers and phones. This led to a demographic shift in heroin consumption, which had been predominantly consumed by poor urban blacks, towards middle and upper class whites. Further differentiating them from traditional heroin distributors, the Xalisco Boys eschewed violence and operated in small, independent cells, which minimized police attention and kept them off the radar for almost two decades. By the 1990s, the Xalisco Boys began to expand to small and medium sized cities without a preexisting heroin market across the United States [@quinonesDreamlandTrueTale2016].
 
-```{r load_data}
-flights <- read.csv("data/flights.csv")
-```
+By the 2000s, relatively large heroin markets supplied exclusively with Nayarit black tar existed in cities such as Portland, Columbus, Salt Lake City, Charleston, and Denver, where there had previously been almost no demand. While police in each individual city were aware of the markets, they were not considered a priority, and were not aggressively targeted by the DEA until after the spike in heroin overdose deaths [@quinonesDreamlandTrueTale2016]. While it is difficult to accurately quantify the size of black markets, it is safe to say that heroin sales exploded after the reformulation of OxyContin and the increase in monitoring and regulation of opioid prescriptions [@alpertSupplySideDrugPolicy2017; @macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016].
 
-The data is now stored in the data frame called `flights` in **R**.  To get a better feel for the variables included in this dataset we can use a variety of functions.  Here we can see the dimensions (rows by columns) and also the names of the columns.
+## Regulatory Changes
 
-```{r str}
-dim(flights)
-names(flights)
-```
+In response to the opioid epidemic, some states enacted regulations to attempt to reduce the supply of prescription opioids on the gray and black market. For example, states such as Ohio and Kentucky instituted prescription monitoring programs. These programs identified doctor shoppers[^5] as well as physicians prescribing opioids and other medications of concern in very high quantities or to an abnormally high percentage of their patients. Furthermore, some states began targeting pill mills[^6] [@macyDopesickDealersDoctors2018; @popoviciEffectStateLaws2018; @quinonesDreamlandTrueTale2016]. These laws were effective at reducing opioid overdose deaths--both from prescription opioids and heroin--by approximately 2000 a year [@popoviciEffectStateLaws2018]. Unfortunately, the benefits of these laws were limited by their state-specific scope, as some states like Florida became a haven for pill mills and other prescription diversion tactics, which created a steady supply of painkillers for the black market elsewhere [@quinonesDreamlandTrueTale2016]. Furthermore, the introduction of extremely strong--and therefore extremely dangerous--synthetic opioids into the black market opioid supply chain undid these efforts by more than an order of magnitude.
 
-Another good idea is to take a look at the dataset in table form.  With this dataset having more than 50,000 rows, we won't explicitly show the results of the command here.  I recommend you enter the command into the Console **_after_** you have run the **R** chunks above to load the data into **R**.
+[^5]: Doctor shoppers are individuals who go to multiple doctors seeking specific highly divertable medications
 
-```{r view_flights, eval=FALSE}
-View(flights)
-```
+[^6]: Pill mills are essentially physician-owned opioid distributors masquerading as pain management clinics. According to Quinones, dead giveaways include: high fees payable only in cash, large queues in rural areas, and open drug use around the clinic. While these clinics were often shut down, they were quickly replaced until regulations made them difficult to open at all, and the physicians operating them usually faced license suspensions at most unless they were caught working with organized criminal operations or having inappropriate relationships with doctor-shopping patients [@quinonesDreamlandTrueTale2016].
 
-While not required, it is highly recommended you use the `dplyr` package to manipulate and summarize your data set as needed.  It uses a syntax that is easy to understand using chaining operations.  Below I've created a few examples of using `dplyr` to get information about the Portland flights in 2014.  You will also see the use of the `ggplot2` package, which produces beautiful, high-quality academic visuals.
+## The Introduction of Fentanyl
 
-We begin by checking to ensure that needed packages are installed and then we load them into our current working environment:
+Synthetic opioids such as Fentanyl entered the US black market supply chain in the 2010s [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. These substances are much stronger than conventional opioids like heroin and OxyContin; Fentanyl is 50 to 100 times as powerful as morphine [@cdcFentanyl2019]. Drug dealers and distributors blend synthetic opioids into heroin, or press them into fake pills, because the synthetics are approximately 95% cheaper than heroin [@frankAddressingFentanylThreat2017; @hempsteadSupplySideResponseDeclining2014]. While most opioid addicts dislike the synthetic opioids, they are unable to identify its presence in their drugs without relatively expensive testing kits, which minimizes the risk to drug distributors who chose to cut their product to maximize profit [@carrollExposureFentanylcontaminatedHeroin2017; @sociasEpidemicDeathsFentanyl2017]. When synthetic opioids are introduced to a black market, overdose deaths increase [@hempsteadSupplySideResponseDeclining2014; @odonnellTrendsDeathsInvolving2017; @sociasEpidemicDeathsFentanyl2017].
 
-```{r load_pkgs, message=FALSE}
-# List of packages required for this analysis
-pkg <- c("dplyr", "ggplot2", "knitr", "bookdown", "devtools")
-# Check if packages are not installed and assign the
-# names of the packages not installed to the variable new.pkg
-new.pkg <- pkg[!(pkg %in% installed.packages())]
-# If there are any packages in the list that aren't installed,
-# install them
-if (length(new.pkg))
-  install.packages(new.pkg, repos = "http://cran.rstudio.com")
-# Load packages (thesisdown will load all of the packages as well)
-library(thesisdown)
-```
+The introduction of synthetic opioids such as Fentanyl into the black market increases overdose deaths for several reasons. For one, the extreme potency of synthetic opioids means that even tiny amounts of heterogeneity in the final product sold in the street can cause a fatal overdose [@ciccaroneFentanylUSHeroin2017; @hempsteadSupplySideResponseDeclining2014; @marshallEpidemiologyFentanylinvolvedDrug2017; @odonnellTrendsDeathsInvolving2017; @sociasEpidemicDeathsFentanyl2017]. Furthermore, its introduction lowers the price of street opioids, causing both greater consumption by current users and higher numbers of new users [@frankAddressingFentanylThreat2017]. In addition, non-opioid recreational drugs are sometimes contaminated with Fentanyl and other synthetic opioids, causing fatal opioid overdose in non-opioid users [@fairbairnNaloxoneHeroinPrescription2017; @frankAddressingFentanylThreat2017]. Furthermore, fentanyl overdoses can kill in as little as two minutes, whereas traditional opioids like heroin take 20 to 30 minutes, which dramatically reduces the opportunity window for bystanders and emergency medical services to provide naloxone [@fairbairnNaloxoneHeroinPrescription2017]. Finally, opioids contaminated with Fentanyl dramatically increase the risk of overdose in recreational users, increasing the pool of people liable to overdose from exclusively dependent users [@sociasEpidemicDeathsFentanyl2017].
 
-\clearpage
+## Naloxone
 
-The example we show here does the following:
+Opioid overdoses can be treated with naloxone [@rastegarAmericanSocietyAddiction2015]. Access to naloxone is key to reducing opioid overdose deaths. Community-level naloxone distribution to people who inject drugs began in Chicago in 1996, and has slowly diffused across the country since then. Large decreases in overdose deaths have been observed in cities after the introduction of naloxone; opioid overdose deaths decreased 95% in the 10 years following San Francisco's decision to supply naloxone [@fairbairnNaloxoneHeroinPrescription2017]. Given that naloxone has such a major impact on overdose deaths, access to naloxone is important to understanding the variation in opioid overdose deaths per capita across the United States.
 
-- Selects only the `carrier_name` and `arr_delay` from the `flights` dataset and then assigns this subset to a new variable called `flights2`. 
+## Medication-Assisted Treatment: The Gold Standard of Opioid Recovery
 
-- Using `flights2`, we determine the largest arrival delay for each of the carriers.
+Medication-assisted treatment, or maintenance therapy, is the gold standard for treating opioid addiction. While opioids are considered dangerous substances, barring overdose, the primary medical concerns of chronic use are all related to how it is used[^7] @rastegarAmericanSocietyAddiction2015]. Since "long-term abstinence after detoxification is the exception rather than the rule", the most effective way to treat individuals with an opioid addiction is to provide them with a long-term maintenance dose of opioids to minimize cravings and withdrawal coupled with counseling services [@rastegarAmericanSocietyAddiction2015, 155]. Maintenance opioids include methadone and buprenorphine, and are much longer lasting than recreational opioids like heroin [@rastegarAmericanSocietyAddiction2015].
 
-```{r max_delays}
-flights2 <- flights %>% 
-  select(carrier_name, arr_delay)
-max_delays <- flights2 %>% 
-  group_by(carrier_name) %>%
-  summarize(max_arr_delay = max(arr_delay, na.rm = TRUE))
-```
+(cover geographic distribution / limited availability of MAT, especially in the past)
 
-A useful function in the `knitr` package for making nice tables in _R Markdown_ is called `kable`.  It is much easier to use than manually entering values into a table by copying and pasting values into Excel or LaTeX.  This again goes to show how nice reproducible documents can be! (Note the use of `results="asis"`, which will produce the table instead of the code to create the table.)  The `caption.short` argument is used to include a shorter title to appear in the List of Tables.
+[^7]: For example, street users of heroin often suffer from abcesses from improper injections, HIV and other blood-borne diseases from sharing and reusing needles, and systemic infections. None of these conditions are directly caused by opioid use, and all are greatly exacerbated by homelessness and other poor living conditions [@bourgoisRighteousDopefiend2009; @rastegarAmericanSocietyAddiction2015].
 
-```{r maxdelays, results="asis"}
-kable(max_delays, 
-      col.names = c("Airline", "Max Arrival Delay"),
-      caption = "Maximum Delays by Airline",
-      caption.short = "Max Delays by Airline",
-      longtable = TRUE,
-      booktabs = TRUE)
-```
+## Economy and History of Ohio
 
-The last two options make the table a little easier-to-read.
+(brief overview of why parts of Ohio would have much higher demand than other parts)
 
-We can further look into the properties of the largest value here for American Airlines Inc.  To do so, we can isolate the row corresponding to the arrival delay of 1539 minutes for American in our original `flights` dataset.
+# Why
 
+Explanations for the opioid epidemic in the United States can be broadly characterized as either supply-side or demand-side. Supply-siders claim that an increase in the supply of opioids triggered the 21st century epidemic, while demand-siders believe that social and economic factors are responsible. Supply-siders attribute the increase in the overall opioid supply--and therefore opioid deaths--to the rise of prescription painkillers like OxyContin, the simultaneous price decrease and supply increase of heroin outside of major metropolitan areas, and the introduction of synthetic opioids such as Fentanyl into the recreational opioid supply chain. In contrast, demand-siders focus on changes in pain treatment, poor economic outcomes in particular regions of the United States, and the overall phenomena of deaths of despair.
 
-```{r max_props}
-flights %>% filter(arr_delay == 1539, 
-                  carrier_name == "American Airlines Inc.") %>%
-  select(-c(month, day, carrier, dest_name, hour, 
-            minute, carrier_name, arr_delay))
-```
-
-We see that the flight occurred on March 3rd and departed a little after 2 PM on its way to Dallas/Fort Worth.  Lastly, we show how we can visualize the arrival delay of all departing flights from Portland on March 3rd against time of departure.
-
-```{r march3plot, fig.height=3, fig.width=6}
-flights %>% filter(month == 3, day == 3) %>%
-  ggplot(aes(x = dep_time, y = arr_delay)) + geom_point()
-```
-
-## Additional resources
-
-- _Markdown_ Cheatsheet - <https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet>
-
-- _R Markdown_ Reference Guide - <https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf>
-
-- Introduction to `dplyr` - <https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html>
-
-- `ggplot2` Documentation - <http://docs.ggplot2.org/current/>
+Appalachia
