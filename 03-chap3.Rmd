@@ -18,7 +18,7 @@ if(!require(thesisdown)){
 library(thesisdown)
 ```
 
-```{r setup, include=FALSE}
+```{r setup_chpt3, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
 library(citr)

@@ -10,7 +10,7 @@ header-includes:
 bibliography: references.bib
 ---
 
-```{r setup, include=FALSE}
+```{r setup_chpt1, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(citr)
 ```
