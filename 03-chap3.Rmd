@@ -34,11 +34,13 @@ load(here("data", "df.Rda"))
 
 # Results
 
-## Basic Model With All Counties Included in Data
-```{r}
+```{r basic_regression_formula}
 # formula used throughout chapter 3 as of right now
 basic_regression_formula <- formula(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female)
+```
 
+## Basic Model With All Counties Included in Data
+```{r basic_ols}
 basic_model <- lm(basic_regression_formula, df)
 
 glance(basic_model) %>%
@@ -51,14 +53,14 @@ tidy(basic_model) %>%
 
 ## Basic Model Excluding Cleveland
 
-```{r}
+```{r ols_no_cle}
 df_no_cle <- df %>%
   filter(county != "Cuyahoga")
 
 basic_model_no_cle <- lm(basic_regression_formula, df_no_cle)
 
 glance(basic_model_no_cle) %>%
-  kable()
+  select(r.squared, adj.r.squared)
 
 tidy(basic_model_no_cle) %>%
   mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
