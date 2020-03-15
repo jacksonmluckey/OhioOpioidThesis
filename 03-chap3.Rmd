@@ -110,4 +110,13 @@ tobit(basic_regression_formula, left = 0.5066819) %>%
 tobit(basic_regression_formula, left = 0.5066819, data = df_no_cle) %>%
   tobit_to_table() %>%
   kable()
+
+tobit(basic_regression_formula, left = 0.5066819) %>%
+  tobit_to_table() %>%
+  select(tobit_estimate = Estimate, variable) %>%
+  left_join(tidy(basic_model), by = c("variable" = "term")) %>%
+  select(tobit_estimate, variable, ols_estimate = estimate) %>%
+  mutate(percentDifferenceInEstimate = (abs(ols_estimate - tobit_estimate) / abs(tobit_estimate) * 100)) %>%
+  select(variable, `OLS Estimate` = ols_estimate, `Tobit Estimate` = tobit_estimate, `Percent Difference Between Estimates` = percentDifferenceInEstimate) %>%
+  kable()
 ```
