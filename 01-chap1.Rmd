@@ -4,21 +4,11 @@
 
 ### Definition of Rationality
 
- Rational consumers make choices based on a set of consistent preferences that are complete[^1], reflexive[^2], and transitive[^3] [@blackConsumerRationality2013].
-
-(will be expanded and/or replaced)
-
-[^1]: Given any two goods X and Y, either X is preferred to Y, Y is preferred to X, or X and Y are preferred equally [@blackConsumerRationality2013].
-
-[^2]: Consumers are indifferent between two identical instances of the same good [@blackConsumerRationality2013].
-
-[^3]: If a consumer prefers X to Y, and prefers Y to Z, then they must prefer X to Z [@blackConsumerRationality2013].
-
 While there is significant evidence that consumers are not "rational", the economics discipline is founded upon the theory of consumer rationality [@arcidiaconoConsumerRationalityMultidisciplinary2011].
 
 According to traditional economic theory, individuals making consumption decisions engage in economizing behavior, meaning that they "choose the options that best advance their personal desires and goals at the least possible cost" [@gwartneyMicroeconomicsPrivatePublic2006, p. 11]. This is a form of rational decision-making. Economists abstract away personal desires and goals by viewing them through the lines of utility, which measures the benefit an individual derives through making any particular choice. Utility differs from person to person because each individual has different preferences, making rational decisions inconsistent between individuals. [@gwartneyMicroeconomicsPrivatePublic2006].
 
-For the theory of consumer rationality to work, consumers must make choices based on a set of consistent preferences that are complete, reflexive, and transitive.
+For the theory of consumer rationality to work, consumers must make choices based on a set of consistent preferences that are complete, reflexive, and transitive. Completeness means that given any two goods X and Y, either X is preferred to Y, Y is preferred to X, or X and Y are preferred equally. Reflexivity means that consumers are indifferent between two identical instances of the same good. Transitivity means that if a consumer prefers X to Y, and prefers Y to Z, then they must prefer X to Z [@blackConsumerRationality2013].
 
 ### Addiction and Rationality
 
