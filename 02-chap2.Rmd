@@ -90,8 +90,10 @@ Counties excluded in the one year Annual Community Survey are available in other
 # df %>%
 #   group_by(county, GEOID) %>%
 #   summarize(population = mean(population)) %>%
+#   ungroup() %>%
 #   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
 #   mutate(included = !is.na(population)) %>%
+#   select(geometry, included) %>%
 #   ggplot(aes(geometry = geometry, fill = included)) +
 #   geom_sf() +
 #   labs(fill = "Included in Sample?",
