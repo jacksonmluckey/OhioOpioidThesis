@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.3.15)  15 MAR 2020 15:20
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (preloaded format=pdflatex 2020.3.15)  16 MAR 2020 09:21
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -683,6 +683,12 @@ l.225 ...pter{Introduction}\label{introduction-1}}
 
 ]
 Chapter 1.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 227.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 227.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 227.
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
 been already used, duplicate ignored
 <to be read again> 
@@ -698,15 +704,6 @@ l.232 \chapter{Rationality}\label{rationality}}
 
 ]
 Chapter 2.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 237.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 237.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 237.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 [5]
 
 Package Fancyhdr Warning: \headheight is too small (12.0pt): 
@@ -718,14 +715,15 @@ This may cause the page layout to be inconsistent, however.
 Chapter 3.
 [7
 
-] [8]
+] [8] [9]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
 82.
 (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [9] [10] [11] [12] [13] [14
+) [10]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-]
+[11] [12] [13] [14]
 Chapter 4.
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 350.
@@ -733,7 +731,9 @@ LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line
 362.
 (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [15] [16] [17] [18
+) [15
+
+] [16] [17] [18
 
 ]
 Chapter 5.
@@ -762,12 +762,12 @@ Overfull \hbox (119.06339pt too wide) in paragraph at lines 578--610
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[22]
+[22] [23]
 Overfull \hbox (57.71274pt too wide) in paragraph at lines 639--672
 [] 
  []
 
-[23]
+
 Overfull \hbox (57.71274pt too wide) in paragraph at lines 684--717
 [] 
  []
@@ -809,13 +809,13 @@ LaTeX Warning: There were undefined references.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 850.
  ) 
 Here is how much of TeX's memory you used:
- 8916 strings out of 482913
- 139047 string characters out of 5957308
- 548445 words of memory out of 5000000
+ 9006 strings out of 482913
+ 140125 string characters out of 5957308
+ 549247 words of memory out of 5000000
  23821 multiletter control sequences out of 15000+600000
  596872 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 41i,12n,49p,24520b,371s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,11n,49p,24678b,490s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-
 ts1.enc}{c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/
 lm/lm-ec.enc}<c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1
@@ -831,10 +831,10 @@ e/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/Users
 tk10.pfb><c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/pub
 lic/lm/lmtt12.pfb><c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/fonts/
 type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (51 pages, 344138 bytes).
+Output written on thesis.pdf (51 pages, 356598 bytes).
 PDF statistics:
- 497 PDF objects out of 1000 (max. 8388607)
- 428 compressed objects within 5 object streams
- 124 named destinations out of 1000 (max. 500000)
+ 696 PDF objects out of 1000 (max. 8388607)
+ 625 compressed objects within 7 object streams
+ 214 named destinations out of 1000 (max. 500000)
  233 words of extra memory for PDF output out of 10000 (max. 10000000)
 

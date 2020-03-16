@@ -1,3 +1,20 @@
+---
+title: "Opioid Thesis: Literature Review Chapter"
+author: "Jackson Luckey"
+date: "12/6/2019"
+output: pdf_document
+font-size: 12pt
+geometry: margin=1in
+header-includes:
+    - \usepackage{setspace}\doublespacing
+bibliography: references.bib
+---
+
+```{r setup_chpt1, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(citr)
+```
+
 # Introduction
 
 According to the Center for Disease Control, the opioid epidemic is the worst drug epidemic in US history. While opioids are a legitimate medical treatment for acute pain, they are highly addictive and come with the risk of abuse, dependence, and fatal overdose [@aliprantisOpioidsLaborMarket2018]. Abuse of and dependence on opioids has serious consequences. Since 2016, drug overdoses have been the leading cause of accidental death in the United States [@maguireOpioidCrisisAppalachia2019]. Overdoses kill more people than gun violence, motor vehicle incidents, or the HIV/AIDS epidemic did at its peak [@quinonesDreamlandTrueTale2016; @ciccaroneFentanylUSHeroin2017; @alpertSupplySideDrugPolicy2017]. In fact, the scourge of opioid overdoses is so severe that it has lead to an increase in all-cause mortality for white Americans despite mortality decreasing for all other Americans and citizens of comparably developed countries [@caseMortalityMorbidity21st2017]. Reducing the number of deaths due to opioids is essential to reversing this trend, increasing the labor supply, and improving outcomes for millions of Americans.
@@ -111,3 +128,5 @@ Medication-assisted treatment, or maintenance therapy, is the gold standard for 
 Explanations for the opioid epidemic in the United States can be broadly characterized as either supply-side or demand-side. Supply-siders claim that an increase in the supply of opioids triggered the 21st century epidemic, while demand-siders believe that social and economic factors are responsible. Supply-siders attribute the increase in the overall opioid supply--and therefore opioid deaths--to the rise of prescription painkillers like OxyContin, the simultaneous price decrease and supply increase of heroin outside of major metropolitan areas, and the introduction of synthetic opioids such as Fentanyl into the recreational opioid supply chain. In contrast, demand-siders focus on changes in pain treatment, poor economic outcomes in particular regions of the United States, and the overall phenomena of deaths of despair.
 
 Appalachia
+
+# References
