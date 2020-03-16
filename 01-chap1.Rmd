@@ -14,6 +14,8 @@ While there is significant evidence that consumers are not "rational", the econo
 
 [^3]: If a consumer prefers X to Y, and prefers Y to Z, then they must prefer X to Z [@blackConsumerRationality2013].
 
+According to traditional economic theory, individuals making consumption decisions engage in economizing behavior, meaning that they "choose the options that best advance their personal desires and goals at the least possible cost" [@gwartneyMicroeconomicsPrivatePublic2006, p. 11]
+
 ### Addiction and Rationality
 
 Health economists study addiction using three types of models. Imperfectly rational models of addiction give consumers two incompatible yet internally consistent utility functions. For example, a consumer might have both a farsighted utility function used for making long-term decisions such as buying a house and a short-term utility function for making marginal decisions such as choosing to use heroin to stave off withdrawal [@culyerDictionaryHealthEconomics2005]. This model does a good job of explaining how heroin addicts living on the street can simultaneously express impressive plans for the future while injecting leftover drops of heroin from a dirty cotton using a used needle [@bourgoisRighteousDopefiend2009]. Myopic irrational models have addicts’ utility functions be exclusively shortsighted by using some combination of heavy discounting of future consequences and future consequences being unknown. For example, an addict may not care about long-term health consequences, and even if they do no individual substance user knows what consequences they will face in the future. Finally, there are theories of rational addiction, as exemplified by Becker and Murphy’s work [@culyerDictionaryHealthEconomics2005].
