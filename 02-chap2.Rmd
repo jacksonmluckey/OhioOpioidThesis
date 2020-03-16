@@ -1,3 +1,16 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup_chpt2}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+library(citr)
+```
+
 ```{r load_packages_and_df}
 # Load the libraries and data used in this Rmd file
 library(tidyverse)
@@ -99,3 +112,110 @@ Counties excluded in the one year Annual Community Survey are available in other
 #   theme_map +
 #   scale_fill_viridis_d()
 ```
+
+```{r check_if_excluded_counties_have_higher_od_rate}
+# do something here
+```
+
+## Variable Summary Statistics
+
+For the education variables, "_s_" refers to small bins (e.g. 11th grade education, 12th grade education), whereas "_b_" refers to the aggregation of multiple small bins (e.g. high school or less, college or more). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree. The original data was provided as a raw count for each education level (i.e. number of people with an 11th grade education, number of people with a 12th grade education, and so on). To convert it into percentages, I divided each raw count by the total population of the county and assumed that all individuals would be included in one--and only one--column.
+
+Race is included as the variable "percent_black". Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, "percent_black" seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998].
+
+Disability is broken into age and sex bins. These bins are kept small because in order to aggregate them, I would need each county-year pair's population broken down into age and sex bins. The type of disability was ignored, as the literature suggested that painful, physical disabilities would have the greatest impact, and the census-provided disability bins only seperated out deafness and blindness.
+
+The majority of variables are in percentage form. These variables, excluding "OD_rate", have the term "percentage" in their name. Percentages are calculated using the raw population for that year, and are stored in the format XX.X%, rather than .XXX%. Percentage, or per capita, form is used to isolate the role of county population on the fatal drug overdose rate.
+
+```{r summary_stats_all_variables, results="asis"}
+df %>%
+  select(-GEOID, -county, -year) %>%
+  select(all_of(master_variable_ordering)) %>%
+  summarize_all(list(min, max, mean, sd), na.rm = TRUE) %>%
+  pivot_longer(everything()) %>% # turns into a 2 column df
+  mutate(func = str_match(name, "_fn([1-4])")[,2]) %>% # func identifies which transformation was used
+  mutate(func = case_when(func == 1 ~ "Min", # converts func into a meaninful label
+                          func == 2 ~ "Max",
+                          func == 3 ~ "Mean",
+                          func == 4 ~ "Standard Deviation")) %>%
+  mutate(name = str_remove(name, "_fn[1-4]")) %>% # strips the suffix which was turned into func
+  pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
+  mutate(`Variable Name` = name, # make the variable name label better
+         name = NULL) %>%
+  select(`Variable Name`, everything()) %>% # gets the variable name in front
+  mutate(`Coefficient of Variation` = `Standard Deviation` / Mean) %>%
+  kable(caption = "Summary statistics of all variables used in analysis",
+        format.args = list(scientific = FALSE,
+                           big.mark = ",",
+                           digits = 5))
+```
+
+
+
+```{r OD_rate_distribution}
+df %>%
+  filter(!is.na(OD_rate)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
+  ggplot(aes(x = OD_rate)) +
+  geom_histogram(bins = 25) +
+  theme_minimal() +
+  ggtitle("Distribution of Overdose Rate") +
+  labs(y = "", x = "Overdose Rate (Deaths per 10,000)") +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5))
+```
+
+The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019].
+
+```{r county_racial_distribution}
+df %>%
+  ggplot(aes(x = percent_black)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() +
+  ggtitle("Distribution of Percent Black") +
+  labs(x = "Percent Black", y = "") +
+  scale_x_continuous(labels = function(x) paste0(x, "%")) + # adds percentage signs; scales::percent assumes .XXX format, while I have XX.X
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5))
+```
+
+## Maps
+
+Let's draw some maps.
+
+```{r percent_black_maps}
+df %>%
+  group_by(county, GEOID) %>%
+  summarize(percent_black = mean(percent_black)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+  ggplot(aes(fill = percent_black, geometry = geometry)) +
+  geom_sf() +
+  theme_map +
+  scale_fill_viridis_c() +
+  labs(subtitle = "Grey means excluded from sample",
+       title = "Percent Black by County",
+       fill = "% Black")
+```
+
+The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only region in Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
+
+# Methods
+
+I used the R package Tidycensus to download census data. Tidycensus was created by Kyle Walker and is maintained by a community on GitHub. Tidycensus allows "R users to return Census and ACS data as tidyverse-ready data frames, and optionally returns a list-column with feature geometry for many geographies". The "list-column with feature geometry" allows the R user to easily draw maps using the downloaded census data and a ggplot2 one-liner. Dataframes can be downloaded in either a wide or tidy format, and brief descriptions of each variable are available. The package is an API wrapper for data.census.gov, and the API calls it creates can be accessed and manually ran using packages such as rvest. The package supports both American Community Survey and Decennial data. To pull down data with Tidycensus, you need to know the variable/table name, the year, the geographic level, and the survey.
+
+ To identify the variables and tables available from a survey, you use the command `tidycensus::load_variables(year, survey)`, where year is a year in numerical format (e.g. 2018), and survey is a survey in character format (e.g. "acs1"). To search for variables within a specific table in the survey, filter the output of `load_variables()` with `filter(stringr::str_detect(name, pattern))`, where pattern is the table name followed by an underscore. Variable names can be merged with the tidy output of another Tidycensus call by using `rename(variable = name)` to change the column names of the output of `load_variables()` to match the column names of a Tidycensus dataframe, and then using `dplyr::left_join(tidycensus_dataframe, output_of_load_variables, by = c("name" = "name"))`.
+ 
+The geographical level, survey, and year are all easier to determine. Geographical levels are things like state, county, school district, census tract, and congressional district. They are represented as characters. Not all geographical levels are supported by Tidycensus, and not all surveys are available for all geographies. Surveys include the different American Community Surveys, the Decennial census, and supplemental estimates. They can be found on the U.S. Census's website. Finally, year is simply a valid year for that survey provided as a number.
+
+To pull down actual data from census.data.gov using Tidycensus, you use one of three functions depending on the survey that you are working with. To work with the decennial census, use `get_decennial()`. To work with American Community Survey data, use `get_acs()`. Finally, use `get_estimates()` to work with the Census Bureau's population estimates API.
+
+[@walkerTidycensus; @tidycensus2020]
+
+In order to better use Tidycensus, I wrote custom functions to accomplish several repeated tasks. One function, `get_census_tables_multiple_years(table, years)`, allows the user to download multiple years of a particular census table at once. The functions accept a table code and year range, and downloads the table for each year, pivot it into a wide format, adds a year column, and binds the rows of the resulting dataframes into one master dataframe, which is returned. Another function, `clean_county_col(df)`, modifies the "county" column, removing the string "County, Ohio" from each entry in order to make it easier to join with other datasets.
+
+Census tables were identified through several means. Using Tidycensus's "load_variables" function, I created a dataframe of all variables covered in the package and filtered it using keywords and R's grep wrapper. Keywords were selected by brainstorming off of the hypothesis that the literature put forward. For example, I used the keyword "disability" for the disability variables, "median income" and "average income" and "mean income" for income, and so on. Furthermore, Reed's data services librarian, Mahria Lebow, helped me identify relevant census tables by examining the census table shells and going through the documentation available at data.census.gov [@lebowCensusHelp]. I decided to start off with one year Annual Community Survey data because it had a relatively limited number of variables, making it easier to work with, and it provided more statistical power than relying on the decennial survey, which at best offered three rows per county (1990, 2000, 2010).
+
+Plots, graphs, and maps that appear within this thesis were produced using ggplot2 unless otherwise noted. ggplot2 is a R package that is part of the Tidyverse universe of R packages. The package allows for a R user to quickly produce aesthetically appealing graphs and maps using any tidy dataset. Visualizations made in ggplot2 are designed using a standardized "grammar of graphics", which helps keep the visual appearance of a variety of different types of visualizations consistent [@wickhamGgplot2ElegantGraphics2016]. One major advantage of working with Tidyverse-compliant packages such as ggplot2 and Tidycensus is that they are designed to work together easily. This allows a R user to go directly from pulling down census data to making maps without having to reshape data or otherwise perform tedious data cleaning, wrangling, and preparation tasks [@walkerTidycensus2020; @wickhamGgplot2ElegantGraphics2016].
+
+Initial regressions were performed using simple linear regression.
+
+In addition to the simple linear regression models, a model with a censored dependent variable is also used. This model, referred to as a Tobit model, is used when there is censoring of the dependent variable [@hareThesisMeetings2019]. Censoring is when all values above or below a particular value are recorded as a single value. For example, income data where all incomes over $100,000 a year are coded as $100,000 is censored from above.
