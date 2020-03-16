@@ -1,8 +1,60 @@
-# Introduction
+---
+author: 'Jackson Maillie Luckey'
+date: 'May 2020'
+institution: 'Reed College'
+division: 'History and Social Sciences'
+advisor: 'Denise Hare'
+department: 'Economics'
+degree: 'Bachelor of Arts'
+title: 'Ohio Opioid Thesis'
+knit: "bookdown::render_book"
+site: bookdown::bookdown_site
+output: 
+  thesisdown::thesis_pdf: default
+#  thesisdown::thesis_gitbook: default
+#  thesisdown::thesis_word: default
+#  thesisdown::thesis_epub: default
+# If you are creating a PDF you'll need to write your preliminary content (e.g., abstract, acknowledgements) here or
+# use code similar to line 22-23 for the .RMD files. If you are NOT producing a PDF, you can delete or silence lines 21-32 in this YAML header.
+abstract: |
+  `r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = '\n  ')`
+# If you'd rather include the preliminary content in files instead of inline
+# like below, use a command like that for the abstract above.  Note that a tab is 
+# needed on the line after the `|`.
+acknowledgements: |
+  I want to thank a few people.
+dedication: |
+  You can have a dedication here if you wish. 
+preface: |
+  This is an example of a thesis setup to use the reed thesis document class
+  (for LaTeX) and the R bookdown package, in general.
+# Specify the location of the bibliography below
+bibliography: bib/thesis.bib
+# Download your specific csl file and refer to it in the line below.
+csl: csl/chicago-fullnote-bibliography.csl
+lot: true
+lof: true
+# If you prefer blank lines between paragraphs, un-silence lines  40-41 (this requires package tikz)
+#header-includes:
+#- \usepackage{tikz}
+---
+
+```{r include_packages, include = FALSE}
+# This chunk ensures that the thesisdown package is
+# installed and loaded. This thesisdown package includes
+# the template files for the thesis.
+if(!require(devtools))
+  install.packages("devtools", repos = "http://cran.rstudio.com")
+if(!require(thesisdown))
+  devtools::install_github("ismayc/thesisdown")
+library(thesisdown)
+```
+
+# Introduction {.unnumbered}
 
 According to the Center for Disease Control, the opioid epidemic is the worst drug epidemic in US history. While opioids are a legitimate medical treatment for acute pain, they are highly addictive and come with the risk of abuse, dependence, and fatal overdose [@aliprantisOpioidsLaborMarket2018]. Abuse of and dependence on opioids has serious consequences. Since 2016, drug overdoses have been the leading cause of accidental death in the United States [@maguireOpioidCrisisAppalachia2019]. Overdoses kill more people than gun violence, motor vehicle incidents, or the HIV/AIDS epidemic did at its peak [@quinonesDreamlandTrueTale2016; @ciccaroneFentanylUSHeroin2017; @alpertSupplySideDrugPolicy2017]. In fact, the scourge of opioid overdoses is so severe that it has lead to an increase in all-cause mortality for white Americans despite mortality decreasing for all other Americans and citizens of comparably developed countries [@caseMortalityMorbidity21st2017]. Reducing the number of deaths due to opioids is essential to reversing this trend, increasing the labor supply, and improving outcomes for millions of Americans.
 
-(will probably not be part of this chapter long-term)
+<!--chapter:end:index.Rmd-->
 
 # Rationality
 
@@ -111,3 +163,295 @@ Medication-assisted treatment, or maintenance therapy, is the gold standard for 
 Explanations for the opioid epidemic in the United States can be broadly characterized as either supply-side or demand-side. Supply-siders claim that an increase in the supply of opioids triggered the 21st century epidemic, while demand-siders believe that social and economic factors are responsible. Supply-siders attribute the increase in the overall opioid supply--and therefore opioid deaths--to the rise of prescription painkillers like OxyContin, the simultaneous price decrease and supply increase of heroin outside of major metropolitan areas, and the introduction of synthetic opioids such as Fentanyl into the recreational opioid supply chain. In contrast, demand-siders focus on changes in pain treatment, poor economic outcomes in particular regions of the United States, and the overall phenomena of deaths of despair.
 
 Appalachia
+
+<!--chapter:end:01-chap1.Rmd-->
+
+```{r load_packages_and_df}
+# Load the libraries and data used in this Rmd file
+library(tidyverse)
+library(here)
+library(knitr) # for kable
+library(tidycensus)
+load(here("data", "df.Rda"))
+```
+
+```{r variable_ordering}
+################################
+# Disability Variable Ordering #
+################################
+base_disability_list <- c("disability_percent_under5", "disability_percent_5to17", "disability_percent_18to34", "disability_percent_35to64", "disability_percent_65to74", "disability_percent_75andup")
+
+# adds a suffix to a string
+# used for generating the male and female disability lists
+add_suffix <- function(string, suffix) {
+  string <- paste0(string, suffix)
+  string
+}
+
+# create male, female, and unified disability variable ordering list
+# and then turn them back into usable vectors
+# instead of lists (to avoid the [[]] nonsense and ambiguity with tidyselect)
+male_disability_ordering <- base_disability_list %>%
+  map(add_suffix, "_male") %>%
+  as.character()
+female_disability_ordering <- base_disability_list %>%
+  map(add_suffix, "_female") %>%
+  as.character()
+disability_ordering <- c(male_disability_ordering, female_disability_ordering)
+
+###############################
+# Education Variable Ordering #
+###############################
+education_ordering <- c("education_b_percent_highschool_or_less", "education_b_percent_college_or_more",
+                        "education_s_percent_less_than_highschool", "education_s_percent_highschool",
+                        "education_s_percent_ged", "education_s_percent_some_college", "education_s_percent_college",
+                        "education_s_percent_graduate")
+
+############################
+# Master Variable Ordering #
+############################
+misc_variable_ordering <- c("OD_rate", "income_pc_individual", "percent_white", "percent_black", "population", "deaths")
+master_variable_ordering <- c(misc_variable_ordering, education_ordering, disability_ordering)
+```
+
+```{r grab_county_geometry, echo=FALSE, message=FALSE, warning=FALSE}
+base_map <- get_acs("county",
+                    state = "OH",
+                    table = "B02001",
+                    geometry = TRUE,
+                    output = "wide")
+# reduce down to GEOID and geometry
+base_map <- base_map %>%
+  select(GEOID, geometry)
+```
+
+```{r map_theme}
+theme_map <- theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        panel.grid.major = element_blank())
+```
+
+# Data
+
+Census data is stored by table, year, geography, and survey. Each survey has a different set of tables, and surveys can differ from year to year [@UnderstandingACSBasics2020]. Surveys are only available for specific geographic regions, with broader, less frequent surveys covering a greater variety of geographies. Geographies include states, counties, census tracts, and school districts [@GeographicAreasCovered2020].
+
+The majority of my independent variables were sourced from the census Annual Community Survey. The Annual Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole. This thesis uses ACS data aggregated at the county level from the one-year survey [@GeographicAreasCovered2020]. Due to changes in the way that ACS data were collected in 2010, the dataset includes ACS data from the years 2012 to 2018. Tables are not necessarily consistent between years [@UnderstandingACSBasics2020].
+
+The variables "DeathRateCDC" and "UrbanRural" come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is age-adjusted. The data was paired with the census and overdose data using the FIPS code, which is a GEOID [@calgaryNCHSDrugPoisoning].
+
+## Sample Size
+
+Unfortunately, not all counties in Ohio are included in the Annual Community Survey. Only counties with a population of 65,000 or greater are included in the one year Annual Community Survey [@GeographicAreasCovered2020]. In total, the sample includes 39 out of Ohio's 88 counties. Since the census data is censored based on county population, there is selection bias in the sample. This means that my results may be an inaccurate reflection of reality if there is correlation between a county's population and the county's fatal drug overdose rate. Given that the literature suggests that rural areas have suffered from greater increases in overdose rates, it is likely that there is correlation between county population and the overdose rate, meaning that there is likely selection bias in the dataset.
+
+Counties excluded in the one year Annual Community Survey are available in other U.S. Census Bureau datasets. Counties with at least a population of 20,000 are included in the one year Annual Community Survey supplemental estimates, which provide a more limited version of the tables included in the broader one year Annual Community Survey. Furthermore, the ACS five year estimates include many counties excluded from the one-year estimates, and the decennial survey includes all areas [@UnderstandingACSBasics2020].
+
+```{r included_counties_map}
+# commented out because it broke at some point and I did not realize
+# uncomment once I get the whole thesis to knit
+# df %>%
+#   group_by(county, GEOID) %>%
+#   summarize(population = mean(population)) %>%
+#   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+#   mutate(included = !is.na(population)) %>%
+#   ggplot(aes(geometry = geometry, fill = included)) +
+#   geom_sf() +
+#   labs(fill = "Included in Sample?",
+#        title = "Counties included in sample",
+#        x = "",
+#        y = "") +
+#   theme_map +
+#   scale_fill_viridis_d()
+```
+
+<!--chapter:end:02-chap2.Rmd-->
+
+```{r include_packages_2, include = FALSE}
+# This chunk ensures that the thesisdown package is
+# installed and loaded. This thesisdown package includes
+# the template files for the thesis and also two functions
+# used for labeling and referencing
+if(!require(devtools))
+  install.packages("devtools", repos = "http://cran.rstudio.com")
+if(!require(dplyr))
+    install.packages("dplyr", repos = "http://cran.rstudio.com")
+if(!require(ggplot2))
+    install.packages("ggplot2", repos = "http://cran.rstudio.com")
+if(!require(ggplot2))
+    install.packages("bookdown", repos = "http://cran.rstudio.com")
+if(!require(thesisdown)){
+  library(devtools)
+  devtools::install_github("ismayc/thesisdown")
+  }
+library(thesisdown)
+flights <- read.csv("data/flights.csv")
+```
+
+```{r install_packages}
+library(broom)
+library(tidyverse)
+library(here)
+library(knitr) # for kable
+load(here("data", "df.Rda"))
+```
+
+# Results
+
+```{r basic_regression_formula}
+# formula used throughout chapter 3 as of right now
+basic_regression_formula <- formula(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female)
+```
+
+## Basic Model With All Counties Included in Data
+```{r basic_ols}
+basic_model <- lm(basic_regression_formula, df)
+
+glance(basic_model) %>%
+  kable()
+
+tidy(basic_model) %>%
+  mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
+  kable()
+```
+
+## Basic Model Excluding Cleveland
+
+```{r ols_no_cle}
+df_no_cle <- df %>%
+  filter(county != "Cuyahoga")
+
+basic_model_no_cle <- lm(basic_regression_formula, df_no_cle)
+
+glance(basic_model_no_cle) %>%
+  select(r.squared, adj.r.squared)
+
+tidy(basic_model_no_cle) %>%
+  mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
+  kable()
+```
+
+## Tobit Model
+
+For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. In the table above, "estimate" is sourced from the original simple linear regression, while "tobit_estimate" unsurprisingly comes from the Tobit model. "percentDifferenceInEstimate" is the absolute difference between the models divided by "tobit_estimate" and converted into a percentage in the form XX.X%.
+
+```{r tobit_functions}
+tobit <- function(formula, left, data = df) {
+  summary(censReg::censReg(formula, left = left, data = df, logLikOnly = FALSE))
+}
+
+# converts the output of tobit() into a tidy dataframe
+tobit_to_table <- function(tobitResults) {
+  tobitResults$estimate %>%
+    as.data.frame() %>%
+    rownames_to_column(var = "variable")
+}
+```
+
+```{r tobit_all_counties}
+tobit(basic_regression_formula, left = 0.5066819) %>%
+  tobit_to_table() %>%
+  kable()
+```
+
+```{r tobit_no_cle}
+tobit(basic_regression_formula, left = 0.5066819, data = df_no_cle) %>%
+  tobit_to_table() %>%
+  kable()
+```
+
+```{r tobit_vs_ols}
+tobit(basic_regression_formula, left = 0.5066819) %>%
+  tobit_to_table() %>%
+  select(tobit_estimate = Estimate, variable) %>%
+  left_join(tidy(basic_model), by = c("variable" = "term")) %>%
+  select(tobit_estimate, variable, ols_estimate = estimate) %>%
+  mutate(percentDifferenceInEstimate = (abs(ols_estimate - tobit_estimate) / abs(tobit_estimate) * 100)) %>%
+  select(variable, `OLS Estimate` = ols_estimate, `Tobit Estimate` = tobit_estimate, `Percent Difference Between Estimates` = percentDifferenceInEstimate) %>%
+  kable()
+```
+
+<!--chapter:end:03-chap3.Rmd-->
+
+# Conclusion {-}
+
+If we don't want Conclusion to have a chapter number next to it, we can add the `{-}` attribute.
+
+**More info**
+
+And here's some other random info: the first paragraph after a chapter title or section head _shouldn't be_ indented, because indents are to tell the reader that you're starting a new paragraph. Since that's obvious after a chapter or section title, proper typesetting doesn't add an indent there.
+
+
+<!--chapter:end:04-conclusion.Rmd-->
+
+`r if(knitr:::is_latex_output()) '\\appendix'`
+
+`r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'` 
+
+<!--
+If you feel it necessary to include an appendix, it goes here.
+-->
+
+
+# The First Appendix
+
+This first appendix includes all of the R chunks of code that were hidden throughout the document (using the `include = FALSE` chunk tag) to help with readibility and/or setup.
+
+**In the main Rmd file**
+
+```{r ref.label='include_packages', results='hide', echo = TRUE}
+```
+
+**In Chapter \@ref(ref-labels):**
+
+```{r ref.label='include_packages_2', results='hide', echo = TRUE}
+```
+
+# The Second Appendix, for Fun
+
+<!--chapter:end:05-appendix.Rmd-->
+
+<!--
+The bib chunk below must go last in this document according to how R Markdown renders.  More info is at http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html
+-->
+
+\backmatter
+
+<!-- 
+If you'd like to change the name of the bibliography to something else,
+delete "References" and replace it.
+-->
+
+# References {-}
+<!--
+This manually sets the header for this unnumbered chapter.
+-->
+\markboth{References}{References}
+<!--
+To remove the indentation of the first entry.
+-->
+\noindent
+
+<!--
+To create a hanging indent and spacing between entries.  These three lines may need to be removed for styles that don't require the hanging indent.
+-->
+
+\setlength{\parindent}{-0.20in}
+\setlength{\leftskip}{0.20in}
+\setlength{\parskip}{8pt}
+
+
+<!--
+This is just for testing with more citations for the bibliography at the end.  Add other entries into the list here if you'd like them to appear in the bibliography even if they weren't explicitly cited in the document.
+-->
+
+---
+nocite: | 
+  @angel2000, @angel2001, @angel2002a
+...
+
+<!--chapter:end:99-references.Rmd-->
+
