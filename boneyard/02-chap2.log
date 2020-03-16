@@ -1,0 +1,145 @@
+
+! fmtutil: fmtutil is using the following fmtutil.cnf files (in precedence order):
+! fmtutil:   c:/users/mollymute/appdata/roaming/tinytex/texmf-dist/web2c/fmtutil.cnf
+! fmtutil: fmtutil is using the following fmtutil.cnf file for writing changes:
+! fmtutil:   c:/users/mollymute/documents/.tinytex/texmf-config/web2c/fmtutil.cnf
+! fmtutil [INFO]: writing formats under c:/users/mollymute/documents/.tinytex/texmf-var/web2c
+! fmtutil [INFO]: --- remaking pdflatex with pdftex
+! fmtutil: running `pdftex -ini   -jobname=pdflatex -progname=pdflatex -translate-file=cp227.tcx *pdflatex.ini' ...
+! This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/W32TeX) (INITEX)
+!  restricted \write18 enabled.
+!  (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/web2c/cp227.tcx)
+! entering extended mode
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/latexconfig/pd
+! flatex.ini
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/tex-ini-file
+! s/pdftexconfig.tex)
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/latex.ltx
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/texsys.cf
+! g)
+! ./texsys.aux found
+
+
+! \@currdir set to: ./.
+
+
+! Assuming \openin and \input 
+! have the same search path.
+
+
+! Defining UNIX/DOS style filename parser.
+
+! catcodes, registers, parameters,
+! LaTeX2e <2020-02-02> patch level 5
+! hacks, control, par, spacing, files, font encodings, lengths,
+! ====================================
+
+! Local config file fonttext.cfg used
+
+! ====================================
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fonttext.
+! cfg
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fonttext.
+! ltx
+! === Don't modify this file, use a .cfg file instead ===
+
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/omlenc.de
+! f)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/omsenc.de
+! f)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ot1enc.de
+! f)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/t1enc.def
+! )
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ts1enc.de
+! f)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ts1cmr.fd
+! )
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/t1cmr.fd)
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ot1cmr.fd
+! )
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ot1cmss.f
+! d)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ot1cmtt.f
+! d)))
+! ====================================
+
+! Local config file fontmath.cfg used
+
+! ====================================
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontmath.
+! cfg
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/fontmath.
+! ltx
+! === Don't modify this file, use a .cfg file instead ===
+
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/omlcmm.fd
+! )
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/omscmsy.f
+! d)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/omxcmex.f
+! d)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ucmr.fd))
+! )
+! ====================================
+
+! Local config file preload.cfg used
+
+! =====================================
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/preload.c
+! fg
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/preload.l
+! tx)) page nos., x-ref, environments, center, verbatim, math definitions,
+! boxes, title, sectioning, contents, floats, footnotes, index, bibliography,
+! output,
+! ===========================================
+! Local configuration file hyphen.cfg used
+! ===========================================
+
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/hyphen
+! .cfg
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/switch
+! .def)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/hyphen/hyphe
+! n.tex)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/hyphen/dumyh
+! yph.tex)
+! (c:/Users/mollymute/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/hyphen/zeroh
+! yph.tex)
+! ! I can't find file `dehypht-x-2019-04-04.tex'.
+! <to be read again> 
+!                    \relax 
+! l.172   \repeat
+               
+! (Press Enter to retry, or Control-Z to exit)
+! Please type another input file name: 
+! ! Emergency stop.
+! <to be read again> 
+!                    \relax 
+! l.172   \repeat
+               
+! !  ==> Fatal error occurred, no output PDF file produced!
+! Transcript written on pdflatex.log.
+! fmtutil [ERROR]: running `pdftex -ini   -jobname=pdflatex -progname=pdflatex -translate-file=cp227.tcx *pdflatex.ini <nul' return status: 1
+! fmtutil [ERROR]: returning error due to option --strict
+! fmtutil [INFO]: log file copied to: c:/users/mollymute/documents/.tinytex/texmf-var/web2c/pdftex/pdflatex.log
+! fmtutil [INFO]: not selected formats: 12
+! fmtutil [INFO]: failed to build: 1 (pdftex/pdflatex)
+! fmtutil [INFO]: total formats: 13
+! fmtutil [INFO]: exiting with status 1
+! ...ollymute\AppData\Roaming\TinyTeX\bin\win32\runscript.tlu:907: command failed with exit code 1:
+! perl.exe c:\Users\mollymute\AppData\Roaming\TinyTeX\texmf-dist\scripts\texlive\fmtutil.pl  --user --byfmt pdflatex
+! Running the command C:\Users\mollymute\AppData\Roaming\TinyTeX\bin\win32\fmtutil-user.exe
+
+! kpathsea: Running mktexfmt pdflatex.fmt
+
+! The command name is C:\Users\mollymute\AppData\Roaming\TinyTeX\bin\win32\mktexfmt

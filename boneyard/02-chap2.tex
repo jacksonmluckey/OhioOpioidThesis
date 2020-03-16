@@ -1,0 +1,386 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs}
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\OperatorTok{::}\NormalTok{opts_chunk}\OperatorTok{$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{echo =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{knitr}\OperatorTok{::}\NormalTok{opts_chunk}\OperatorTok{$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{warning =} \OtherTok{FALSE}\NormalTok{)}
+\NormalTok{knitr}\OperatorTok{::}\NormalTok{opts_chunk}\OperatorTok{$}\KeywordTok{set}\NormalTok{(}\DataTypeTok{message =} \OtherTok{FALSE}\NormalTok{)}
+\KeywordTok{library}\NormalTok{(citr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   |                                                                              |                                                                      |   0%  |                                                                              |                                                                      |   1%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |==                                                                    |   4%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |=====                                                                 |   8%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |=======                                                               |  11%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  16%  |                                                                              |============                                                          |  17%  |                                                                              |============                                                          |  18%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |==============                                                        |  21%  |                                                                              |===============                                                       |  21%  |                                                                              |===============                                                       |  22%  |                                                                              |================                                                      |  22%  |                                                                              |================                                                      |  23%  |                                                                              |=================                                                     |  24%  |                                                                              |=================                                                     |  25%  |                                                                              |==================                                                    |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |===================                                                   |  28%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |=====================                                                 |  31%  |                                                                              |======================                                                |  31%  |                                                                              |======================                                                |  32%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |==========================                                            |  38%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  39%  |                                                                              |============================                                          |  40%  |                                                                              |============================                                          |  41%  |                                                                              |=============================                                         |  41%  |                                                                              |=============================                                         |  42%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |=================================                                     |  48%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |===================================                                   |  51%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |==========================================                            |  61%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  62%  |                                                                              |============================================                          |  63%  |                                                                              |=============================================                         |  64%  |                                                                              |=============================================                         |  65%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |=================================================                     |  71%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |====================================================                  |  74%  |                                                                              |====================================================                  |  75%  |                                                                              |=====================================================                 |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  76%  |                                                                              |======================================================                |  77%  |                                                                              |======================================================                |  78%  |                                                                              |=======================================================               |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  79%  |                                                                              |========================================================              |  80%  |                                                                              |========================================================              |  81%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |===========================================================           |  84%  |                                                                              |===========================================================           |  85%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |=============================================================         |  88%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |===============================================================       |  91%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |=================================================================     |  94%  |                                                                              |==================================================================    |  94%  |                                                                              |==================================================================    |  95%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |====================================================================  |  98%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================| 100%
+\end{verbatim}
+
+\hypertarget{data}{%
+\section{Data}\label{data}}
+
+Census data is stored by table, year, geography, and survey. Each survey
+has a different set of surveys, and surveys can differ from year to year
+{[}@UnderstandingACSBasics2020{]}. Surveys are only available for
+specific geographies, with broader, less frequent surveys covering a
+greater variety of geographies. Geographies include states, counties,
+census tracts, and school districts {[}@GeographicAreasCovered2020{]}.
+
+The majority of my independent variables were sourced from the census
+Annual Community Survey. The Annual Community Survey, or ACS, ``provides
+a detailed portrait of the social, economic, housing, and demographic
+characteristics of America's communities''
+{[}@UnderstandingACSBasics2020{]}. ACS data is available on a geographic
+hierarchy, going from census tracts to the United States as a whole.
+This thesis uses ACS data aggregated at the county level from the
+one-year survey {[}@GeographicAreasCovered2020{]}. Due to changes in the
+way that ACS data was collected in 2010, the dataset includes ACS data
+from the years 2012 to 2018. Tables are not necessarily consistent
+between years {[}@UnderstandingACSBasics2020{]}.
+
+The variables ``DeathRateCDC'' and ``UrbanRural'' come from CDC data.
+They are sourced from the ``Drug Poisoning Mortality by County''
+dataset, which is published by the National Center for Health
+Statistics. The death rate is age-adjusted. The data was paired with the
+census and overdose data using the FIPS code, which is a GEOID
+{[}@calgaryNCHSDrugPoisoning{]}.
+
+\hypertarget{sample-size}{%
+\subsection{Sample Size}\label{sample-size}}
+
+Unfortunately, not all counties in Ohio are included in the Annual
+Community Survey. Only counties with a population of 65,000 or greater
+are included in the one year Annual Community Survey
+{[}@GeographicAreasCovered2020{]}. In total, the sample includes 39 out
+of Ohio's 88 counties. Since the census data is censored based on county
+population, there is selection bias in the sample. This means that my
+results may be an inaccurate reflection of reality if there is
+correlation between a county's population and the county's fatal drug
+overdose rate. Given that the literature suggests that rural areas have
+suffered from greater increases in overdose rates, it is likely that
+there is correlation between county population and the overdose rate,
+meaning that there is likely selection bias in the dataset.
+
+Counties excluded in the one year Annual Community Survey are available
+in other U.S. Census Bureau datasets. Counties with at least a
+population of 20,000 are included in the one year Annual Community
+Survey supplemental estimates, which provide a more limited version of
+the tables included in the broader one year Annual Community Survey.
+Furthermore, the ACS five year estimates include many counties excluded
+from the one-year estimates, and the decennial survey includes all areas
+{[}@UnderstandingACSBasics2020{]}.
+
+\includegraphics{02-chap2_files/figure-latex/included_counties_map-1.pdf}
+
+\hypertarget{variable-summary-statistics}{%
+\subsection{Variable Summary
+Statistics}\label{variable-summary-statistics}}
+
+For the education variables, ``\emph{b}'' refers to big bins
+(e.g.~college or more, high school or less), while ``\emph{s}'' refers
+to small bins (e.g.~some college, college, graduate school). The big
+bins are calculated by aggregating the smaller bins, and exclude
+individuals with some amount of college education but less than a
+bachelors-level degree. The original data was provided as a raw count
+for each education level (i.e.~number of people with an 11th grade
+education, number of people with a 12th grade education, and so on). To
+convert it into percentages, I divided each raw count by the total
+population of the county and assumed that all individuals would be
+included in one--and only one--column.
+
+Race is included as the variable ``percent\_black''. Racial demographic
+data is represented this way because census demographic data that
+distinguishes between cacausian and latinx is significantly more
+challenging to work with, as the categories provided do not neatly add
+up the total population of the county. Since heroin was considered an
+urban black drug from the late 1930s until recently, ``percent\_black''
+seemed an effective enough variable for assesing the role of race in
+drug overdose rates {[}@macyDopesickDealersDoctors2018;
+@quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998{]}.
+
+Disability is broken into age and sex bins. These bins are kept small
+because in order to aggregate them, I would need each county-year pair's
+population broken down into age and sex bins. The type of disability was
+ignored, as the literature suggested that painful, physical disabilities
+would have the greatest impact, and the census-provided disability bins
+only seperated out deafness and blindness.
+
+The majority of variables are in percentage form. These variables,
+excluding ``OD\_rate'', have the term ``percentage'' in their name.
+Percentages are calculated using the raw population for that year, and
+are stored in the format XX.X\%, rather than .XXX\%. Percentage, or per
+capita, form is used to isolate the role of county population on the
+fatal drug overdose rate.
+
+\begin{longtable}[]{@{}lrrrrr@{}}
+\caption{Summary statistics of all variables used in
+analysis}\tabularnewline
+\toprule
+Variable Name & Min & Max & Mean & Standard Deviation & Coefficient of
+Variation\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+Variable Name & Min & Max & Mean & Standard Deviation & Coefficient of
+Variation\tabularnewline
+\midrule
+\endhead
+OD\_rate & 0.50668 & 14.2342 & 3.74323 & 2.1555 &
+0.575845\tabularnewline
+income\_pc\_individual & 13,095.00000 & 46,425.0000 & 26,769.77407 &
+5,024.6261 & 0.187698\tabularnewline
+percent\_white & 62.20042 & 96.8164 & 86.45269 & 8.5383 &
+0.098763\tabularnewline
+percent\_black & 0.47355 & 30.1085 & 8.28356 & 7.3295 &
+0.884829\tabularnewline
+population & 35,883.00000 & 877,281.0000 & 171,348.85556 & 191,827.4189
+& 1.119514\tabularnewline
+deaths & 4.00000 & 598.0000 & 70.50216 & 97.4522 &
+1.382259\tabularnewline
+education\_b\_percent\_highschool\_or\_less & 20.85431 & 63.0921 &
+45.71442 & 8.8123 & 0.192768\tabularnewline
+education\_b\_percent\_college\_or\_more & 10.10135 & 54.8550 & 25.05948
+& 9.1391 & 0.364695\tabularnewline
+education\_s\_percent\_less\_than\_highschool & 2.81395 & 18.6673 &
+10.20973 & 2.8672 & 0.280831\tabularnewline
+education\_s\_percent\_highschool & 15.65730 & 44.3161 & 31.44281 &
+6.2147 & 0.197651\tabularnewline
+education\_s\_percent\_ged & 1.14330 & 9.1582 & 4.06188 & 1.2868 &
+0.316801\tabularnewline
+education\_s\_percent\_some\_college & 21.30249 & 36.2366 & 29.22610 &
+3.0200 & 0.103334\tabularnewline
+education\_s\_percent\_college & 6.04289 & 36.0794 & 15.69210 & 5.6287 &
+0.358699\tabularnewline
+education\_s\_percent\_graduate & 3.09803 & 21.0404 & 9.36738 & 3.8614 &
+0.412220\tabularnewline
+disability\_percent\_under5\_male & 0.00000 & 19.6573 & 0.87782 & 1.8758
+& 2.136860\tabularnewline
+disability\_percent\_5to17\_male & 1.32488 & 18.0907 & 7.65557 & 3.0721
+& 0.401289\tabularnewline
+disability\_percent\_18to34\_male & 1.31149 & 29.7191 & 8.17417 & 3.4753
+& 0.425158\tabularnewline
+disability\_percent\_35to64\_male & 5.24346 & 30.1339 & 14.99059 &
+4.5743 & 0.305143\tabularnewline
+disability\_percent\_65to74\_male & 10.10003 & 52.1153 & 26.67983 &
+6.4000 & 0.239882\tabularnewline
+disability\_percent\_75andup\_male & 23.18588 & 71.4406 & 46.76510 &
+8.0207 & 0.171509\tabularnewline
+disability\_percent\_under5\_female & 0.00000 & 12.6608 & 0.54807 &
+1.4206 & 2.591990\tabularnewline
+disability\_percent\_5to17\_female & 0.00000 & 17.0842 & 4.96618 &
+2.6629 & 0.536215\tabularnewline
+disability\_percent\_18to34\_female & 0.78596 & 20.5607 & 6.93652 &
+2.9827 & 0.429995\tabularnewline
+disability\_percent\_35to64\_female & 4.65088 & 30.9834 & 14.94295 &
+4.5075 & 0.301649\tabularnewline
+disability\_percent\_65to74\_female & 10.16584 & 43.1565 & 23.69865 &
+5.3441 & 0.225504\tabularnewline
+disability\_percent\_75andup\_female & 30.41486 & 76.3823 & 49.03926 &
+6.9648 & 0.142025\tabularnewline
+\bottomrule
+\end{longtable}
+
+\includegraphics{02-chap2_files/figure-latex/OD_rate_distribution-1.pdf}
+
+The distribution of the fatal drug overdose rate between counties
+suggests that censoring is occuring from the bottom. This is because the
+right-side tail is significantly longer and fatter than the left-side
+tail {[}@hareThesisMeetings2019{]}.
+
+\includegraphics{02-chap2_files/figure-latex/county_racial_distribution-1.pdf}
+
+\hypertarget{maps}{%
+\subsection{Maps}\label{maps}}
+
+Let's draw some maps.
+
+\includegraphics{02-chap2_files/figure-latex/percent_black_maps-1.pdf}
+
+The yellow county is Cuyahoga County, which contains the city of
+Cleveland. Before the 1990s, Cleveland was considered to be the only
+region in Ohio to contain a significant heroin market
+{[}@quinonesDreamlandTrueTale2016{]}. Therefore, we would expect
+Cleveland to have started off with an above average drug overdose death
+rate. With the rise of the Xalisco boys and the introduction of
+OxyContin, heroin markets spread across the state
+{[}@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016{]}.
+Hence, we would expect Cleveland, and therefore Cuyahoga County, to have
+a higher than average overdose rate prior to the mid 90s, and for other
+counties to have a larger increase in their overdose death rate.
+
+\hypertarget{methods}{%
+\section{Methods}\label{methods}}
+
+I used the R package Tidycensus to download census data. Tidycensus was
+created by Kyle Walker and is maintained by a community on GitHub.
+Tidycensus allows ``R users to return Census and ACS data as
+tidyverse-ready data frames, and optionally returns a list-column with
+feature geometry for many geographies''. The ``list-column with feature
+geometry'' allows the R user to easily draw maps using the downloaded
+census data and a ggplot2 one-liner. Dataframes can be downloaded in
+either a wide or tidy format, and brief descriptions of each variable
+are available. The package is an API wrapper for data.census.gov, and
+the API calls it creates can be accessed and manually ran using packages
+such as rvest {[}@walkerTidycensus{]}.
+
+In order to better use Tidycensus, I wrote custom functions to
+accomplish several repeated tasks. One set of functions allows the user
+to download multiple years of a particular census table at once. The
+functions accept a table code and year range, and download the table for
+each year, pivot it into a wide format, add a year column, and bind the
+rows of the resulting dataframes into one master dataframe, which is
+returned. Another function modifies the ``county'' column, removing the
+string ``County, Ohio'' from each entry in order to make it easier to
+join with other datasets.
+
+Census tables were identified through several means. Using Tidycensus's
+``load\_variables'' function, I created a dataframe of all variables
+covered in the package and filtered it using keywords and R's grep
+wrapper. Keywords were selected by brainstorming off of the hypothesis
+that the literature put forward. For example, I used the keyword
+``disability'' for the disability variables, ``median income'' and
+``average income'' and ``mean income'' for income, and so on.
+Furthermore, Reed's data services librarian, Mahria Lebow, helped me
+identify relevant census tables by examining the census table shells and
+going through the documentation available at data.census.gov
+{[}@lebowCensusHelp{]}. I decided to start off with one year Annual
+Community Survey data because it had a relatively limited number of
+variables, making it easier to work with, and it provided more
+statistical power than relying on the decennial survey, which at best
+offered three rows per county (1990, 2000, 2010).
+
+Plots, graphs, and maps that appear within this thesis were produced
+using ggplot2 unless otherwise noted. ggplot2 is a R package that is
+part of the Tidyverse universe of R packages. The package allows for a R
+user to quickly produce aesthetically appealing graphs and maps using
+any tidy dataset. Visualizations made in ggplot2 are designed using a
+standardized ``grammar of graphics'', which helps keep the visual
+appearance of a variety of different types of visualizations consistent
+{[}@wickhamGgplot2ElegantGraphics2016{]}. One major advantage of working
+with Tidyverse-compliant packages such as ggplot2 and Tidycensus is that
+they are designed to work together easily. This allows a R user to go
+directly from pulling down census data to making maps without having to
+reshape data or otherwise perform tedious data cleaning, wrangling, and
+preparation tasks {[}@walkerTidycensus2020;
+@wickhamGgplot2ElegantGraphics2016{]}.
+
+Initial regressions were performed using simple linear regression.
+
+In addition to the simple linear regression models, a model with a
+censored dependent variable is also used. This model, referred to as a
+Tobit model, is used when there is censoring of the dependent variable
+{[}@hareThesisMeetings2019{]}. Censoring is when all values above or
+below a particular value are recorded as one value. For example, income
+data where all incomes over \$100,000 a year are coded as \$100,000 is
+censored from above.
+
+\end{document}

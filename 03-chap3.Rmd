@@ -16,12 +16,7 @@ if(!require(thesisdown)){
   devtools::install_github("ismayc/thesisdown")
   }
 library(thesisdown)
-```
-
-```{r setup_chpt3, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(warning = FALSE)
-library(citr)
+flights <- read.csv("data/flights.csv")
 ```
 
 ```{r install_packages}
