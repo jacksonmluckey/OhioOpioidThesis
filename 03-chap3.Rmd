@@ -1,3 +1,5 @@
+# Results
+
 ```{r include_packages_2, include = FALSE}
 # This chunk ensures that the thesisdown package is
 # installed and loaded. This thesisdown package includes
@@ -31,8 +33,6 @@ library(here)
 library(knitr) # for kable
 load(here("data", "df.Rda"))
 ```
-
-# Results
 
 ```{r basic_regression_formula}
 # formula used throughout chapter 3 as of right now

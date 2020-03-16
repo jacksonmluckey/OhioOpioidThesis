@@ -1,15 +1,4 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
-
-```{r setup_chpt2}
-knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(warning = FALSE)
-knitr::opts_chunk$set(message = FALSE)
-library(citr)
-```
+# Data and Methods
 
 ```{r load_packages_and_df}
 # Load the libraries and data used in this Rmd file
@@ -81,7 +70,7 @@ theme_map <- theme_minimal() +
         panel.grid.major = element_blank())
 ```
 
-# Data
+## Data
 
 Census data is stored by table, year, geography, and survey. Each survey has a different set of tables, and surveys can differ from year to year [@UnderstandingACSBasics2020]. Surveys are only available for specific geographic regions, with broader, less frequent surveys covering a greater variety of geographies. Geographies include states, counties, census tracts, and school districts [@GeographicAreasCovered2020].
 
@@ -89,7 +78,7 @@ The majority of my independent variables were sourced from the census Annual Com
 
 The variables "DeathRateCDC" and "UrbanRural" come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is age-adjusted. The data was paired with the census and overdose data using the FIPS code, which is a GEOID [@calgaryNCHSDrugPoisoning].
 
-## Sample Size
+### Sample Size
 
 Unfortunately, not all counties in Ohio are included in the Annual Community Survey. Only counties with a population of 65,000 or greater are included in the one year Annual Community Survey [@GeographicAreasCovered2020]. In total, the sample includes 39 out of Ohio's 88 counties. Since the census data is censored based on county population, there is selection bias in the sample. This means that my results may be an inaccurate reflection of reality if there is correlation between a county's population and the county's fatal drug overdose rate. Given that the literature suggests that rural areas have suffered from greater increases in overdose rates, it is likely that there is correlation between county population and the overdose rate, meaning that there is likely selection bias in the dataset.
 
@@ -117,7 +106,7 @@ Counties excluded in the one year Annual Community Survey are available in other
 # do something here
 ```
 
-## Variable Summary Statistics
+### Variable Summary Statistics
 
 For the education variables, "_s_" refers to small bins (e.g. 11th grade education, 12th grade education), whereas "_b_" refers to the aggregation of multiple small bins (e.g. high school or less, college or more). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree. The original data was provided as a raw count for each education level (i.e. number of people with an 11th grade education, number of people with a 12th grade education, and so on). To convert it into percentages, I divided each raw count by the total population of the county and assumed that all individuals would be included in one--and only one--column.
 
@@ -178,7 +167,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-## Maps
+### Maps
 
 Let's draw some maps.
 
@@ -198,7 +187,7 @@ df %>%
 
 The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only region in Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
 
-# Methods
+## Methods
 
 I used the R package Tidycensus to download census data. Tidycensus was created by Kyle Walker and is maintained by a community on GitHub. Tidycensus allows "R users to return Census and ACS data as tidyverse-ready data frames, and optionally returns a list-column with feature geometry for many geographies". The "list-column with feature geometry" allows the R user to easily draw maps using the downloaded census data and a ggplot2 one-liner. Dataframes can be downloaded in either a wide or tidy format, and brief descriptions of each variable are available. The package is an API wrapper for data.census.gov, and the API calls it creates can be accessed and manually ran using packages such as rvest. The package supports both American Community Survey and Decennial data. To pull down data with Tidycensus, you need to know the variable/table name, the year, the geographic level, and the survey.
 
