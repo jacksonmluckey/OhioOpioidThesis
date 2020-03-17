@@ -109,7 +109,7 @@ df %>%
   kable(caption = "Summary statistics of all variables used in analysis",
         format.args = list(scientific = FALSE,
                            big.mark = ",",
-                           digits = 5),
+                           digits = 4),
         booktabs = T)
 ```
 

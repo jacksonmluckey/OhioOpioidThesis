@@ -16,6 +16,10 @@ This first appendix includes all of the R chunks of code that were hidden throug
 ```{r ref.label='include_packages', results='hide', echo = TRUE}
 ```
 
+```{r ref.label=knitr::all_labels(), echo = T, eval = F}
+# copied from https://yihui.org/en/2018/09/code-appendix/
+```
+
 **In Chapter \@ref(ref-labels):**
 
 ```{r ref.label='include_packages_2', results='hide', echo = TRUE}

@@ -71,6 +71,10 @@ options(knitr.table.format = "latex",
                            big.mark = ",",
                            digits = 5),
         knitr.table.booktabs = T)
+opts_chunk$set(include = TRUE,
+               echo = FALSE,
+               message = FALSE,
+               warning = FALSE) # have R code only appear in appendix
 ```
 
 # Introduction {.unnumbered}
