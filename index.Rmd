@@ -136,9 +136,11 @@ var_label_category <- tribble(
 "disability_percent_75andup_female", "Disability Female", "Percent 75 and Up",
 )
 recode_vars <- function(df) {
+  # relies on var_label_caetgory existing in the global env
+  # which is bad practice but will do for the 1st draft
   df %>%
+    left_join(var_label_category, by = c("Variable Name" = "Variable Name")) %>%
     mutate(rawVarName = `Variable Name`,
-           )
+           `Variable Name` = Label)
 }
-
 ```

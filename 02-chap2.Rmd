@@ -106,6 +106,8 @@ df %>%
          name = NULL) %>%
   select(`Variable Name`, everything()) %>% # gets the variable name in front
   mutate(`Coefficient of Variation` = `Standard Deviation` / Mean) %>%
+  recode_vars() %>%
+  select(-rawVarName, -Label) %>%
   kable(caption = "Summary statistics of all variables used in analysis",
         format.args = list(scientific = FALSE,
                            big.mark = ",",
