@@ -178,7 +178,7 @@ Let's draw some maps.
 ```{r percent_black_maps}
 df %>%
   group_by(county, GEOID) %>%
-  summarize(percent_black = mean(percent_black)) %>%
+  summarize(percent_black = mean(percent_black, na.rm = TRUE)) %>%
   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
   ggplot(aes(fill = percent_black, geometry = geometry)) +
   geom_sf() +
