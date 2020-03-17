@@ -22,6 +22,12 @@ Harmful addictions usually feature tolerance and reinforcement. Tolerance means 
 
 ## Timeline
 
+1980s: Last physicians from first opioid epidemic retire
+1995: Pain becomes fifth vital sign
+1996: Oxycontin is brought to market by Purdue Pharmaceuticals
+2010: Oxycontin is reformulated
+2010s: Fentanyl and other synthetic opioids enter the black market supply chain
+
 ### What are Opioids?
 
 Opioids are a group of powerful analgesic drugs [@kastinHandbookBiologicallyActive2013]. They both alleviate pain and create intense euphoria, and are considered highly addictive [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Opioids generate this effects via activating opioid receptors [@kastinHandbookBiologicallyActive2013]. Opium--the original opioid--is processed liquid from opium poppies, and has been used for pleasure, pain alleviation, and controlling dysentry for thousands of years. In the early 1800s, opium was first purified into morphine, which was later transformed into heroin in the 1870s. More opium derivatives, as well as fully synthetic opioids, were developed in the 1900s. Today, the family of opioids includes heroin, morphine, fentanyl, oxycodone, hydrocodone, buprenorphine, and methadone. Unfortunately, these new stronger opioids increased the risk of overdose, which is when a high dose of opioids causes respiratory failure among other things. While opioids are highly addictive and considered dangerous, they remain uniquely effective at treating severe pain [@brummettManagingPainEssentials2013; @rastegarAmericanSocietyAddiction2015].
@@ -102,7 +108,7 @@ base_map %>%
   labs(title = "Counties in Ohio")
 ```
 
-(brief overview of why parts of Ohio would have much higher demand than other parts)
+Cuyahoga County, which contains Cleveland, was traditionally the only part of Ohio to have an active heroin market [@quinonesDreamlandTrueTale2016].
 
 ## Why
 
