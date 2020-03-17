@@ -2,14 +2,6 @@
 
 ## Acknowledgements {-}
 
-First of all, I would like to thank my thesis advisor, Denise Hare, for supporting me throughout the thesis process. I would also like to thank Nick Wilson for being my first reader, giving me invaluable feedback throughout the thesis project, and for teaching me health economics.
-
-Reed staff have been just as important as faculty in supporting my thesis. In particular, I would like to thank Kristin Bott and Mahria Lebow. I learned the R skills that provided the backbone of this thesis primarily through working for Kristin in Reed's mLab. Furthermore, she has connected me with resources at Reed as I ran into issues working through my thesis. Reed's data services librarian, Mahria Lebow, helped me navigate census data and saved me countless hours of futile struggling with the census API. Without their help, I would likely still be trying to gather my data.
-
-I would like to thank my father, James (or Bill) Luckey, for introducing me to public health policy and the study of addiction. Without his influence in my life, I would not have gone down this path.
-
-I would also like to thank Arnie Aldridge, Brendan Wedehase, and Gary Zarkin for their invaluable role in my thesis. Without their guidance during my internship at RTI, I would have never developed the technical skills nor background knowledge that was necessary for producing this document.
-
 ## Preface {-}
 
 This is an example of a thesis setup to use the reed thesis document class

@@ -22,7 +22,13 @@ abstract: |
 # like below, use a command like that for the abstract above.  Note that a tab is 
 # needed on the line after the `|`.
 acknowledgements: |
-  I want to thank a few people.
+  First of all, I would like to thank my thesis advisor, Denise Hare, for supporting me throughout the thesis process. I would also like to thank Nick Wilson for being my first reader, giving me invaluable feedback throughout the thesis project, and for teaching me health economics.
+
+  Reed staff have been just as important as faculty in supporting my thesis. In particular, I would like to thank Kristin Bott and Mahria Lebow. I learned the R skills that provided the backbone of this thesis primarily through working for Kristin in Reed's mLab. Furthermore, she has connected me with resources at Reed as I ran into issues working through my thesis. Reed's data services librarian, Mahria Lebow, helped me navigate census data and saved me countless hours of futile struggling with the census API. Without their help, I would likely still be trying to gather my data.
+
+  I would like to thank my father, James (or Bill) Luckey, for introducing me to public health policy and the study of addiction. Without his influence in my life, I would not have gone down this path.
+
+  I would also like to thank Arnie Aldridge, Brendan Wedehase, and Gary Zarkin for their invaluable role in my thesis. Without their guidance during my internship at RTI, I would have never developed the technical skills nor background knowledge that was necessary for producing this document.
 dedication: |
   You can have a dedication here if you wish. 
 preface: |
@@ -35,8 +41,8 @@ csl: csl/chicago-fullnote-bibliography.csl
 lot: true
 lof: true
 # If you prefer blank lines between paragraphs, un-silence lines  40-41 (this requires package tikz)
-#header-includes:
-#- \usepackage{tikz}
+header-includes:
+- \usepackage{tikz}
 ---
 
 ```{r include_packages, include = FALSE}
@@ -57,8 +63,14 @@ library(tidycensus)
 library(broom)
 library(here)
 library(knitr) # for kable
+library(kableExtra)
 library(citr)
 load(here("data", "df.Rda"))
+options(knitr.table.format = "latex",
+        knitr.table.format.args = list(scientific = FALSE,
+                           big.mark = ",",
+                           digits = 5),
+        knitr.table.booktabs = T)
 ```
 
 # Introduction {.unnumbered}

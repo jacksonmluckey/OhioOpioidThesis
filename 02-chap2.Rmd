@@ -89,7 +89,7 @@ Disability is broken into age and sex bins. These bins are kept small because in
 
 The majority of variables are in percentage form. These variables, excluding "OD_rate", have the term "percentage" in their name. Percentages are calculated using the raw population for that year, and are stored in the format XX.X%, rather than .XXX%. Percentage, or per capita, form is used to isolate the role of county population on the fatal drug overdose rate.
 
-```{r summary_stats_all_variables, results="asis"}
+```{r summary_stats_all_variables}
 df %>%
   select(-GEOID, -county, -year) %>%
   select(all_of(master_variable_ordering)) %>%
@@ -109,7 +109,8 @@ df %>%
   kable(caption = "Summary statistics of all variables used in analysis",
         format.args = list(scientific = FALSE,
                            big.mark = ",",
-                           digits = 5))
+                           digits = 5),
+        booktabs = T)
 ```
 
 
