@@ -102,3 +102,43 @@ theme_map <- theme_minimal() +
         axis.text.y = element_blank(),
         panel.grid.major = element_blank())
 ```
+
+```{r recode_variables}
+# Variable Name is the name in df
+# Category is for grouping the rows of the table
+# Label is for replacing Variable Name (it's a human-readable version)
+var_label_category <- tribble(
+  ~`Variable Name`, ~Category, ~Label,
+"income_pc_individual", "Demographics", "Individual Per Capita Income",
+"percent_white", "Race", "Percent White",
+"percent_black", "Race", "Percent Black",
+"population", "Demographics", "Population",
+"deaths", "Demographics", "Overdose Deaths",
+"education_b_percent_highschool_or_less", "Education", "Highschool or Less",
+"education_b_percent_college_or_more", "Education", "Bachelor's Degree or More",
+"education_s_percent_less_than_highschool", "Education", "Less than Highschool",
+"education_s_percent_highschool", "Education", "Highschool",
+"education_s_percent_ged", "Education", "GED",
+"education_s_percent_some_college", "Education", "Some College",
+"education_s_percent_college", "Education", "College",
+"education_s_percent_graduate", "Education", "Graduate School",
+"disability_percent_under5_male", "Disability Male", "Percent 5 or Younger",
+"disability_percent_5to17_male", "Disability Male", "Percent 5 to 17",
+"disability_percent_18to34_male", "Disability Male", "Percent 18 to 34",
+"disability_percent_35to64_male", "Disability Male", "Percent 35 to 64",
+"disability_percent_65to74_male", "Disability Male", "Percent 65 to 74",
+"disability_percent_75andup_male", "Disability Male", "Percent 75 and Up",
+"disability_percent_under5_female", "Disability Female", "Percent 5 or Younger",
+"disability_percent_5to17_female", "Disability Female", "Percent 5 to 17",
+"disability_percent_18to34_female", "Disability Female", "Percent 18 to 34",
+"disability_percent_35to64_female", "Disability Female", "Percent 35 to 64",
+"disability_percent_65to74_female", "Disability Female", "Percent 65 to 74",
+"disability_percent_75andup_female", "Disability Female", "Percent 75 and Up",
+)
+recode_vars <- function(df) {
+  df %>%
+    mutate(rawVarName = `Variable Name`,
+           )
+}
+
+```
