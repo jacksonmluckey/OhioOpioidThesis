@@ -48,28 +48,6 @@ misc_variable_ordering <- c("OD_rate", "income_pc_individual", "percent_white", 
 master_variable_ordering <- c(misc_variable_ordering, education_ordering, disability_ordering)
 ```
 
-```{r grab_county_geometry, echo=FALSE, message=FALSE, warning=FALSE}
-base_map <- get_acs("county",
-                    state = "OH",
-                    table = "B02001",
-                    geometry = TRUE,
-                    output = "wide")
-# reduce down to GEOID and geometry
-base_map <- base_map %>%
-  select(GEOID, geometry)
-```
-
-```{r map_theme}
-theme_map <- theme_minimal() +
-  theme(axis.title.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        axis.title.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        axis.text.x = element_blank(),
-        axis.text.y = element_blank(),
-        panel.grid.major = element_blank())
-```
-
 ## Data
 
 Census data is stored by table, year, geography, and survey. Each survey has a different set of tables, and surveys can differ from year to year [@UnderstandingACSBasics2020]. Surveys are only available for specific geographic regions, with broader, less frequent surveys covering a greater variety of geographies. Geographies include states, counties, census tracts, and school districts [@GeographicAreasCovered2020].

@@ -46,10 +46,6 @@ More specifically, OxyContin's original label stated "Delayed absorption as prov
 
 [^4]: In reality, the only thing that Porter and Jick's letter demonstrated was that opioid dependence can occur after a brief period of use even when used exclusively under medical supervision while in hospital.
 
-```{r appalachia_map}
-"[map of Appalachia goes here"
-```
-
 Warning signs of the current opioid crisis first arose in Appalachia, where physicians such as Dr. Art Van Zee observed a huge rise in opioid addictions following the introduction of OxyContin [@meierPainKillerEmpire2018; @vanzeePromotionMarketingOxyContin2009; @quinonesDreamlandTrueTale2016]. Communities that had previously only faced alcoholism suddenly had large number of opioid addicts, who were usually much younger--high schools in inpatient rehabilitation was not unheard of. Anecdotally, Dr. Art Van Zee noticed addicts seeking OxyContin by name within one month of it arriving in local pharmacies [@meierPainKillerEmpire2018]. Addicts weren’t the only ones to notice the Purdue’s blockbuster drug—it was the first drug the DEA targeted for monitoring by brand name [@alpertSupplySideDrugPolicy2017]. By the early 2000s, there was an organized coalition based in Appalachia seeking to reformulate or recall OxyContin. The movement failed, however, due to clever legal and political maneuvering by Purdue [@meierPainKillerEmpire2018].
 
 ```{r opioid_prescription_timeseries}
@@ -95,6 +91,9 @@ Medication-assisted treatment, or maintenance therapy, is the gold standard for 
 [^7]: For example, street users of heroin often suffer from abcesses from improper injections, HIV and other blood-borne diseases from sharing and reusing needles, and systemic infections. None of these conditions are directly caused by opioid use, and all are greatly exacerbated by homelessness and other poor living conditions [@bourgoisRighteousDopefiend2009; @rastegarAmericanSocietyAddiction2015].
 
 ### Economy and History of Ohio
+
+```{r map_of_ohio}
+```
 
 (brief overview of why parts of Ohio would have much higher demand than other parts)
 
