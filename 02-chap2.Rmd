@@ -1,14 +1,5 @@
 # Data and Methods
 
-```{r load_packages_and_df}
-# Load the libraries and data used in this Rmd file
-library(tidyverse)
-library(here)
-library(knitr) # for kable
-library(tidycensus)
-load(here("data", "df.Rda"))
-```
-
 ```{r variable_ordering}
 ################################
 # Disability Variable Ordering #

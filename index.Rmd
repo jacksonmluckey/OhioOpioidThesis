@@ -50,6 +50,17 @@ if(!require(thesisdown))
 library(thesisdown)
 ```
 
+```{r load_all_packages}
+# Load the libraries and data used in this Rmd file
+library(tidyverse)
+library(tidycensus)
+library(broom)
+library(here)
+library(knitr) # for kable
+library(citr)
+load(here("data", "df.Rda"))
+```
+
 # Introduction {.unnumbered}
 
 The current pioid epidemic is the worst drug epidemic in US history. While opioids are a legitimate medical treatment for acute pain, they are highly addictive and come with the risk of abuse, dependence, and fatal overdose [@aliprantisOpioidsLaborMarket2018]. Abuse of and dependence on opioids has serious consequences. Since 2016, drug overdoses have been the leading cause of accidental death in the United States [@maguireOpioidCrisisAppalachia2019]. Overdoses kill more people than gun violence, motor vehicle incidents, or the HIV/AIDS epidemic did at its peak [@quinonesDreamlandTrueTale2016; @ciccaroneFentanylUSHeroin2017; @alpertSupplySideDrugPolicy2017]. In fact, the scourge of opioid overdoses is so severe that it has lead to an increase in all-cause mortality for white Americans despite mortality decreasing for all other Americans and citizens of comparably developed countries [@caseMortalityMorbidity21st2017]. Reducing the number of deaths due to opioids is essential to reversing this trend, increasing the labor supply, and improving outcomes for millions of Americans.
