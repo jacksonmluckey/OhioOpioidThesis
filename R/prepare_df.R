@@ -2,12 +2,6 @@
 library(tidyverse)
 library(tidycensus)
 library(stringr)
-library(here)
-
-# income - B19013
-# population
-# occupation
-# combining ACS1 and others? -> would love to go before 2010/2011
 
 ####################
 # census functions #
@@ -64,38 +58,19 @@ get_census_table_multiple_years <- function(table, years) {
   df
 }
 
+var_labels <- function(table) {
+  load_variables(2010, "acs1", cache = TRUE) %>%
+    filter(str_detect(name, paste0(table, "_"))) %>%
+    rename(variable = name)
+}
 
 ####################
 # grab census data #
 ####################
-# household_income
-# B19037 is household income by age of householder
-# not sure if this is the right table to work with
-# NOT INCLUDED IN FINAL DF
-household_income_age_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
-  filter(str_detect(name, "B19037_")) %>%
-  rename(variable = name)
-household_income_age_tall <- get_census_table("B19037", 2018) %>%
-  left_join(household_income_age_var_labels)
-household_income_age_wide <- make_census_table_wide(household_income_age_tall)
-# remove intermediate dfs
-rm(household_income_age_var_labels)
-rm(household_income_age_tall)
 
-# disability
-# load the variable labels so I can actually figure out what the columns mean
-disability_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
-  filter(stringr::str_detect(name, "B18101_")) %>%
-  rename(variable = name)
-# create a tall version that has the labels for doing some sanity checking
-disability_tall <- get_census_table_multiple_years("B18101", 2012:2018)
-disability_tall <- disability_tall %>%
-  left_join(disability_var_labels)
-# create a wide version
-disability_wide <- make_census_table_wide(disability_tall)
-# create new variables
-# table/category_n/percent_agebin_sex
-disability_wide <- disability_wide %>%
+disability <- get_census_table_multiple_years("B18101", 2012:2018) %>%
+  left_join(var_labels("B18101")) %>%
+  make_census_table_wide %>%
   mutate(disability_percent_under5_male = estimate_B18101_004 / estimate_B18101_003,
          disability_percent_5to17_male = estimate_B18101_007 / estimate_B18101_006,
          disability_percent_18to34_male = estimate_B18101_010 / estimate_B18101_009,
@@ -107,64 +82,26 @@ disability_wide <- disability_wide %>%
          disability_percent_18to34_female = estimate_B18101_029 / estimate_B18101_028,
          disability_percent_35to64_female = estimate_B18101_032 / estimate_B18101_031,
          disability_percent_65to74_female = estimate_B18101_035 / estimate_B18101_034,
-         disability_percent_75andup_female = estimate_B18101_038 / estimate_B18101_037)
-# drop the original columns
-disability <- disability_wide %>%
+         disability_percent_75andup_female = estimate_B18101_038 / estimate_B18101_037) %>%
   select(GEOID, county, year, starts_with("disability"))
-# remove intermediate dfs
-rm(disability_tall)
-rm(disability_tall)
-rm(disability_var_labels)
 
-# race
-# load all of the data
-race_tall <- get_census_table_multiple_years("B02001", 2010:2018)
-# load the variable labels so I can actually figure out what the columns mean
-race_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
-  filter(stringr::str_detect(name, "B02001_")) %>%
-  rename(variable = name)
-# make race wide
-race_wide <- race_tall %>%
-  left_join(race_var_labels) %>%
-  make_census_table_wide()
-# reduce down to only percent white and percent black
-# because the census data that can differentiate latino and white is complicated
-race <- race_wide %>%
+race <- get_census_table_multiple_years("B02001", 2010:2018) %>%
+  left_join(var_labels("B02001")) %>%
+  make_census_table_wide() %>%
   mutate(percent_white = estimate_B02001_002 / estimate_B02001_001,
          percent_black = estimate_B02001_003 / estimate_B02001_001) %>%
   select(GEOID, county, year, percent_white, percent_black)
-# remove intermediate dfs
-rm(race_wide)
-rm(race_tall)
-rm(race_var_labels)
 
-# income
-income_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
-  filter(stringr::str_detect(name, "B06011_")) %>%
-  rename(variable = name)
-income_tall <- get_census_table_multiple_years("B06011", 2010:2018)
-income_wide <- income_tall %>%
-  left_join(income_var_labels) %>%
-  make_census_table_wide()
-# income_individual is median income pc for individuals with reported income
-income_individual <- income_wide %>%
+income <- get_census_table_multiple_years("B06011", 2010:2018) %>%
+  left_join(var_labels("B06011")) %>%
+  make_census_table_wide() %>%
   rename(income_pc_individual = estimate_B06011_001) %>%
   select(GEOID, county, year, income_pc_individual)
-# remove intermediate dfs
-rm(income_var_labels)
-rm(income_tall)
-rm(income_wide)
 
 # education
-education_var_labels <- load_variables(2010, "acs1", cache = TRUE) %>%
-  filter(stringr::str_detect(name, "C15003_")) %>%
-  rename(variable = name)
-education_tall <- get_census_table_multiple_years("C15003", 2010:2018)
-education_wide <- education_tall %>%
-  left_join(education_var_labels) %>%
-  make_census_table_wide()
-education <- education_wide %>%
-  # rename the population variable
+education <- get_census_table_multiple_years("C15003", 2010:2018) %>%
+  left_join(var_labels("C15003")) %>%
+  make_census_table_wide() %>%
   rename(population = estimate_C15003_001) %>%
   # create the small education bins (_s_), which should add up to one
   mutate(education_s_percent_less_than_highschool = (estimate_C15003_002 + estimate_C15003_003 + estimate_C15003_004 + estimate_C15003_005 + estimate_C15003_006 + estimate_C15003_007 + estimate_C15003_008 + estimate_C15003_009) / population,
@@ -177,10 +114,10 @@ education <- education_wide %>%
   mutate(education_b_percent_highschool_or_less = education_s_percent_less_than_highschool + education_s_percent_highschool + education_s_percent_ged,
          education_b_percent_college_or_more = education_s_percent_college + education_s_percent_graduate) %>%
   select(GEOID, county, year, population, starts_with("education"))
-# remove intermediate dfs
-rm(education_var_labels)
-rm(education_tall)
-rm(education_wide)
+
+df <- left_join(income, race) %>%
+  left_join(disability) %>%
+  left_join(education)
 
 #############
 # finish up #
@@ -200,12 +137,9 @@ df <- left_join(disability, race) %>%
   left_join(income_individual)
 
 # convert OD raw to OD rate
-df <- df %>%
-  mutate(OD_rate = deaths / population)
-
 # change OD rate to be deaths per 10,000 pop
 df <- df %>%
-  mutate(OD_rate = OD_rate * 10000)
+  mutate(OD_rate = (deaths / population) * 10000)
 
 # convert percentages to be XX.X instead of .XXX
 df <- df %>%
@@ -223,10 +157,10 @@ OverdoseDeathRateCDC <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
          UrbanRural = `Urban/Rural Category`) %>%
   mutate(county = str_remove(county, " County, OH")) %>%
   mutate(GEOID = as.character(GEOID)) # to enable merging with DF
-  
+
 
 df <- left_join(df, OverdoseDeathRateCDC, by = c("GEOID" = "GEOID",
-                                                  "year" = "year",
-                                                  "county" = "county"))
+                                                 "year" = "year",
+                                                 "county" = "county"))
 # save the final df as RDA file
 save(df, file  = "data/df.Rda")
