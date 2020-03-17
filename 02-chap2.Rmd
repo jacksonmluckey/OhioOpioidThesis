@@ -87,21 +87,23 @@ Counties excluded in the one year Annual Community Survey are available in other
 ```{r included_counties_map}
 # commented out because it broke at some point and I did not realize
 # uncomment once I get the whole thesis to knit
-# df %>%
-#   group_by(county, GEOID) %>%
-#   summarize(population = mean(population)) %>%
-#   ungroup() %>%
-#   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
-#   mutate(included = !is.na(population)) %>%
-#   select(geometry, included) %>%
-#   ggplot(aes(geometry = geometry, fill = included)) +
-#   geom_sf() +
-#   labs(fill = "Included in Sample?",
-#        title = "Counties included in sample",
-#        x = "",
-#        y = "") +
-#   theme_map +
-#   scale_fill_viridis_d()
+counties_included <- df %>%
+  group_by(county, GEOID) %>%
+  summarize(population = mean(population)) %>%
+  ungroup() %>%
+  mutate(included = !is.na(population)) %>%
+  select(GEOID, included)
+
+base_map %>%
+  left_join(counties_included, by = c("GEOID" = "GEOID")) %>%
+  ggplot(aes(geometry = geometry, fill = included)) +
+  geom_sf() +
+  labs(fill = "Included in Sample?",
+       title = "Counties included in sample",
+       x = "",
+       y = "") +
+  theme_map +
+  scale_fill_viridis_d()
 ```
 
 ```{r check_if_excluded_counties_have_higher_od_rate}
