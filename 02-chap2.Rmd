@@ -110,24 +110,42 @@ summary_stats <- df %>%
   select(-rawVarName, -Label)
 
 build_group_vars_category_tibble <- function(df) {
-  index <- tibble(category = NA, rows = NA, .rows = 0)
-  for (category in unique(df$Category)) {
-    row_nums <- which(df$Category == category)
-    index <- index %>%
-      add_row(category = category, rows = row_nums)
-  }
-  index %>%
-    drop_na()
+  # index <- tibble(category = NA, rows = NA, .rows = 0)
+  # for (category in unique(df$Category)) {
+  #   row_nums <- which(df$Category == category)
+  #   index <- index %>%
+  #     add_row(category = category, rows = row_nums)
+  # }
+  # index %>%
+  #   drop_na() %>%
+  #   group_by(category) %>%
+  #   summarize(row_min = first(row_nums))
+  df %>%
+    mutate(row_num = 1:n()) %>%
+    group_by(Category) %>%
+    summarize(first_row = first(row_num)) %>%
+    arrange(first_row)
 }
 
 summary_stats_index <- build_group_vars_category_tibble(summary_stats)
+
+group_rows_by_tibble <- function(kable_table, tibble) {
+  for (i in 1:nrow(tibble)) {
+    print(tibble[[i,1]])
+    print(tibble[[i,2]])
+    kable_table <- kable_table %>%
+      pack_rows(group_label = tibble[[i,1]], tibble[[i,2]])
+  }
+}
 
 summary_stats %>%
   kable(caption = "Summary statistics of all variables used in analysis",
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 4),
-        booktabs = T)
+        booktabs = T,
+        format = "html") %>%
+  group_rows_by_tibble(summary_stats_index)
 ```
 
 
