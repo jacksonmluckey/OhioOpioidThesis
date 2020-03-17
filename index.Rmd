@@ -66,10 +66,13 @@ library(knitr) # for kable
 library(kableExtra)
 library(citr)
 load(here("data", "df.Rda"))
-options(knitr.table.format = "latex",
-        knitr.table.format.args = list(scientific = FALSE,
-                           big.mark = ",",
-                           digits = 5),
+#options(knitr.table.format = "latex",
+#        knitr.table.format.args = list(scientific = FALSE,
+#                           big.mark = ",",
+#                           digits = 5),
+options(knitr.table.format.args = list(scientific = FALSE,
+        big.mark = ",",
+        digits = 5),
         knitr.table.booktabs = T)
 opts_chunk$set(include = TRUE,
                echo = FALSE,
@@ -109,11 +112,12 @@ theme_map <- theme_minimal() +
 # Label is for replacing Variable Name (it's a human-readable version)
 var_label_category <- tribble(
   ~`Variable Name`, ~Category, ~Label,
+"OD_rate", "Overdoses", "Fatal Overdoses per 10,000",
 "income_pc_individual", "Demographics", "Individual Per Capita Income",
 "percent_white", "Race", "Percent White",
 "percent_black", "Race", "Percent Black",
 "population", "Demographics", "Population",
-"deaths", "Demographics", "Overdose Deaths",
+"deaths", "Overdoses", "Overdose Deaths",
 "education_b_percent_highschool_or_less", "Education", "Highschool or Less",
 "education_b_percent_college_or_more", "Education", "Bachelor's Degree or More",
 "education_s_percent_less_than_highschool", "Education", "Less than Highschool",
