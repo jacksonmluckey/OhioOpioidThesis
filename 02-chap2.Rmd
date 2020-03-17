@@ -103,7 +103,7 @@ base_map %>%
   ggplot(aes(geometry = geometry, fill = included)) +
   geom_sf() +
   labs(fill = "Included in Sample?",
-       title = "Counties included in sample at least once",
+       title = "Counties Included in Sample",
        x = "",
        y = "") +
   theme_map +
