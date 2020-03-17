@@ -93,6 +93,13 @@ Medication-assisted treatment, or maintenance therapy, is the gold standard for 
 ### Economy and History of Ohio
 
 ```{r map_of_ohio}
+base_map %>%
+  mutate(county = str_remove(county, " County, Ohio")) %>%
+  ggplot(aes(label = county)) +
+  geom_sf() +
+  theme_map +
+  geom_sf_text(aes(label = county), size = 2.5) +
+  labs(title = "Counties in Ohio")
 ```
 
 (brief overview of why parts of Ohio would have much higher demand than other parts)

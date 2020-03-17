@@ -62,7 +62,7 @@ base_map <- get_acs("county",
                     output = "wide")
 # reduce down to GEOID and geometry
 base_map <- base_map %>%
-  select(GEOID, geometry)
+  select(GEOID, geometry, county = NAME)
 ```
 
 ```{r map_theme}
