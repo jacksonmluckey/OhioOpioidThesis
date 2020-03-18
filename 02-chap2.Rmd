@@ -107,7 +107,8 @@ summary_stats <- df %>%
   select(`Variable Name`, everything()) %>% # gets the variable name in front
   mutate(`Coefficient of Variation` = `Standard Deviation` / Mean) %>%
   recode_vars() %>%
-  select(-rawVarName, -Label)
+  select(-rawVarName, -Label) %>%
+  arrange(Category)
 
 build_group_vars_category_tibble <- function(df) {
   # index <- tibble(category = NA, rows = NA, .rows = 0)
@@ -130,11 +131,18 @@ build_group_vars_category_tibble <- function(df) {
 summary_stats_index <- build_group_vars_category_tibble(summary_stats)
 
 group_rows_by_tibble <- function(kable_table, tibble) {
-  for (i in seq_along(tibble)) {
+  for (i in 1:nrow(tibble)) {
+    print(i)
     print(tibble[[i,1]])
     print(tibble[[i,2]])
-    kable_table <- kable_table %>%
-      pack_rows(group_label = tibble[[i,1]], start_row = tibble[[i,2]], end_row = (tibble[[i+1,2]] - 1))
+    # handles the out of bounds for i+1 issue
+    if (i != nrow(tibble)) {
+      kable_table <- kable_table %>%
+        pack_rows(group_label = tibble[[i,1]], start_row = tibble[[i,2]], end_row = (tibble[[i+1,2]] - 1))
+    } else {
+      kable_table <- kable_table %>%
+        pack_rows(group_label = tibble[[i,1]], start_row = tibble[[i,2]], end_row = nrow(tibble))
+    }
   }
   kable_table
 }
