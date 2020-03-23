@@ -153,8 +153,7 @@ summary_stats %>%
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 4),
-        booktabs = T,
-        format = "html") %>%
+        booktabs = T) %>%
   group_rows_by_tibble(summary_stats_index)
 ```
 
