@@ -111,16 +111,6 @@ summary_stats <- df %>%
   arrange(Category)
 
 build_group_vars_category_tibble <- function(df) {
-  # index <- tibble(category = NA, rows = NA, .rows = 0)
-  # for (category in unique(df$Category)) {
-  #   row_nums <- which(df$Category == category)
-  #   index <- index %>%
-  #     add_row(category = category, rows = row_nums)
-  # }
-  # index %>%
-  #   drop_na() %>%
-  #   group_by(category) %>%
-  #   summarize(row_min = first(row_nums))
   df %>%
     mutate(row_num = 1:n()) %>%
     group_by(Category) %>%
@@ -132,9 +122,6 @@ summary_stats_index <- build_group_vars_category_tibble(summary_stats)
 
 group_rows_by_tibble <- function(kable_table, tibble) {
   for (i in 1:nrow(tibble)) {
-    print(i)
-    print(tibble[[i,1]])
-    print(tibble[[i,2]])
     # handles the out of bounds for i+1 issue
     if (i != nrow(tibble)) {
       kable_table <- kable_table %>%
@@ -148,7 +135,7 @@ group_rows_by_tibble <- function(kable_table, tibble) {
 }
 ```
 
-```{r summary_stats_all_variables, results='asis'}
+```{r summary_stats_all_variables}
 summary_stats %>%
   select(-Category) %>%
   kable(caption = "Summary statistics of all variables used in analysis",
