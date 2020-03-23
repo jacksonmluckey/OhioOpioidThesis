@@ -29,11 +29,6 @@ acknowledgements: |
   I would like to thank my father, James (or Bill) Luckey, for introducing me to public health policy and the study of addiction. Without his influence in my life, I would not have gone down this path.
 
   I would also like to thank Arnie Aldridge, Brendan Wedehase, and Gary Zarkin for their invaluable role in my thesis. Without their guidance during my internship at RTI, I would have never developed the technical skills nor background knowledge that was necessary for producing this document.
-dedication: |
-  You can have a dedication here if you wish. 
-preface: |
-  This is an example of a thesis setup to use the reed thesis document class
-  (for LaTeX) and the R bookdown package, in general.
 # Specify the location of the bibliography below
 bibliography: bib/thesis.bib
 # Download your specific csl file and refer to it in the line below.
