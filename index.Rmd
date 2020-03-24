@@ -33,8 +33,9 @@ acknowledgements: |
 bibliography: bib/thesis.bib
 # Download your specific csl file and refer to it in the line below.
 csl: csl/chicago-fullnote-bibliography.csl
-lot: true
-lof: true
+# lot (list of tables) disabled because I cannot get it to work
+# lot: true
+lof: true # the figure captions are fucky
 # If you prefer blank lines between paragraphs, un-silence lines  40-41 (this requires package tikz)
 header-includes:
   \usepackage{tikz}
