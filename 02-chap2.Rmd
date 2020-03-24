@@ -143,9 +143,10 @@ summary_stats %>%
                            big.mark = ",",
                            digits = 3),
         booktabs = T) %>%
-  group_rows_by_tibble(summary_stats_index)
+  group_rows_by_tibble(summary_stats_index) %>%
   # this should make the table fit on the page, but it causes a bizarre error whenever I include it
-  #kable_styling(latex_options="scale_down")
+  # https://stackoverflow.com/questions/49044753/scale-kable-table-to-fit-page-width
+  kable_styling(latex_options="scale_down")
 ```
 
 ```{r OD_rate_distribution, fig.cap="Distribution of drug overdose rate"}
