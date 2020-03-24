@@ -99,13 +99,13 @@ summary_stats <- df %>%
   mutate(func = case_when(func == 1 ~ "Min", # converts func into a meaninful label
                           func == 2 ~ "Max",
                           func == 3 ~ "Mean",
-                          func == 4 ~ "Standard Deviation")) %>%
+                          func == 4 ~ "SD")) %>%
   mutate(name = str_remove(name, "_fn[1-4]")) %>% # strips the suffix which was turned into func
   pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
   mutate(`Variable Name` = name, # make the variable name label better
          name = NULL) %>%
   select(`Variable Name`, everything()) %>% # gets the variable name in front
-  mutate(`Coefficient of Variation` = `Standard Deviation` / Mean) %>%
+  mutate(`CoV` = `Standard Deviation` / Mean) %>%
   recode_vars() %>%
   select(-rawVarName, -Label) %>%
   arrange(Category)
