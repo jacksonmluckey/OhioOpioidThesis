@@ -105,7 +105,7 @@ summary_stats <- df %>%
   mutate(`Variable Name` = name, # make the variable name label better
          name = NULL) %>%
   select(`Variable Name`, everything()) %>% # gets the variable name in front
-  mutate(`CoV` = `Standard Deviation` / Mean) %>%
+  mutate(`CoV` = SD / Mean) %>%
   recode_vars() %>%
   select(-rawVarName, -Label) %>%
   arrange(Category)
