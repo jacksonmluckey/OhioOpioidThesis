@@ -9,12 +9,14 @@ basic_regression_formula <- formula(OD_rate ~ income_pc_individual + percent_bla
 ```{r basic_ols}
 basic_model <- lm(basic_regression_formula, df)
 
-glance(basic_model) %>%
-  kable()
-
 tidy(basic_model) %>%
   mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
-  kable()
+  kable(caption = "Basic Model Including All Counties",
+        format.args = list(scientific = FALSE,
+                           big.mark = ",",
+                           digits = 3),
+        booktabs = T) %>%
+  kable_styling(latex_options="scale_down")
 ```
 
 ## Basic Model Excluding Cleveland
@@ -25,12 +27,14 @@ df_no_cle <- df %>%
 
 basic_model_no_cle <- lm(basic_regression_formula, df_no_cle)
 
-glance(basic_model_no_cle) %>%
-  select(r.squared, adj.r.squared)
-
 tidy(basic_model_no_cle) %>%
   mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
-  kable()
+  kable(caption = "Basic Model Excluding Cleveland",
+        format.args = list(scientific = FALSE,
+                           big.mark = ",",
+                           digits = 3),
+        booktabs = T) %>%
+  kable_styling(latex_options="scale_down")
 ```
 
 ## Tobit Model
@@ -53,13 +57,23 @@ tobit_to_table <- function(tobitResults) {
 ```{r tobit_all_counties}
 tobit(basic_regression_formula, left = 0.5066819) %>%
   tobit_to_table() %>%
-  kable()
+  kable(caption = "Tobit Model with All Counties",
+        format.args = list(scientific = FALSE,
+                           big.mark = ",",
+                           digits = 3),
+        booktabs = T) %>%
+  kable_styling(latex_options="scale_down")
 ```
 
 ```{r tobit_no_cle}
 tobit(basic_regression_formula, left = 0.5066819, data = df_no_cle) %>%
   tobit_to_table() %>%
-  kable()
+  kable(caption = "Tobit Model Excluding Cleveland",
+        format.args = list(scientific = FALSE,
+                           big.mark = ",",
+                           digits = 3),
+        booktabs = T) %>%
+  kable_styling(latex_options="scale_down")
 ```
 
 ```{r tobit_vs_ols}
@@ -70,5 +84,10 @@ tobit(basic_regression_formula, left = 0.5066819) %>%
   select(tobit_estimate, variable, ols_estimate = estimate) %>%
   mutate(percentDifferenceInEstimate = (abs(ols_estimate - tobit_estimate) / abs(tobit_estimate) * 100)) %>%
   select(variable, `OLS Estimate` = ols_estimate, `Tobit Estimate` = tobit_estimate, `Percent Difference Between Estimates` = percentDifferenceInEstimate) %>%
-  kable()
+  kable(caption = "Tobit vs OLS (Basic) Model",
+        format.args = list(scientific = FALSE,
+                           big.mark = ",",
+                           digits = 3),
+        booktabs = T) %>%
+  kable_styling(latex_options="scale_down")
 ```
