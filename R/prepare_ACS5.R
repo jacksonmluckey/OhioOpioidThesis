@@ -68,3 +68,14 @@ var_labels <- function(table) {
 # NEW CODE BEGINS HERE #
 ########################
 
+# disability
+
+# race
+
+# education
+
+# income
+
+# pair with non-census data
+
+# save
