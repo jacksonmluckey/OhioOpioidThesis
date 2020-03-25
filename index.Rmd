@@ -6,7 +6,7 @@ division: 'History and Social Sciences'
 advisor: 'Denise Hare'
 department: 'Economics'
 degree: 'Bachelor of Arts'
-title: 'Ohio Opioid Thesis'
+title: 'Social and Economic Determinants of the Opioid Overdose Death Rate in Ohio'
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 output: 
@@ -52,7 +52,7 @@ if(!require(thesisdown))
 library(thesisdown)
 ```
 
-```{r load_all_packages}
+```{r load_all_packages, include=FALSE, eval=TRUE}
 # Load the libraries and data used in this Rmd file
 library(tidyverse)
 library(tidycensus)
