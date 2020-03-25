@@ -155,7 +155,7 @@ County populations in the sample range from just over 35,000 to almost 900,000. 
 
 There is significant variation in education levels between counties. While in some counties barely ten percent of the adult population has a college degree, in others more than half of the population does. On average, approximately 25% of a county's population has at least a bachelors degree, just under 50% has a high school degree or less, and the rest attended some amount of college without obtaining a bachelors. Interestingly, the education level with the least variation between counties is attending college without achieving a bachelors degree, which varies by less than 50%. The other levels vary by at least 100%, and in some cases by almost an order of magnitude.
 
-
+Race varies dramatically between counties.
 
 ```{r OD_rate_distribution, fig.cap="Distribution of drug overdose rate"}
 df %>%
