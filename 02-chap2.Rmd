@@ -147,6 +147,8 @@ summary_stats %>%
   kable_styling(latex_options="scale_down")
 ```
 
+In general, it appears that disability statistics become more accurate as the age bin increases. This makes intuitive sense, as disability rates presumably increase as age increases, so there would be less variability as age increases, especially in counties with a smaller population. The presence of observations with zero children under the age of five with disabilities confirms this intuition.
+
 ```{r OD_rate_distribution, fig.cap="Distribution of drug overdose rate"}
 df %>%
   filter(!is.na(OD_rate)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
@@ -159,7 +161,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019].
+The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019]. Furthermore, no observations reach zero, further suggesting data censoring [@hillPrinciplesEconometrics2011].
 
 ```{r county_racial_distribution, fig.cap="Distribution of percent black by county"}
 df %>%
@@ -173,6 +175,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
+The distribution of percent black by county does not indicate any data issues. While observations do not occur in a perfect Gaussian bell curve, there is no reason to believe that the data is censored.
 ### Maps
 
 ```{r percent_black_maps, fig.cap="Map of Ohio counties by percent black"}
