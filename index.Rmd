@@ -56,11 +56,12 @@ library(thesisdown)
 # Load the libraries and data used in this Rmd file
 library(tidyverse)
 library(tidycensus)
-library(broom)
+library(broom) # for manipulating regression output
 library(here)
 library(knitr) # for kable
 library(kableExtra)
 library(citr)
+library(stargazer) # for regression output
 load(here("data", "df.Rda"))
 #options(knitr.table.format = "latex",
 #        knitr.table.format.args = list(scientific = FALSE,
