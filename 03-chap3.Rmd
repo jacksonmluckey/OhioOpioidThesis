@@ -6,6 +6,7 @@ basic_regression_formula <- formula(OD_rate ~ income_pc_individual + percent_bla
 ```
 
 ## Basic Model With All Counties Included in Data
+
 ```{r basic_ols}
 basic_model <- lm(basic_regression_formula, df)
 
@@ -18,6 +19,10 @@ tidy(basic_model) %>%
         format = "pandoc",
         booktabs = T) %>%
   kable_styling(latex_options="scale_down")
+```
+
+```{r stargazerTest, results="asis"}
+stargazer(basic_model, title = "Basic Model With Stargazer")
 ```
 
 ## Basic Model Excluding Cleveland
