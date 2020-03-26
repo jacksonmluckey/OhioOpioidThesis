@@ -15,6 +15,7 @@ tidy(basic_model) %>%
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 3),
+        format = "pandoc",
         booktabs = T) %>%
   kable_styling(latex_options="scale_down")
 ```
@@ -33,6 +34,7 @@ tidy(basic_model_no_cle) %>%
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 3),
+        format = "pandoc",
         booktabs = T) %>%
   kable_styling(latex_options="scale_down")
 ```
@@ -61,6 +63,7 @@ tobit(basic_regression_formula, left = 0.5066819) %>%
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 3),
+        format = "pandoc",
         booktabs = T) %>%
   kable_styling(latex_options="scale_down")
 ```
@@ -72,6 +75,7 @@ tobit(basic_regression_formula, left = 0.5066819, data = df_no_cle) %>%
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 3),
+        format = "pandoc",
         booktabs = T) %>%
   kable_styling(latex_options="scale_down")
 ```
@@ -88,6 +92,7 @@ tobit(basic_regression_formula, left = 0.5066819) %>%
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 3),
+        format = "pandoc",
         booktabs = T) %>%
   kable_styling(latex_options="scale_down")
 ```
