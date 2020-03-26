@@ -61,6 +61,7 @@ library(here)
 library(knitr) # for kable
 library(kableExtra)
 library(citr)
+library(censReg)
 library(stargazer) # for regression output
 load(here("data", "df.Rda"))
 #options(knitr.table.format = "latex",

@@ -26,60 +26,6 @@ stargazer(basic_model, basic_model_no_cle,
 
 For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. In the table above, "estimate" is sourced from the original simple linear regression, while "tobit_estimate" unsurprisingly comes from the Tobit model. "percentDifferenceInEstimate" is the absolute difference between the models divided by "tobit_estimate" and converted into a percentage in the form XX.X%.
 
-```{r tobit_functions}
-tobit <- function(formula, left, data = df) {
-  summary(censReg::censReg(formula, left = left, data = df, logLikOnly = FALSE))
-}
-
-# converts the output of tobit() into a tidy dataframe
-tobit_to_table <- function(tobitResults) {
-  tobitResults$estimate %>%
-    as.data.frame() %>%
-    rownames_to_column(var = "variable")
-}
-```
-
-```{r tobit_all_counties}
-tobit(basic_regression_formula, left = 0.5066819) %>%
-  tobit_to_table() %>%
-  kable(caption = "Tobit Model with All Counties",
-        format.args = list(scientific = FALSE,
-                           big.mark = ",",
-                           digits = 3),
-        format = "pandoc",
-        booktabs = T) %>%
-  kable_styling(latex_options="scale_down")
-```
-
-```{r tobit_no_cle}
-tobit(basic_regression_formula, left = 0.5066819, data = df_no_cle) %>%
-  tobit_to_table() %>%
-  kable(caption = "Tobit Model Excluding Cleveland",
-        format.args = list(scientific = FALSE,
-                           big.mark = ",",
-                           digits = 3),
-        format = "pandoc",
-        booktabs = T) %>%
-  kable_styling(latex_options="scale_down")
-```
-
-```{r tobit_vs_ols}
-tobit(basic_regression_formula, left = 0.5066819) %>%
-  tobit_to_table() %>%
-  select(tobit_estimate = Estimate, variable) %>%
-  left_join(tidy(basic_model), by = c("variable" = "term")) %>%
-  select(tobit_estimate, variable, ols_estimate = estimate) %>%
-  mutate(percentDifferenceInEstimate = (abs(ols_estimate - tobit_estimate) / abs(tobit_estimate) * 100)) %>%
-  select(variable, `OLS Estimate` = ols_estimate, `Tobit Estimate` = tobit_estimate, `Percent Difference Between Estimates` = percentDifferenceInEstimate) %>%
-  kable(caption = "Tobit vs OLS (Basic) Model",
-        format.args = list(scientific = FALSE,
-                           big.mark = ",",
-                           digits = 3),
-        format = "pandoc",
-        booktabs = T) %>%
-  kable_styling(latex_options="scale_down")
-```
-
 ```{r stargazerTobit, results = "asis"}
 tobit_with_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df, logLikOnly = FALSE)
 tobit_without_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df_no_cle, logLikOnly = FALSE)
