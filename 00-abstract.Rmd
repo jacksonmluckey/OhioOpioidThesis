@@ -1,3 +1,1 @@
-The preface pretty much says it all.  \par
-
-Second paragraph of abstract starts here.
+The United States is currently suffering from a severe opioid addiction epidemic that kills more people than car crashes, HIV/AIDS, or gun violence. This thesis examines the impact of economic and demographic factors on the opioid overdose death rate of counties in Ohio. I find that higher education decreases the overdose rate, whereas disabilities in women aged 35 to 64, higher incomes, and a higher percentage of the county being black increases the overdose rate. These findings are important for addressing the root causes of the epidemic, and can help complement the solutions being evaluated by the HEALing communities study.
