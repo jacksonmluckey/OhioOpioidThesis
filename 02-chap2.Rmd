@@ -138,7 +138,7 @@ group_rows_by_tibble <- function(kable_table, tibble) {
 ```{r summary_stats_all_variables, results="asis"}
 summary_stats %>%
   select(-Category) %>%
-  kable(caption = "test",
+  kable(caption = "Variable Summary Statistics",
         format.args = list(scientific = FALSE,
                            big.mark = ",",
                            digits = 3),
