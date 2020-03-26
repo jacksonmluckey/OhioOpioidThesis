@@ -5,43 +5,21 @@
 basic_regression_formula <- formula(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female)
 ```
 
-## Basic Model With All Counties Included in Data
+## Ordinary Least Squares Multiple Regression
 
-```{r basic_ols}
+```{r prepareBasicOLS}
 basic_model <- lm(basic_regression_formula, df)
 
-tidy(basic_model) %>%
-  mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
-  kable(caption = "Basic Model Including All Counties",
-        format.args = list(scientific = FALSE,
-                           big.mark = ",",
-                           digits = 3),
-        format = "pandoc",
-        booktabs = T) %>%
-  kable_styling(latex_options="scale_down")
-```
-
-```{r stargazerTest, results="asis"}
-stargazer(basic_model, title = "Basic Model With Stargazer")
-```
-
-## Basic Model Excluding Cleveland
-
-```{r ols_no_cle}
 df_no_cle <- df %>%
   filter(county != "Cuyahoga")
 
 basic_model_no_cle <- lm(basic_regression_formula, df_no_cle)
+```
 
-tidy(basic_model_no_cle) %>%
-  mutate(significant = if_else(p.value < .05, TRUE, FALSE)) %>%
-  kable(caption = "Basic Model Excluding Cleveland",
-        format.args = list(scientific = FALSE,
-                           big.mark = ",",
-                           digits = 3),
-        format = "pandoc",
-        booktabs = T) %>%
-  kable_styling(latex_options="scale_down")
+```{r stargazerTest, results="asis"}
+stargazer(basic_model, basic_model_no_cle,
+          title = "OLS Multiple Regression With (1) and Without (2) Cuyahoga County",
+          single.row = TRUE)
 ```
 
 ## Tobit Model
