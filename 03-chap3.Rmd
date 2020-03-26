@@ -29,7 +29,7 @@ Excluding Cuyahoga county from the samle increases the explanatory power of the 
 
 ## Tobit Model
 
-For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. In the table above, "estimate" is sourced from the original simple linear regression, while "tobit_estimate" unsurprisingly comes from the Tobit model. "percentDifferenceInEstimate" is the absolute difference between the models divided by "tobit_estimate" and converted into a percentage in the form XX.X%.
+For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. As shown in table 3.3, there does not appear to be a significant difference between the censored regression model estimate parameters and the ordinary least squares multiple regression model estimate parameters. Therefore, we can assume that censoring is not a significant issue with the current data. Table 3.2 shows that excluding Cuyahoga county has similar effects on both the tobit and OLS model.
 
 ```{r stargazerTobit, results = "asis"}
 tobit_with_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df, logLikOnly = FALSE)
@@ -39,6 +39,8 @@ stargazer(tobit_with_cle, tobit_without_cle,
           single.row = TRUE,
           header = FALSE)
 ```
+
+
 
 ## OLS vs Tobit Models
 
