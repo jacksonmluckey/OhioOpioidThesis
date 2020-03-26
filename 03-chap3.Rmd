@@ -79,3 +79,11 @@ tobit(basic_regression_formula, left = 0.5066819) %>%
         booktabs = T) %>%
   kable_styling(latex_options="scale_down")
 ```
+
+```{r stargazerTobit, results = "asis"}
+tobit_with_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df, logLikOnly = FALSE)
+tobit_without_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df_no_cle, logLikOnly = FALSE)
+stargazer(tobit_with_cle, tobit_without_cle,
+          title = "Tobit Model With (1) and Without (2) Cuyahoga County",
+          single.row = TRUE)
+```
