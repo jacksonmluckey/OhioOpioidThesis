@@ -19,7 +19,8 @@ basic_model_no_cle <- lm(basic_regression_formula, df_no_cle)
 ```{r stargazerTest, results="asis"}
 stargazer(basic_model, basic_model_no_cle,
           title = "OLS Multiple Regression With (1) and Without (2) Cuyahoga County",
-          single.row = TRUE)
+          single.row = TRUE,
+          header = FALSE)
 ```
 
 ## Tobit Model
@@ -31,5 +32,15 @@ tobit_with_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df,
 tobit_without_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df_no_cle, logLikOnly = FALSE)
 stargazer(tobit_with_cle, tobit_without_cle,
           title = "Tobit Model With (1) and Without (2) Cuyahoga County",
-          single.row = TRUE)
+          single.row = TRUE,
+          header = FALSE)
+```
+
+## OLS vs Tobit Models
+
+```{r stargazerTobitOLS, results = "asis"}
+stargazer(basic_model, tobit_with_cle,
+          title = "OLS Multiple Regression (1) vs Tobit (2)",
+          single.row = TRUE,
+          header = FALSE)
 ```
