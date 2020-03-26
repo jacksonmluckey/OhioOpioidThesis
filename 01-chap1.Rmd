@@ -54,8 +54,19 @@ More specifically, OxyContin's original label stated "Delayed absorption as prov
 
 Warning signs of the current opioid crisis first arose in Appalachia, where physicians such as Dr. Art Van Zee observed a huge rise in opioid addictions following the introduction of OxyContin [@meierPainKillerEmpire2018; @vanzeePromotionMarketingOxyContin2009; @quinonesDreamlandTrueTale2016]. Communities that had previously only faced alcoholism suddenly had large number of opioid addicts, who were usually much younger--high schools in inpatient rehabilitation was not unheard of. Anecdotally, Dr. Art Van Zee noticed addicts seeking OxyContin by name within one month of it arriving in local pharmacies [@meierPainKillerEmpire2018]. Addicts weren’t the only ones to notice the Purdue’s blockbuster drug—it was the first drug the DEA targeted for monitoring by brand name [@alpertSupplySideDrugPolicy2017]. By the early 2000s, there was an organized coalition based in Appalachia seeking to reformulate or recall OxyContin. The movement failed, however, due to clever legal and political maneuvering by Purdue [@meierPainKillerEmpire2018].
 
-```{r opioid_prescription_timeseries}
-"[timeseries graph of opioid overdoses goes here"
+```{r OhioOpioidTimeseriesGraph}
+df %>%
+  filter(!is.na(deaths)) %>%
+  group_by(year) %>%
+  summarize(overdoses = sum(deaths)) %>%
+  ggplot(aes(x = year, y = overdoses)) +
+    geom_point() +
+    geom_line() +
+    theme_minimal() +
+    labs(x = "Year",
+         y = "Annual Fatal Drug Overdoses",
+         title = "Overdose Deaths by Year",
+         subtitle = "In Ohio Counties Included in Sample")
 ```
 
 Despite the warnings, opioid prescriptions continued to rise throughout the 2000s and early 2010s [@macyDopesickDealersDoctors2018; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. In total, there was a 356% increase in prescriptions from 1999 to 2015 [@kruegerWhereHaveAll2017]. In fact, some communities received more prescription painkillers than there were people who could use them, which highlights the high level of diversion of prescription opioids for non-medical use during this period [@alpertSupplySideDrugPolicy2017; @quinonesDreamlandTrueTale2016]. While many doctors treated OxyContin and similar prescription painkillers as routine pharmaceuticals, their impact on patients was more similar to heroin than statins. Approximately one in every 550 patients started on opioid therapy dies from an opioid-related cause, with most deaths occurring within three years of the initial prescription [@friedenReducingRisksRelief2016; @kruegerWhereHaveAll2017]. Furthermore, prescription painkillers often lead to heroin use; approximately 75% of heroin users first misused prescription opioids [@odonnellTrendsDeathsInvolving2017]. OxyContin's devastation would continue unrestrained until its reformulation in the early 2010s [@quinonesDreamlandTrueTale2016].
@@ -92,8 +103,6 @@ Opioid overdoses can be treated with naloxone [@rastegarAmericanSocietyAddiction
 
 Medication-assisted treatment, or maintenance therapy, is the gold standard for treating opioid addiction. While opioids are considered dangerous substances, barring overdose, the primary medical concerns of chronic use are all related to how it is used[^7] @rastegarAmericanSocietyAddiction2015]. Since "long-term abstinence after detoxification is the exception rather than the rule", the most effective way to treat individuals with an opioid addiction is to provide them with a long-term maintenance dose of opioids to minimize cravings and withdrawal coupled with counseling services [@rastegarAmericanSocietyAddiction2015, 155]. Maintenance opioids include methadone and buprenorphine, and are much longer lasting than recreational opioids like heroin [@rastegarAmericanSocietyAddiction2015].
 
-(cover geographic distribution / limited availability of MAT, especially in the past)
-
 [^7]: For example, street users of heroin often suffer from abcesses from improper injections, HIV and other blood-borne diseases from sharing and reusing needles, and systemic infections. None of these conditions are directly caused by opioid use, and all are greatly exacerbated by homelessness and other poor living conditions [@bourgoisRighteousDopefiend2009; @rastegarAmericanSocietyAddiction2015].
 
 ### Economy and History of Ohio
@@ -108,10 +117,8 @@ base_map %>%
   labs(title = "Counties in Ohio")
 ```
 
-Cuyahoga County, which contains Cleveland, was traditionally the only part of Ohio to have an active heroin market [@quinonesDreamlandTrueTale2016].
+Cuyahoga County, which contains Cleveland, was traditionally the only part of Ohio to have an active heroin market, which filtered down to nearby cities such as Toledo [@quinonesDreamlandTrueTale2016]. This helps explain the high rate of heroin usage in the county. While Cleveland was historically a major city--5th in the nation by population at one point--today it exemplifies "deindustrialization, population decline, and entrenched poverty" [@naomilamoreauxDeclineInnovativeRegion2008]. This phenomena is not limited to Cleveland proper. Between 1985 and 2010, manufacturing employment fell by over 50% in Northeast Ohio, which is the region that contains Cuyahoga County and therefore the city of Cleveland [@matthewhrubeyNortheastOhioManufacturing2011]. Broadly speaking, Ohio as a whole has suffered from a decline in unionized manufacturing jobs, which has led to limited opportunities for low education workers in much of the state. Many authors have claimed that the disappearance of high-paying, relatively low-skilled positions led to increased demand for substances such as heroin. For example, in Portsmouth, Ohio, the main employer shut down, and the city now has one of the highest rates of opioid abuse in the country [@quinonesDreamlandTrueTale2016].
 
 ## Why
 
 Explanations for the opioid epidemic in the United States can be broadly characterized as either supply-side or demand-side. Supply-siders claim that an increase in the supply of opioids triggered the 21st century epidemic, while demand-siders believe that social and economic factors are responsible. Supply-siders attribute the increase in the overall opioid supply--and therefore opioid deaths--to the rise of prescription painkillers like OxyContin, the simultaneous price decrease and supply increase of heroin outside of major metropolitan areas, and the introduction of synthetic opioids such as Fentanyl into the recreational opioid supply chain. In contrast, demand-siders focus on changes in pain treatment, poor economic outcomes in particular regions of the United States, and the overall phenomena of deaths of despair.
-
-Appalachia
