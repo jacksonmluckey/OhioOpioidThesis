@@ -40,10 +40,6 @@ stargazer(tobit_with_cle, tobit_without_cle,
           header = FALSE)
 ```
 
-
-
-## OLS vs Tobit Models
-
 ```{r stargazerTobitOLS, results = "asis"}
 stargazer(basic_model, tobit_with_cle,
           title = "OLS Multiple Regression (1) vs Tobit (2)",
