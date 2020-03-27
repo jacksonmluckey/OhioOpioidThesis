@@ -18,17 +18,27 @@ While “addictions would seem to be the antithesis of rational behavior”,  Be
 
 Harmful addictions usually feature tolerance and reinforcement. Tolerance means that current consumption is less satisfying when past consumption is greater, while reinforcement means that greater current consumption increases future consumption [@beckerTheoryRationalAddiction1988]. Opioid tolerance makes any given level of consumption less satisfying because it decreases the duration and intensity of euphoria, sedation, and analgesia that opioids induce, which encourages users to increase their consumption over time [@collettOpioidToleranceClinical1998; @morganAnalysisOpioidEfficacy2011]. From a clinical perspective, opioid tolerance occurs through three mechanisms: changes in the body’s metabolism of the drug, changes in the body’s receptors for a drug, and changes in the brain’s response to the stimulus from the drug [@collettOpioidToleranceClinical1998]. The most famous reinforcement mechanism for opioids is withdrawal. Withdrawal is a common term for the symptoms that chronic opioid users feel when they discontinue use [@collettOpioidToleranceClinical1998; @morganAnalysisOpioidEfficacy2011]. These symptoms are deeply unpleasant, and the "fear of withdrawal has been considered to be one of the major forces behind persistent drug abuse in addicts" [@collettOpioidToleranceClinical1998, 62].
 
+Jonathan Gruber and Botond Koszegi expanded on Becker and Murphy's theory of rational addiction in their article "Is Addiction "Rational"? Theory and Evidence".  While Gruber and Koszegi agree with the majority of the traditional theory of rational addiction, they make consumer preferences time-inconsistent. This means that users of addictive substances do not fully factor in the cost of future addiction when making the decision to consume an addictive substance. While time consistency in preferences is an assumption of the rational consumer model, psychological experiments support Gruber and Koszegi's claim that consumers do not have truly time consistent preferences. Anecdotally, this is reflected in the number of substance users who express a desire to quit while continuing to consume [@bourgoisRighteousDopefiend2009; @gruberAddictionRationalTheory2001]. Under this modified theory of rational addiction, in addition to the externalities of substance use, there is an "internality": users consume more of a harmful substance than they would choose to if the substance did not have addictive properties. These internalities can dwarf the externalities of a substance in size [@gruberAddictionRationalTheory2001].
+
+### Policy Implications of Addiction Models
+
+
+
 ## History of the Opioid Epidemic
 
 ### Timeline
 
 1980s: Last physicians from first opioid epidemic retire
-1995: Pain becomes fifth vital sign
+1995: Pain becomes fifth vital sign in physician guidelines
 1996: Oxycontin is brought to market by Purdue Pharmaceuticals
+1999: VA adopts pain as fifth vital sign [@jonesBriefHistoryOpioid2018]
 2001: First major book on prescription painkiller abuse is written (Meier's *Painkiller*)
 2000s: Heroin from Nayarit available in most cities
+2007: Purdue (the Oxycontin manufacturers) pleads guilty to misbranding the drug [@jonesBriefHistoryOpioid2018; @quinonesDreamlandTrueTale2016]
 2010: Oxycontin is reformulated
 2010s: Fentanyl and other synthetic opioids enter the black market supply chain
+2016: FDA begins to require CME for physicians prescribing opioids [@jonesBriefHistoryOpioid2018]
+2017: US government labels the epidemic as a public health emergency[@jonesBriefHistoryOpioid2018]
 
 ### What are Opioids?
 
@@ -121,6 +131,6 @@ base_map %>%
 
 Cuyahoga County, which contains Cleveland, was traditionally the only part of Ohio to have an active heroin market, which filtered down to nearby cities such as Toledo [@quinonesDreamlandTrueTale2016]. This helps explain the high rate of heroin usage in the county. While Cleveland was historically a major city--5th in the nation by population at one point--today it exemplifies "deindustrialization, population decline, and entrenched poverty" [@naomilamoreauxDeclineInnovativeRegion2008]. This phenomena is not limited to Cleveland proper. Between 1985 and 2010, manufacturing employment fell by over 50% in Northeast Ohio, which is the region that contains Cuyahoga County and therefore the city of Cleveland [@matthewhrubeyNortheastOhioManufacturing2011]. Broadly speaking, Ohio as a whole has suffered from a decline in unionized manufacturing jobs, which has led to limited opportunities for low education workers in much of the state. Many authors have claimed that the disappearance of high-paying, relatively low-skilled positions led to increased demand for substances such as heroin. For example, in Portsmouth, Ohio, the main employer shut down, and the city now has one of the highest rates of opioid abuse in the country [@quinonesDreamlandTrueTale2016].
 
-## Why
+## Supply vs Demand Side Explanations
 
-Explanations for the opioid epidemic in the United States can be broadly characterized as either supply-side or demand-side. Supply-siders claim that an increase in the supply of opioids triggered the 21st century epidemic, while demand-siders believe that social and economic factors are responsible. Supply-siders attribute the increase in the overall opioid supply--and therefore opioid deaths--to the rise of prescription painkillers like OxyContin, the simultaneous price decrease and supply increase of heroin outside of major metropolitan areas, and the introduction of synthetic opioids such as Fentanyl into the recreational opioid supply chain. In contrast, demand-siders focus on changes in pain treatment, poor economic outcomes in particular regions of the United States, and the overall phenomena of deaths of despair.
+Explanations for the opioid epidemic in the United States can be broadly characterized as either supply-side or demand-side. Supply-siders claim that an increase in the supply of opioids triggered the 21st century epidemic, while demand-siders believe that social and economic factors are responsible. Supply-siders attribute the increase in the overall opioid supply--and therefore opioid deaths--to the rise of prescription painkillers like OxyContin, the simultaneous price decrease and supply increase of heroin outside of major metropolitan areas, and the introduction of synthetic opioids such as Fentanyl into the recreational opioid supply chain. In contrast, demand-siders focus on changes in pain treatment, poor economic outcomes in particular regions of the United States, and the overall phenomena of deaths of despair. If demand-siders are correct, then economic and demographic indicators should accurately predict fatal opioid overdose rates. On the other hand, if supply-siders are correct, then economic and demographic indicators other than income should not provide much explanatory value, and instead statistics such as the prescribing rate should have the most explanatory power.
