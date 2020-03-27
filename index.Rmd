@@ -11,16 +11,8 @@ knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 output: 
   thesisdown::thesis_pdf: default
-#  thesisdown::thesis_gitbook: default
-#  thesisdown::thesis_word: default
-#  thesisdown::thesis_epub: default
-# If you are creating a PDF you'll need to write your preliminary content (e.g., abstract, acknowledgements) here or
-# use code similar to line 22-23 for the .RMD files. If you are NOT producing a PDF, you can delete or silence lines 21-32 in this YAML header.
 abstract: |
   `r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = '\n  ')`
-# If you'd rather include the preliminary content in files instead of inline
-# like below, use a command like that for the abstract above.  Note that a tab is 
-# needed on the line after the `|`.
 acknowledgements: |
   First of all, I would like to thank my thesis advisor, Denise Hare, for supporting me throughout the thesis process. I would also like to thank Nick Wilson for being my first reader, giving me invaluable feedback throughout the thesis project, and for teaching me health economics.
 
@@ -35,10 +27,8 @@ acknowledgements: |
 bibliography: bib/thesis.bib
 # Download your specific csl file and refer to it in the line below.
 csl: csl/chicago-fullnote-bibliography.csl
-# lot (list of tables) disabled because I cannot get it to work
 lot: true
 lof: true # the figure captions are fucky
-# If you prefer blank lines between paragraphs, un-silence lines  40-41 (this requires package tikz)
 header-includes:
   \usepackage{tikz}
 ---
