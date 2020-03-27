@@ -22,7 +22,7 @@ Jonathan Gruber and Botond Koszegi expanded on Becker and Murphy's theory of rat
 
 ### Policy Implications of Addiction Models
 
-
+Each model of addiction suggests different policies. Under the imperfectly rational model, minimizing situations in which addicts have to make the marginal decision to consume is key. This suggests that eliminating supply by reducing access to prescription painkillers and targeting drug traffickers is critical to reducing opioid use. Furthermore, the model would suggest that interventions that target users actively making the marginal decision to consume would be effective. For example, in Baltimore there are billboards listing numbers to call for immediate intake into treatment programs posted in areas with high rates of opioid consumption. In contrast, the myopic model offers little other than preventing opioid addiction in the first place, since under the model addicts do not have a long-view utility function to appeal to. Based on the theory of rational addiction, policies that either prevent initial addiction (e.g. high prices on addictive goods) or help addicted individuals escape the reinforcement trap (e.g. inpatient treatment, detoxes, and MAT) are effective. While Gruber and Koszegi's modification of the theory of rational addiction does not change the policy implications, it suggests that much larger interventions are needed (e.g. much higher price increases), since the internalities of addiction are often just as large, if not larger, than the externalities, and the original model does not consider internalities.
 
 ## History of the Opioid Epidemic
 
