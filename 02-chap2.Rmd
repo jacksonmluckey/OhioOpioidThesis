@@ -1,6 +1,6 @@
 # Data and Methods
 
-```{r variable_ordering}
+```{r variableOrdering}
 ################################
 # Disability Variable Ordering #
 ################################
@@ -53,7 +53,7 @@ Unfortunately, not all counties in Ohio are included in the American Community S
 
 Counties excluded in the one year American Community Survey are available in other U.S. Census Bureau datasets. Counties with at least a population of 20,000 are included in the one year American Community Survey supplemental estimates, which provide a more limited version of the tables included in the broader one year American Community Survey. Furthermore, the ACS five year estimates include many counties excluded from the one-year estimates, and the decennial survey includes all areas [@UnderstandingACSBasics2020].
 
-```{r included_counties_map, fig.cap="Counties included in the data"}
+```{r mapCountiesIncludedInSample, fig.cap="Counties included in the data"}
 counties_included <- df %>%
   group_by(county, GEOID) %>%
   summarize(population = mean(population),
@@ -89,7 +89,7 @@ Disability is broken into age and sex bins. These bins are kept small because in
 
 The majority of variables are in percentage form. These variables, excluding "OD_rate", have the term "percentage" in their name. Percentages are calculated using the raw population for that year, and are stored in the format XX.X%, rather than .XXX%. Percentage, or per capita, form is used to isolate the role of county population on the fatal drug overdose rate.
 
-```{r summary_stats_prep, include=FALSE}
+```{r summaryStatsPrep, include=FALSE}
 summary_stats <- df %>%
   select(-GEOID, -county, -year) %>%
   select(all_of(master_variable_ordering)) %>%
@@ -135,7 +135,7 @@ group_rows_by_tibble <- function(kable_table, tibble) {
 }
 ```
 
-```{r summary_stats_all_variables, results="asis"}
+```{r summaryStatsAllVariables, results="asis"}
 summary_stats %>%
   select(-Category) %>%
   kable(caption = "Variable Summary Statistics",
@@ -158,7 +158,7 @@ There is significant variation in education levels between counties. While in so
 
 Race varies dramatically between counties. Some counties are over 95% white, whereas others are barely over 60%. On average, counties included in the sample are approximately 86% white. If all counties were included in the sample, the mean would likely be higher, as more rural, and therefore smaller, counties in Ohio tend to be more racially homogenous.
 
-```{r OD_rate_distribution, fig.cap="Distribution of drug overdose rate"}
+```{r overdoseRateDistribution, fig.cap="Distribution of drug overdose rate"}
 df %>%
   filter(!is.na(OD_rate)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
   ggplot(aes(x = OD_rate)) +
@@ -172,7 +172,7 @@ df %>%
 
 The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019]. Furthermore, no observations reach zero, further suggesting data censoring [@hillPrinciplesEconometrics2011].
 
-```{r county_racial_distribution, fig.cap="Distribution of percent black by county"}
+```{r raceDistribution, fig.cap="Distribution of percent black by county"}
 df %>%
   ggplot(aes(x = percent_black)) +
   geom_histogram(bins = 20) +
@@ -188,7 +188,7 @@ The distribution of percent black by county does not indicate any data issues. W
 
 ### Maps
 
-```{r percent_black_maps, fig.cap="Map of Ohio counties by percent black"}
+```{r mapPercentBlack, fig.cap="Map of Ohio counties by percent black"}
 df %>%
   group_by(county, GEOID) %>%
   summarize(percent_black = mean(percent_black, na.rm = TRUE)) %>%

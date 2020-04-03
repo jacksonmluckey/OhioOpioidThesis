@@ -33,7 +33,7 @@ header-includes:
   \usepackage{tikz}
 ---
 
-```{r include_packages, include = FALSE}
+```{r includePackages, include = FALSE}
 # This chunk ensures that the thesisdown package is
 # installed and loaded. This thesisdown package includes
 # the template files for the thesis.
@@ -44,7 +44,7 @@ if(!require(thesisdown))
 library(thesisdown)
 ```
 
-```{r load_all_packages, include=FALSE, eval=TRUE}
+```{r loadPackages, include=FALSE, eval=TRUE}
 # Load the libraries and data used in this Rmd file
 library(tidyverse)
 library(tidycensus)
@@ -247,7 +247,7 @@ if(!file.exists(here("data", "df.Rda"))){
 }
 ```
 
-```{r grab_county_geometry, echo=FALSE, message=FALSE, warning=FALSE}
+```{r grabCountyGeometry, echo=FALSE, message=FALSE, warning=FALSE}
 base_map <- get_acs("county",
                     state = "OH",
                     table = "B02001",
@@ -258,7 +258,7 @@ base_map <- base_map %>%
   select(GEOID, geometry, county = NAME)
 ```
 
-```{r map_theme}
+```{r mapTheme}
 theme_map <- theme_minimal() +
   theme(axis.title.x = element_blank(),
         axis.ticks.x = element_blank(),
@@ -269,7 +269,7 @@ theme_map <- theme_minimal() +
         panel.grid.major = element_blank())
 ```
 
-```{r recode_variables}
+```{r recodeVariables}
 # Variable Name is the name in df
 # Category is for grouping the rows of the table
 # Label is for replacing Variable Name (it's a human-readable version)

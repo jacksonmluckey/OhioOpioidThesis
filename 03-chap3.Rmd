@@ -1,6 +1,6 @@
 # Results
 
-```{r basic_regression_formula}
+```{r basicRegressionFormula}
 # formula used throughout chapter 3 as of right now
 basic_regression_formula <- formula(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female)
 ```
@@ -16,7 +16,7 @@ df_no_cle <- df %>%
 basic_model_no_cle <- lm(basic_regression_formula, df_no_cle)
 ```
 
-```{r stargazerTest, results="asis"}
+```{r stargazerOLS, results="asis"}
 stargazer(basic_model, basic_model_no_cle,
           title = "OLS Multiple Regression With (1) and Without (2) Cuyahoga County",
           single.row = TRUE,
