@@ -77,9 +77,6 @@ The current opioid epidemic is the worst drug epidemic in US history. While opio
 In this thesis, I will start by reviewing the literature. The literature review will open by defining rationality in the context of economics. I will follow this up by examining the different models of addiction and how they approach rationality, and what these models say about opioid addiction policy. I will then examine the history of the opioid epidemic. I will open this by defining opioids, then provide a brief timeline, and then discuss the first American opioid epidemic (which occurs shortly after the Chinese opioid epidemic). Next, I will discuss the factors that led to the current opioid epidemic, such as changes in physician attitudes towards opioids and the introduction of Oxycontin. I will then describe the transition from prescription painkillers to heroin and synthetic opioids, and how they became available across the United States. I will briefly discuss opioid addiction treatment and naloxone, and then give a quick rundown on the state of Ohio. I end the literature review by classifying explanations as either supply side or demand side. In my data and methods chapter, I provide summary statistics of my data, describe how I acquired it from the U.S. Census and the CDC, and then explain my choice of statistical methods in chapter 3. In my results chapter, I run Tobit and ordinary least squares regressions, and then briefly describe the results. Finally, I provide a conclusion and a copy of some of the code I used to produce this thesis.
 
 ```{r censusFunctions}
-####################
-# census functions #
-####################
 make_census_table_wide <- function(df) {
   
   df <- df %>%
@@ -139,7 +136,7 @@ var_labels <- function(table) {
 }
 ```
 
-```{r loadCensusData}
+```{r censusData}
 # Pulls down data from census if it is not already stored as a .Rda object in data/
 if(!file.exists(here("data", "df.Rda"))){
   
@@ -242,8 +239,39 @@ if(!file.exists(here("data", "df.Rda"))){
                                                    "year" = "year",
                                                    "county" = "county"))
   # save the final df as RDA file
-  save(df, file  = "data/df.Rda")
+  save(df, file  = here("data", "df.Rda"))
   
+} else {
+  load(here("data", "df.Rda"))
+}
+```
+
+```{r prescribingRate}
+# download prescription data for one particular year
+prescriptionYear <- function(year) {
+  year <- as.character(year)
+  df <- glue("https://www.cdc.gov/drugoverdose/maps/rxcounty{year}.html") %>%
+    read_html() %>%
+    html_node("table") %>%
+    html_table() %>%
+    mutate(year = year)
+  colnames(df) <- c("county", "State", "FIPS", "PrescribingRate", "year")
+  df <- df %>%
+    filter(State == "OH") %>%
+    select(-State, -FIPS) %>%
+    mutate(county = str_remove(county, ", OH"))
+}
+
+# years covered in CDC data
+years <- 2006:2018
+
+if(!file.exists(here("data", "prescriptions.Rda"))) {
+  prescriptions <- map_dfr(years, prescriptionYear) %>%
+    mutate(county = as_factor(county),
+           PrescribingRate = as.numeric(PrescribingRate))
+  save(prescriptions, file = here("data", "prescriptions.Rda"))
+} else {
+  load(here("data", "prescriptions.Rda"))
 }
 ```
 
