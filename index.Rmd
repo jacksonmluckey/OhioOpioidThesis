@@ -53,6 +53,8 @@ library(here)
 library(knitr) # for kable
 library(kableExtra)
 library(citr)
+library(rvest)
+library(glue)
 library(censReg)
 library(stargazer) # for regression output
 load(here("data", "df.Rda"))
@@ -138,11 +140,7 @@ var_labels <- function(table) {
 
 ```{r censusData}
 # Pulls down data from census if it is not already stored as a .Rda object in data/
-if(!file.exists(here("data", "df.Rda"))){
-  
-  ####################
-  # grab census data #
-  ####################
+if(!file.exists(here("data", "census.Rda"))){
   
   disability <- get_census_table_multiple_years("B18101", 2012:2018) %>%
     left_join(var_labels("B18101")) %>%
@@ -191,59 +189,36 @@ if(!file.exists(here("data", "df.Rda"))){
            education_b_percent_college_or_more = education_s_percent_college + education_s_percent_graduate) %>%
     select(GEOID, county, year, population, starts_with("education"))
   
-  df <- left_join(income, race) %>%
-    left_join(disability) %>%
-    left_join(education)
-  
-  #############
-  # finish up #
-  #############
-  # death data
-  # 2018 values will always be 0
-  # might be able to get better data directly from CDC?
-  # GET DEATHS INTO RATE
-  # BRING IN DESCRIPTIVE/SUMMARY statistics
-  deaths <- read_csv("Data/OverdoseDeathsTall.csv") %>%
-    rename(county = County)
-  
-  # prepare final df
-  df <- left_join(disability, race) %>%
-    left_join(deaths) %>%
+  census <- left_join(disability, race) %>%
     left_join(education) %>%
     left_join(income_individual)
   
-  # convert OD raw to OD rate
-  # change OD rate to be deaths per 10,000 pop
-  df <- df %>%
-    mutate(OD_rate = (deaths / population) * 10000)
-  
-  # convert percentages to be XX.X instead of .XXX
-  df <- df %>%
-    mutate_at(vars(contains("percent")), ~ .x * 100)
-  
-  # add CDC overdose death rate
-  # downloaded from https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/#data-tables
-  OverdoseDeathRateCDC <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
-    filter(State == "Ohio") %>%
-    select(GEOID = FIPS,
-           county = County,
-           year = Year,
-           DeathRateCDC = `Model-based Death Rate`,
-           PopulationCDC = Population,
-           UrbanRural = `Urban/Rural Category`) %>%
-    mutate(county = str_remove(county, " County, OH")) %>%
-    mutate(GEOID = as.character(GEOID)) # to enable merging with DF
-  
-  
-  df <- left_join(df, OverdoseDeathRateCDC, by = c("GEOID" = "GEOID",
-                                                   "year" = "year",
-                                                   "county" = "county"))
-  # save the final df as RDA file
-  save(df, file  = here("data", "df.Rda"))
+  # save the census data as an RDA file
+  save(census, file  = here("data", "census.Rda"))
   
 } else {
-  load(here("data", "df.Rda"))
+  
+  load(here("data", "census.Rda"))
+  
 }
+```
+
+```{r overdoseData}
+# downloaded from https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/#data-tables
+OverdoseDeathRateCDC <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
+  filter(State == "Ohio") %>%
+  select(GEOID = FIPS,
+         county = County,
+         year = Year,
+         DeathRateCDC = `Model-based Death Rate`,
+         PopulationCDC = Population,
+         UrbanRural = `Urban/Rural Category`) %>%
+  mutate(county = str_remove(county, " County, OH")) %>%
+  mutate(GEOID = as.character(GEOID)) # to enable merging with DF
+
+# confirm where this is from:
+deaths <- read_csv("Data/OverdoseDeathsTall.csv") %>%
+    rename(county = County)
 ```
 
 ```{r prescribingRate}
@@ -266,12 +241,17 @@ prescriptionYear <- function(year) {
 years <- 2006:2018
 
 if(!file.exists(here("data", "prescriptions.Rda"))) {
+  
   prescriptions <- map_dfr(years, prescriptionYear) %>%
     mutate(county = as_factor(county),
            PrescribingRate = as.numeric(PrescribingRate))
+  
   save(prescriptions, file = here("data", "prescriptions.Rda"))
+  
 } else {
+  
   load(here("data", "prescriptions.Rda"))
+  
 }
 ```
 
@@ -284,6 +264,30 @@ base_map <- get_acs("county",
 # reduce down to GEOID and geometry
 base_map <- base_map %>%
   select(GEOID, geometry, county = NAME)
+```
+
+```{r prepareDF}
+if(!file.exists(here("data", "df.Rda"))) {
+  
+  df <- left_join(census, deaths) %>%
+    left_join(OverdoseDeathRateCDC) %>%
+    left_join(prescriptions)
+
+  # convert OD raw to OD death rate per 10,000 pop
+  df <- df %>%
+    mutate(OD_rate = (deaths / population) * 10000)
+  
+  # convert percentages to be XX.X instead of .XXX
+  df <- df %>%
+    mutate_at(vars(contains("percent")), ~ .x * 100)
+  
+  save(df, file = here("data", "df.Rda"))
+  
+} else {
+  
+  load(here("data", "df.Rda"))
+  
+}
 ```
 
 ```{r mapTheme}
