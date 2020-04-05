@@ -44,7 +44,7 @@ if(!require(thesisdown))
 library(thesisdown)
 ```
 
-```{r loadPackages, include=FALSE, eval=TRUE}
+```{r loadPackages, include=FALSE}
 # Load the libraries and data used in this Rmd file
 library(tidyverse)
 library(tidycensus)
@@ -52,16 +52,12 @@ library(broom) # for manipulating regression output
 library(here)
 library(knitr) # for kable
 library(kableExtra)
+library(forcats)
 library(citr)
 library(rvest)
 library(glue)
 library(censReg)
 library(stargazer) # for regression output
-load(here("data", "df.Rda"))
-#options(knitr.table.format = "latex",
-#        knitr.table.format.args = list(scientific = FALSE,
-#                           big.mark = ",",
-#                           digits = 5),
 options(knitr.table.format.args = list(scientific = FALSE,
         big.mark = ",",
         digits = 5),
@@ -166,7 +162,7 @@ if(!file.exists(here("data", "census.Rda"))){
            percent_black = estimate_B02001_003 / estimate_B02001_001) %>%
     select(GEOID, county, year, percent_white, percent_black)
   
-  income <- get_census_table_multiple_years("B06011", 2010:2018) %>%
+  income_individual <- get_census_table_multiple_years("B06011", 2010:2018) %>%
     left_join(var_labels("B06011")) %>%
     make_census_table_wide() %>%
     rename(income_pc_individual = estimate_B06011_001) %>%
@@ -191,7 +187,8 @@ if(!file.exists(here("data", "census.Rda"))){
   
   census <- left_join(disability, race) %>%
     left_join(education) %>%
-    left_join(income_individual)
+    left_join(income_individual) %>%
+    mutate(year = as.numeric(year))
   
   # save the census data as an RDA file
   save(census, file  = here("data", "census.Rda"))
@@ -213,12 +210,14 @@ OverdoseDeathRateCDC <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
          DeathRateCDC = `Model-based Death Rate`,
          PopulationCDC = Population,
          UrbanRural = `Urban/Rural Category`) %>%
-  mutate(county = str_remove(county, " County, OH")) %>%
-  mutate(GEOID = as.character(GEOID)) # to enable merging with DF
+  mutate(county = str_remove(county, " County, OH"),
+         GEOID = as.character(GEOID),
+         year = as.numeric(year)) # to enable merging with DF
 
 # confirm where this is from:
 deaths <- read_csv("Data/OverdoseDeathsTall.csv") %>%
-    rename(county = County)
+    rename(county = County) %>%
+  mutate(year = as.numeric(year))
 ```
 
 ```{r prescribingRate}
@@ -244,7 +243,8 @@ if(!file.exists(here("data", "prescriptions.Rda"))) {
   
   prescriptions <- map_dfr(years, prescriptionYear) %>%
     mutate(county = as_factor(county),
-           PrescribingRate = as.numeric(PrescribingRate))
+           PrescribingRate = as.numeric(PrescribingRate),
+           year = as.numeric(year))
   
   save(prescriptions, file = here("data", "prescriptions.Rda"))
   
@@ -280,6 +280,10 @@ if(!file.exists(here("data", "df.Rda"))) {
   # convert percentages to be XX.X instead of .XXX
   df <- df %>%
     mutate_at(vars(contains("percent")), ~ .x * 100)
+  
+  # make factors factors
+  df <- df %>%
+    mutate(county = as_factor(county))
   
   save(df, file = here("data", "df.Rda"))
   
