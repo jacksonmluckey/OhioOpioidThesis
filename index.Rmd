@@ -201,23 +201,36 @@ if(!file.exists(here("data", "census.Rda"))){
 ```
 
 ```{r overdoseData}
-# downloaded from https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/#data-tables
-OverdoseDeathRateCDC <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
-  filter(State == "Ohio") %>%
-  select(GEOID = FIPS,
-         county = County,
+# table sourced from https://wonder.cdc.gov/controller/datarequest/D76;jsessionid=C5396F5BBB4351ECF2A36732347C7AFB?stage=results&action=toggle&p=O_show_suppressed&v=true
+# suppressed = 9 or fewer deaths
+# county, year with suppressed rows on
+# all drug-related causes (includes alcohol and the like)
+# fix suppression with https://doi.org/10.2105/AJPH.2014.301900
+# rates per 100,000
+# citation: Centers for Disease Control and Prevention, National Center for Health Statistics. Underlying Cause of Death 1999-2018 on CDC WONDER Online Database, released in 2020. Data are from the Multiple Cause of Death Files, 1999-2018, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative Program. Accessed at http://wonder.cdc.gov/ucd-icd10.html on Apr 5, 2020 10:34:28 AM
+overdose <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
+  select(-Notes, -`Year Code`) %>% # na in all cases for Notes, Year Code is duplicate of Year
+  rename(GEOID = `County Code`,
          year = Year,
-         DeathRateCDC = `Model-based Death Rate`,
-         PopulationCDC = Population,
-         UrbanRural = `Urban/Rural Category`) %>%
-  mutate(county = str_remove(county, " County, OH"),
-         GEOID = as.character(GEOID),
-         year = as.numeric(year)) # to enable merging with DF
-
-# confirm where this is from:
-deaths <- read_csv("Data/OverdoseDeathsTall.csv") %>%
-    rename(county = County) %>%
-  mutate(year = as.numeric(year))
+         county = County,
+         overdose_deaths = Deaths,
+         cdc_population = Population,
+         fatal_overdose_crude_rate = `Crude Rate`,
+         fatal_overdose_age_adjusted_rate = `Age Adjusted Rate`) %>%
+  # create dummies for unreliable / suppressed
+  mutate(overdose_deaths_suppressed = if_else(overdose_deaths == "Suppressed", TRUE, FALSE),
+         fatal_overdose_crude_rate_unreliable = if_else(fatal_overdose_crude_rate == "Unreliable", TRUE, FALSE),
+         fatal_overdose_crude_rate_suppressed = if_else(fatal_overdose_crude_rate == "Suppressed", TRUE, FALSE),
+         fatal_overdose_age_adjusted_rate_unreliable = if_else(fatal_overdose_age_adjusted_rate == "Unreliable", TRUE, FALSE),
+         fatal_overdose_age_adjusted_rate_suppressed = if_else(fatal_overdose_age_adjusted_rate == "Suppressed", TRUE, FALSE)) %>%
+  # parse columns with suppressed/unreliable into numbers
+  mutate(overdose_deaths = parse_number(overdose_deaths),
+         fatal_overdose_crude_rate = parse_number(fatal_overdose_crude_rate),
+         fatal_overdose_age_adjusted_rate = parse_number(fatal_overdose_age_adjusted_rate)) %>%
+  # clean county col (function relies on "Ohio" instead of "OH")
+  mutate(county = str_remove(county, " County, OH")) %>%
+  # make GEOID a character to make it easy to make it a factor after merging
+  mutate(GEOID = as.character(GEOID))
 ```
 
 ```{r prescribingRate}
@@ -269,13 +282,8 @@ base_map <- base_map %>%
 ```{r prepareDF}
 if(!file.exists(here("data", "df.Rda"))) {
   
-  df <- left_join(census, deaths) %>%
-    left_join(OverdoseDeathRateCDC) %>%
+  df <- left_join(overdose, census) %>%
     left_join(prescriptions)
-
-  # convert OD raw to OD death rate per 10,000 pop
-  df <- df %>%
-    mutate(OD_rate = (deaths / population) * 10000)
   
   # convert percentages to be XX.X instead of .XXX
   df <- df %>%
@@ -283,7 +291,8 @@ if(!file.exists(here("data", "df.Rda"))) {
   
   # make factors factors
   df <- df %>%
-    mutate(county = as_factor(county))
+    mutate(county = as_factor(county),
+           GEOID = as_factor(GEOID))
   
   save(df, file = here("data", "df.Rda"))
   
