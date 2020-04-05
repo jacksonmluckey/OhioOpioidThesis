@@ -231,6 +231,9 @@ overdose <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
   mutate(county = str_remove(county, " County, OH")) %>%
   # make GEOID a character to make it easy to make it a factor after merging
   mutate(GEOID = as.character(GEOID))
+
+# https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/
+# citation: Rossen LM, Bastian B, Warner M, Khan D, Chong Y. Drug poisoning mortality: United States, 1999–2017. National Center for Health Statistics. 2019.
 ```
 
 ```{r prescribingRate}
