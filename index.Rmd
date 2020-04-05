@@ -208,7 +208,7 @@ if(!file.exists(here("data", "census.Rda"))){
 # fix suppression with https://doi.org/10.2105/AJPH.2014.301900
 # rates per 100,000
 # citation: Centers for Disease Control and Prevention, National Center for Health Statistics. Underlying Cause of Death 1999-2018 on CDC WONDER Online Database, released in 2020. Data are from the Multiple Cause of Death Files, 1999-2018, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative Program. Accessed at http://wonder.cdc.gov/ucd-icd10.html on Apr 5, 2020 10:34:28 AM
-overdose <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
+overdose_real <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
   select(-Notes, -`Year Code`) %>% # na in all cases for Notes, Year Code is duplicate of Year
   rename(GEOID = `County Code`,
          year = Year,
@@ -234,6 +234,20 @@ overdose <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
 
 # https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/
 # citation: Rossen LM, Bastian B, Warner M, Khan D, Chong Y. Drug poisoning mortality: United States, 1999–2017. National Center for Health Statistics. 2019.
+overdose_modeled <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
+  filter(State == "Ohio") %>%
+  select(GEOID = FIPS,
+         county = County,
+         year = Year,
+         fatal_overdose_modeled_rate = `Model-based Death Rate`,
+         cdc_population = Population,
+         urban_rural = `Urban/Rural Category`) %>%
+  mutate(county = str_remove(county, " County, OH"),
+         GEOID = as.character(GEOID),
+         year = as.numeric(year),
+         urban_rural = as_factor(urban_rural))
+
+overdose <- left_join(overdose_real, overdose_modeled)
 ```
 
 ```{r prescribingRate}
