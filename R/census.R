@@ -27,16 +27,12 @@ get_url_acs1_2010_to_2018 <- function(year) {
 }
 
 # identify useful variables
-acs1_vars <- listCensusMetadata("acs/acs1", vintage = 2005, type = "variables")
+acs1_vars <- listCensusMetadata("acs/acs1", vintage = 2018, type = "variables")
 acs1_vars_income <- acs1_vars %>%
-  filter(str_detect(concept, "INCOME"))
+  filter(str_detect(concept, "INCOME") & (str_detect(concept, "HOUSEHOLD") | str_detect(concept, "FAMILY")))
 income_concepts <- enframe(unique(acs1_vars_income$concept)) %>%
   select(value, name)
 
-income_test <- getCensus("acs/acs1",
-                         region = "county",
-                         vintage = 2005,
-                         vars = c("B19313_001E"))
 
 ####################
 # INCOME VARIABLES #
@@ -46,3 +42,36 @@ income_test <- getCensus("acs/acs1",
 # MEDIAN FAMILY INCOME IN THE PAST 12 MONTHS (IN 2005 INFLATION-ADJUSTED DOLLARS)
 # FAMILY INCOME IN THE PAST 12 MONTHS (IN 2005 INFLATION-ADJUSTED DOLLARS)
 # MEDIAN HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN 2005 INFLATION-ADJUSTED DOLLARS)
+
+# HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN {year} INFLATION-ADJUSTED DOLLARS)
+# group: B19001
+
+get_census_year <- function(api_name, year, group) {
+  census_year <- getCensus("acs/acs1",
+                           vintage = year,
+                           region = "county:*",
+                           regionin = "state:39":
+                           group = "B19001")
+}
+get_census_multiple_years <- function(api_name, years, group) {
+  
+}
+for(year in 2005:2018) {
+  print(year)
+  if(year == 2005) {
+    test <- getCensus("acs/acs1",
+                      vintage = year,
+                      region = "county:*",
+                      regionin = "state:39",
+                      vars = c("B19013_001E")) %>%
+              mutate(year = year)
+  } else {
+    test <- getCensus("acs/acs1",
+                      vintage = year,
+                      region = "county:*",
+                      regionin = "state:39",
+                      vars = c("B19013_001E")) %>%
+            mutate(year = year) %>%
+            bind_rows(test)
+  }
+}
