@@ -24,37 +24,20 @@ income_concepts <- enframe(unique(acs1_vars_income$concept)) %>%
 # HOUSEHOLD INCOME IN THE PAST 12 MONTHS (IN {year} INFLATION-ADJUSTED DOLLARS)
 # group: B19001
 
-get_census_year <- function(api_name, year, vars) {
-  census_year <- getCensus("acs/acs1",
+get_census_year <- function(year, api_name, vars) {
+  census_year <- getCensus(name = api_name,
                            vintage = year,
                            vars = vars,
                            region = "county:*",
-                           regionin = "state:39")
+                           regionin = "state:39") %>%
+                  mutate(year = year)
   census_year
 }
 
-get_census_multiple_years <- function(api_name, years, group) {
-  
+get_census_multiple_years <- function(api_name, years, vars) {
+  census <- map_dfr(years, get_census_year, api_name, vars)
 }
 
-for(year in 2005:2018) {
-  print(year)
-  if(year == 2005) {
-    test <- getCensus("acs/acs1",
-                      vintage = year,
-                      region = "county:*",
-                      regionin = "state:39",
-                      vars = c("B19013_001E")) %>%
-              mutate(year = year)
-  } else {
-    test <- getCensus("acs/acs1",
-                      vintage = year,
-                      region = "county:*",
-                      regionin = "state:39",
-                      vars = c("B19013_001E")) %>%
-            mutate(year = year) %>%
-            bind_rows(test)
-  }
-}
+test <- get_census_multiple_years("acs/acs1", 2005:2018, c("B19013_001E"))
 
 # B19013_001E = median household income in last 12 months in that year's inflation adjusted dollars
