@@ -27,4 +27,5 @@ get_census_multiple_years <- function(api_name, years, vars, vars_names) {
 
 # Variables used in census dataset:
 # B19013_001E = median household income in last 12 months in that year's inflation adjusted dollars
-census <- get_census_multiple_years("acs/acs1", 2005:2018, c("B19013_001E"), c(acs1_income_median_household = "B19013_001E"))
+census <- get_census_multiple_years("acs/acs1", 2005:2018, c("B19013_001E"), c(acs1_income_median_household = "B19013_001E")) %>%
+  left_join(get_census_multiple_years("acs/acs1", 2005:2018, c("B02001_002E", "B02001_003E"), c(acs1_race_white = "B02001_002E", acs1_race_black = "B02001_003E")))
