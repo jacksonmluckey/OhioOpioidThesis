@@ -28,20 +28,20 @@ clean_tidycensus_table <- function(df) {
   
 }
 
-get_census_table <- function(table, year) {
+get_census_table <- function(table, year, survey = "acs1") { # defaults to "acs1" to support legacy code
   df <- get_acs("county",
                 year = year,
                 table = table,
-                survey = "acs1", # if things break for older code make a version of this function with this line removed
+                survey = survey,
                 state = "OH")
   df <- clean_tidycensus_table(df)
 }
 
 # wrapper for get_census_table that handles a year range
-get_census_table_multiple_years <- function(table, years) {
+get_census_table_multiple_years <- function(table, years, survey = "acs1") { # defaults to "acs1" to support legacy code
   count <- 0
   for (year in years) {
-    tmp <- get_census_table(table, year)
+    tmp <- get_census_table(table, year, survey)
     tmp$year <- year
     if (count == 0) {
       df <- tmp
