@@ -78,38 +78,62 @@ if(!file.exists(here("data", "census.Rda"))){
     
   }
   
-  
+  # MEDIAN INDIVIDUAL INCOME
+  if(!file.exists(here("data", "income_individual.Rda"))) {
     
+    income_individual <- bind_rows(get_census_table_multiple_years(2010:2018, "B06011", "acs1"),
+                                          get_census_table_multiple_years(2010:2018, "B06011", "acs5")) %>%
+      mutate(income_individual_median = B06011_001E) %>%
+      select(GEOID, survey, county, year, income_individual_median)
+    
+    save(income_individual, file = here("data", "income_individual.Rda"))
+    
+  } else {
+    
+    load(here("data", "income_individual.Rda"))
+    
+  }
   
-  # median income in past 12 months (individual)
-  income_individual <- get_census_table_multiple_years("B06011", 2010:2018) %>%
-    left_join(var_labels("B06011")) %>%
-    make_census_table_wide() %>%
-    rename(income_pc_individual = estimate_B06011_001) %>%
-    select(GEOID, county, year, income_pc_individual)
+  # MEDIAN HOUSEHOLD INCOME
+  if(!file.exists(here("data", "income_household.Rda"))) {
+    
+    income_household <- bind_rows(get_census_table_multiple_years(2010:2018, "B19013", "acs1"),
+                                  get_census_table_multiple_years(2010:2018, "B19013", "acs5")) %>%
+      mutate(income_household_median = B19013_001E) %>%
+      select(GEOID, survey, county, year, income_household_median)
+    
+    save(income_household, file = here("data", "income_household.Rda"))
+    
+  } else {
+    
+    load(here("data", "income_household.Rda"))
+    
+  }
   
-  # education
-  # replace with B15003
-  education <- get_census_table_multiple_years("C15003", 2010:2018) %>%
-    left_join(var_labels("C15003")) %>%
-    make_census_table_wide() %>%
-    rename(population = estimate_C15003_001) %>%
-    # create the small education bins (_s_), which should add up to one
-    mutate(education_s_percent_less_than_highschool = (estimate_C15003_002 + estimate_C15003_003 + estimate_C15003_004 + estimate_C15003_005 + estimate_C15003_006 + estimate_C15003_007 + estimate_C15003_008 + estimate_C15003_009) / population,
-           education_s_percent_highschool = estimate_C15003_010 / population,
-           education_s_percent_ged = estimate_C15003_011 / population,
-           education_s_percent_some_college = (estimate_C15003_012 + estimate_C15003_013 + estimate_C15003_014) / population,
-           education_s_percent_college = estimate_C15003_015 / population,
-           education_s_percent_graduate = (estimate_C15003_016 + estimate_C15003_017 + estimate_C15003_018) / population) %>%
-    # create the big education bins (_b_), which won't add up to one because some college is excluded
-    mutate(education_b_percent_highschool_or_less = education_s_percent_less_than_highschool + education_s_percent_highschool + education_s_percent_ged,
-           education_b_percent_college_or_more = education_s_percent_college + education_s_percent_graduate) %>%
-    select(GEOID, county, year, population, starts_with("education"))
+  # EDUCATION
+  if(!file.exists(here("data", "education.Rda"))) {
+    
+    education <- bind_rows(get_census_table_multiple_years(2010:2018, "B15003", "acs1"),
+                           get_census_table_multiple_years(2012:2018, "B15003", "acs5")) %>%
+      mutate(education_percent_less_than_highschool = ((B15003_002E + B15003_003E + B15003_004E + B15003_005E + B15003_006E + B15003_007E + B15003_008E + B15003_009E + B15003_010E + B15003_011E + B15003_012E + B15003_013E + B15003_014E + B15003_015E + B15003_016E + B15003_017E + B15003_018E) / B15003_001E),
+             education_percent_some_college = ((B15003_019E + B15003_020E + B15003_021E) / B15003_001E),
+             education_percent_bachelors_or_more = ((B15003_022E + B15003_023E + B15003_024E + B15003_025E) / B15003_001E)) %>%
+      select(GEOID, survey, county, year, starts_with("education"))
+    
+    save(education, file = here("data", "education.Rda"))
+    
+  } else {
+  
+    load(here("data", "education.Rda"))  
+  }
   
   census <- left_join(disability, race) %>%
     left_join(education) %>%
     left_join(income_individual) %>%
-    mutate(year = as.numeric(year))
+    left_join(income_household)
+    mutate(year = as.numeric(year),
+           survey = as_factor(survey),
+           county = as_factor(county))
   
   # save the census data as an RDA file
   save(census, file  = here("data", "census.Rda"))
@@ -148,7 +172,6 @@ overdose_real <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
   mutate(overdose_deaths = parse_number(overdose_deaths),
          fatal_overdose_crude_rate = parse_number(fatal_overdose_crude_rate),
          fatal_overdose_age_adjusted_rate = parse_number(fatal_overdose_age_adjusted_rate)) %>%
-  # clean county col (function relies on "Ohio" instead of "OH")
   mutate(county = str_remove(county, " County, OH")) %>%
   # make GEOID a character to make it easy to make it a factor after merging
   mutate(GEOID = as.character(GEOID))
@@ -169,3 +192,7 @@ overdose_modeled <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
          urban_rural = as_factor(urban_rural))
 
 overdose <- left_join(overdose_real, overdose_modeled)
+
+df <- left_join(overdose, census)
+df_nona <- df %>%
+  drop_na()
