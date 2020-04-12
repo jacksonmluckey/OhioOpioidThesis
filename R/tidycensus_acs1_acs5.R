@@ -1,40 +1,17 @@
 ####################
 # CENSUS FUNCTIONS #
 ####################
-make_census_table_wide <- function(df) {
-  
-  df <- df %>%
-    select(-label, -concept) %>%
-    pivot_longer(cols = c(estimate, moe)) %>%
-    pivot_wider(names_from = c(name, variable), values_from = value)
-  
-}
-
-# removes " County, Ohio" from county column (because it's the same in all cases)
-clean_county_col<- function(df) {
-  
-  df <- df %>%
-    mutate(county = str_remove(county, " County, Ohio"))
-  
-}
-
-clean_tidycensus_table <- function(df) {
-  
-  # rename the "NAME" column to county
-  df <- df %>%
-    rename(county = NAME)
-  
-  df <- clean_county_col(df)
-  
-}
 
 get_census_table <- function(table, year, survey = "acs1") { # defaults to "acs1" to support legacy code
   df <- get_acs("county",
                 year = year,
                 table = table,
                 survey = survey,
-                state = "OH")
-  df <- clean_tidycensus_table(df)
+                state = "OH",
+                output = "wide",
+                cache_table = TRUE) %>%
+    rename(county = NAME) %>%
+    mutate(county = str_remove(county, " County, Ohio"))
 }
 
 # wrapper for get_census_table that handles a year range
@@ -53,11 +30,6 @@ get_census_table_multiple_years <- function(table, years, survey = "acs1") { # d
   df
 }
 
-var_labels <- function(table) {
-  load_variables(2010, "acs1", cache = TRUE) %>%
-    filter(str_detect(name, paste0(table, "_"))) %>%
-    rename(variable = name)
-}
 
 ###############
 # CENSUS CODE #
@@ -71,22 +43,28 @@ var_labels <- function(table) {
 # Pulls down data from census if it is not already stored as a .Rda object in data/
 if(!file.exists(here("data", "census.Rda"))){
   
-  disability <- get_census_table_multiple_years("B18101", 2010:2018) %>%
-    left_join(var_labels("B18101")) %>%
-    make_census_table_wide %>%
-    mutate(disability_percent_under5_male = estimate_B18101_004 / estimate_B18101_003,
-           disability_percent_5to17_male = estimate_B18101_007 / estimate_B18101_006,
-           disability_percent_18to34_male = estimate_B18101_010 / estimate_B18101_009,
-           disability_percent_35to64_male = estimate_B18101_013 / estimate_B18101_012,
-           disability_percent_65to74_male = estimate_B18101_016 / estimate_B18101_015,
-           disability_percent_75andup_male = estimate_B18101_019 / estimate_B18101_018,
-           disability_percent_under5_female = estimate_B18101_023 / estimate_B18101_022,
-           disability_percent_5to17_female = estimate_B18101_026 / estimate_B18101_025,
-           disability_percent_18to34_female = estimate_B18101_029 / estimate_B18101_028,
-           disability_percent_35to64_female = estimate_B18101_032 / estimate_B18101_031,
-           disability_percent_65to74_female = estimate_B18101_035 / estimate_B18101_034,
-           disability_percent_75andup_female = estimate_B18101_038 / estimate_B18101_037) %>%
-    select(GEOID, county, year, starts_with("disability"))
+  get_census_disability <- function(years, survey) {
+    disability < get_census_table_multiple_years("B18101", years, survey) %>%
+      #left_join(var_labels("B18101")) %>%
+      make_census_table_wide %>%
+      mutate(disability_percent_under5_male = estimate_B18101_004 / estimate_B18101_003,
+             disability_percent_5to17_male = estimate_B18101_007 / estimate_B18101_006,
+             disability_percent_18to34_male = estimate_B18101_010 / estimate_B18101_009,
+             disability_percent_35to64_male = estimate_B18101_013 / estimate_B18101_012,
+             disability_percent_65to74_male = estimate_B18101_016 / estimate_B18101_015,
+             disability_percent_75andup_male = estimate_B18101_019 / estimate_B18101_018,
+             disability_percent_under5_female = estimate_B18101_023 / estimate_B18101_022,
+             disability_percent_5to17_female = estimate_B18101_026 / estimate_B18101_025,
+             disability_percent_18to34_female = estimate_B18101_029 / estimate_B18101_028,
+             disability_percent_35to64_female = estimate_B18101_032 / estimate_B18101_031,
+             disability_percent_65to74_female = estimate_B18101_035 / estimate_B18101_034,
+             disability_percent_75andup_female = estimate_B18101_038 / estimate_B18101_037) %>%
+      select(GEOID, county, year, starts_with("disability"))
+  }
+  
+  acs1_disability <- get_census_disability(2010:2018, "acs1")
+  # not available until 2012
+  acs5_disability <- get_census_disability(2012:2017, "acs5")
   
   race <- get_census_table_multiple_years("B02001", 2010:2018) %>%
     left_join(var_labels("B02001")) %>%
