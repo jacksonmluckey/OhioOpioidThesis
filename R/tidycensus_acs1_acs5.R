@@ -71,7 +71,7 @@ var_labels <- function(table) {
 # Pulls down data from census if it is not already stored as a .Rda object in data/
 if(!file.exists(here("data", "census.Rda"))){
   
-  disability <- get_census_table_multiple_years("B18101", 2012:2018) %>%
+  disability <- get_census_table_multiple_years("B18101", 2010:2018) %>%
     left_join(var_labels("B18101")) %>%
     make_census_table_wide %>%
     mutate(disability_percent_under5_male = estimate_B18101_004 / estimate_B18101_003,
@@ -95,6 +95,7 @@ if(!file.exists(here("data", "census.Rda"))){
            percent_black = estimate_B02001_003 / estimate_B02001_001) %>%
     select(GEOID, county, year, percent_white, percent_black)
   
+  # median income in past 12 months (individual)
   income_individual <- get_census_table_multiple_years("B06011", 2010:2018) %>%
     left_join(var_labels("B06011")) %>%
     make_census_table_wide() %>%
@@ -102,6 +103,7 @@ if(!file.exists(here("data", "census.Rda"))){
     select(GEOID, county, year, income_pc_individual)
   
   # education
+  # replace with B15003
   education <- get_census_table_multiple_years("C15003", 2010:2018) %>%
     left_join(var_labels("C15003")) %>%
     make_census_table_wide() %>%
@@ -131,9 +133,9 @@ if(!file.exists(here("data", "census.Rda"))){
   load(here("data", "census.Rda"))
   
 }
-```
 
-```{r overdoseData}
+
+#overdoseData
 # table sourced from https://wonder.cdc.gov/controller/datarequest/D76;jsessionid=C5396F5BBB4351ECF2A36732347C7AFB?stage=results&action=toggle&p=O_show_suppressed&v=true
 # suppressed = 9 or fewer deaths
 # county, year with suppressed rows on
