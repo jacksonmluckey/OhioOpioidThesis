@@ -34,7 +34,8 @@ get_census_table_multiple_years <- function(years, table, survey = "acs1") { # d
 # Pulls down data from census if it is not already stored as a .Rda object in data/
 if(!file.exists(here("data", "census.Rda"))){
   
-  if(!file.exists(here("data", "disability.rda"))) {
+  # DISABILITY
+  if(!file.exists(here("data", "disability.Rda"))) {
     
     disability <- bind_rows(get_census_table_multiple_years(2010:2018, "B18101", "acs1"),
                             get_census_table_multiple_years(2012:2018, "B18101", "acs5")) %>%
@@ -52,20 +53,33 @@ if(!file.exists(here("data", "census.Rda"))){
              disability_female_percent_75andup = B18101_038E / B18101_037E) %>%
       select(GEOID, survey, county, year, starts_with("disability"))
     
-    save(disability, file = here("data", "disability.rda"))
+    save(disability, file = here("data", "disability.Rda"))
     
   } else {
     
-    load(here("data", "disability.rda"))
+    load(here("data", "disability.Rda"))
     
   }
   
-  race <- get_census_table_multiple_years("B02001", 2010:2018) %>%
-    left_join(var_labels("B02001")) %>%
-    make_census_table_wide() %>%
-    mutate(percent_white = estimate_B02001_002 / estimate_B02001_001,
-           percent_black = estimate_B02001_003 / estimate_B02001_001) %>%
-    select(GEOID, county, year, percent_white, percent_black)
+  # RACE
+  if(!file.exists(here("data", "race.Rda"))) {
+    
+    race <- bind_rows(get_census_table_multiple_years(2010:2018, "B02001", "acs1"),
+                      get_census_table_multiple_years(2010:2018, "B02001", "acs5")) %>%
+      mutate(percent_white = B02001_002E / B02001_001E,
+             percent_black = B02001_003E / B02001_001E) %>%
+      select(GEOID, survey, county, year, percent_white, percent_black)
+    
+    save(race, file = here("data", "race.Rda"))
+    
+  } else {
+    
+    load(here("data", "race.Rda"))
+    
+  }
+  
+  
+    
   
   # median income in past 12 months (individual)
   income_individual <- get_census_table_multiple_years("B06011", 2010:2018) %>%
