@@ -63,6 +63,11 @@ var_labels <- function(table) {
 # CENSUS CODE #
 ###############
 
+# concept: grab all data from acs1 and acs5
+# then merge, favoring acs5 over acs1
+# which I believe I can do using joins
+# "B" tables should be available back to 2010 for both acs1 and acs5
+
 # Pulls down data from census if it is not already stored as a .Rda object in data/
 if(!file.exists(here("data", "census.Rda"))){
   
