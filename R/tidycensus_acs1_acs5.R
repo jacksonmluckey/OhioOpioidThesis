@@ -34,21 +34,31 @@ get_census_table_multiple_years <- function(years, table, survey = "acs1") { # d
 # Pulls down data from census if it is not already stored as a .Rda object in data/
 if(!file.exists(here("data", "census.Rda"))){
   
-  disability <- bind_rows(get_census_table_multiple_years(2010:2018, "B18101", "acs1"),
-                          get_census_table_multiple_years(2012:2018, "B18101", "acs5")) %>%
-                mutate(disability_male_percent_under5 = B18101_004E / B18101_003E,
-                       disability_male_percent_5to17 = B18101_007E / B18101_006E,
-                       disability_male_percent_18to34 = B18101_010E / B18101_009E,
-                       disability_male_percent_35to64 = B18101_013E / B18101_012E,
-                       disability_male_percent_65to74 = B18101_016E / B18101_015E,
-                       disability_male_percent_75andup = B18101_019E / B18101_018E,
-                       disability_female_percent_under5 = B18101_023E / B18101_022E,
-                       disability_female_percent_5to17 = B18101_026E / B18101_025E,
-                       disability_female_percent_18to34 = B18101_029E / B18101_028E,
-                       disability_female_percent_35to64 = B18101_032E / B18101_031E,
-                       disability_female_percent_65to74 = B18101_035E / B18101_034E,
-                       disability_female_percent_75andup = B18101_038E / B18101_037E) %>%
-                select(GEOID, survey, county, year, starts_with("disability"))
+  if(!file.exists(here("data", "disability.rda"))) {
+    
+    disability <- bind_rows(get_census_table_multiple_years(2010:2018, "B18101", "acs1"),
+                            get_census_table_multiple_years(2012:2018, "B18101", "acs5")) %>%
+      mutate(disability_male_percent_under5 = B18101_004E / B18101_003E,
+             disability_male_percent_5to17 = B18101_007E / B18101_006E,
+             disability_male_percent_18to34 = B18101_010E / B18101_009E,
+             disability_male_percent_35to64 = B18101_013E / B18101_012E,
+             disability_male_percent_65to74 = B18101_016E / B18101_015E,
+             disability_male_percent_75andup = B18101_019E / B18101_018E,
+             disability_female_percent_under5 = B18101_023E / B18101_022E,
+             disability_female_percent_5to17 = B18101_026E / B18101_025E,
+             disability_female_percent_18to34 = B18101_029E / B18101_028E,
+             disability_female_percent_35to64 = B18101_032E / B18101_031E,
+             disability_female_percent_65to74 = B18101_035E / B18101_034E,
+             disability_female_percent_75andup = B18101_038E / B18101_037E) %>%
+      select(GEOID, survey, county, year, starts_with("disability"))
+    
+    save(disability, file = here("data", "disability.rda"))
+    
+  } else {
+    
+    load(here("data", "disability.rda"))
+    
+  }
   
   race <- get_census_table_multiple_years("B02001", 2010:2018) %>%
     left_join(var_labels("B02001")) %>%
