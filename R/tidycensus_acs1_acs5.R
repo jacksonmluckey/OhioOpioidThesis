@@ -48,7 +48,7 @@ if(!file.exists(here("data", "census.Rda"))){
                        disability_female_percent_35to64 = B18101_032E / B18101_031E,
                        disability_female_percent_65to74 = B18101_035E / B18101_034E,
                        disability_female_percent_75andup = B18101_038E / B18101_037E) %>%
-                select(GEOID, county, year, starts_with("disability"))
+                select(GEOID, survey, county, year, starts_with("disability"))
   
   race <- get_census_table_multiple_years("B02001", 2010:2018) %>%
     left_join(var_labels("B02001")) %>%
