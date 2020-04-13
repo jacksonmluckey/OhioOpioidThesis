@@ -195,7 +195,7 @@ if(!file.exists(here("data", "census.Rda"))){
   census <- left_join(disability, race) %>%
     left_join(education) %>%
     left_join(income_individual) %>%
-    left_join(income_household)
+    left_join(income_household) %>%
     mutate(year = as.numeric(year),
            survey = as_factor(survey),
            county = as_factor(county))
