@@ -8,3 +8,7 @@ OhioOpioidThesis.Rproj
 .pdf
 .tex
 .log
+*.Rda
+*.pdf
+.pdf
+thesis.Rmd
