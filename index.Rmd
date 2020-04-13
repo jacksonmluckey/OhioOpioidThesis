@@ -75,62 +75,23 @@ The current opioid epidemic is the worst drug epidemic in US history. While opio
 In this thesis, I will start by reviewing the literature. The literature review will open by defining rationality in the context of economics. I will follow this up by examining the different models of addiction and how they approach rationality, and what these models say about opioid addiction policy. I will then examine the history of the opioid epidemic. I will open this by defining opioids, then provide a brief timeline, and then discuss the first American opioid epidemic (which occurs shortly after the Chinese opioid epidemic). Next, I will discuss the factors that led to the current opioid epidemic, such as changes in physician attitudes towards opioids and the introduction of Oxycontin. I will then describe the transition from prescription painkillers to heroin and synthetic opioids, and how they became available across the United States. I will briefly discuss opioid addiction treatment and naloxone, and then give a quick rundown on the state of Ohio. I end the literature review by classifying explanations as either supply side or demand side. In my data and methods chapter, I provide summary statistics of my data, describe how I acquired it from the U.S. Census and the CDC, and then explain my choice of statistical methods in chapter 3. In my results chapter, I run Tobit and ordinary least squares regressions, and then briefly describe the results. Finally, I provide a conclusion and a copy of some of the code I used to produce this thesis.
 
 ```{r censusFunctions}
-make_census_table_wide <- function(df) {
-  
-  df <- df %>%
-    select(-label, -concept) %>%
-    pivot_longer(cols = c(estimate, moe)) %>%
-    pivot_wider(names_from = c(name, variable), values_from = value)
-  
-}
-
-# removes " County, Ohio" from county column (because it's the same in all cases)
-clean_county_col<- function(df) {
-  
-  df <- df %>%
-    mutate(county = str_remove(county, " County, Ohio"))
-  
-}
-
-clean_tidycensus_table <- function(df) {
-  
-  # rename the "NAME" column to county
-  df <- df %>%
-    rename(county = NAME)
-  
-  df <- clean_county_col(df)
-  
-}
-
-get_census_table <- function(table, year) {
+get_census_table <- function(year, table, survey = "acs1") { # defaults to "acs1" to support legacy code
   df <- get_acs("county",
                 year = year,
                 table = table,
-                survey = "acs1", # if things break for older code make a version of this function with this line removed
-                state = "OH")
-  df <- clean_tidycensus_table(df)
+                survey = survey,
+                state = "OH",
+                output = "wide",
+                cache_table = TRUE) %>%
+    rename(county = NAME) %>%
+    mutate(county = str_remove(county, " County, Ohio")) %>%
+    mutate(year = year,
+           survey = survey)
 }
 
 # wrapper for get_census_table that handles a year range
-get_census_table_multiple_years <- function(table, years) {
-  count <- 0
-  for (year in years) {
-    tmp <- get_census_table(table, year)
-    tmp$year <- year
-    if (count == 0) {
-      df <- tmp
-      count <- 1
-    } else {
-      df <- bind_rows(tmp, df)
-    }
-  }
-  df
-}
-
-var_labels <- function(table) {
-  load_variables(2010, "acs1", cache = TRUE) %>%
-    filter(str_detect(name, paste0(table, "_"))) %>%
-    rename(variable = name)
+get_census_table_multiple_years <- function(years, table, survey = "acs1") { # defaults to "acs1" to support legacy code
+  map_df(years, get_census_table, table, survey)
 }
 ```
 
@@ -138,57 +99,106 @@ var_labels <- function(table) {
 # Pulls down data from census if it is not already stored as a .Rda object in data/
 if(!file.exists(here("data", "census.Rda"))){
   
-  disability <- get_census_table_multiple_years("B18101", 2012:2018) %>%
-    left_join(var_labels("B18101")) %>%
-    make_census_table_wide %>%
-    mutate(disability_percent_under5_male = estimate_B18101_004 / estimate_B18101_003,
-           disability_percent_5to17_male = estimate_B18101_007 / estimate_B18101_006,
-           disability_percent_18to34_male = estimate_B18101_010 / estimate_B18101_009,
-           disability_percent_35to64_male = estimate_B18101_013 / estimate_B18101_012,
-           disability_percent_65to74_male = estimate_B18101_016 / estimate_B18101_015,
-           disability_percent_75andup_male = estimate_B18101_019 / estimate_B18101_018,
-           disability_percent_under5_female = estimate_B18101_023 / estimate_B18101_022,
-           disability_percent_5to17_female = estimate_B18101_026 / estimate_B18101_025,
-           disability_percent_18to34_female = estimate_B18101_029 / estimate_B18101_028,
-           disability_percent_35to64_female = estimate_B18101_032 / estimate_B18101_031,
-           disability_percent_65to74_female = estimate_B18101_035 / estimate_B18101_034,
-           disability_percent_75andup_female = estimate_B18101_038 / estimate_B18101_037) %>%
-    select(GEOID, county, year, starts_with("disability"))
+  # DISABILITY
+  if(!file.exists(here("data", "disability.Rda"))) {
+    
+    disability <- bind_rows(get_census_table_multiple_years(2010:2018, "B18101", "acs1"),
+                            get_census_table_multiple_years(2012:2018, "B18101", "acs5")) %>%
+      mutate(disability_male_percent_under5 = B18101_004E / B18101_003E,
+             disability_male_percent_5to17 = B18101_007E / B18101_006E,
+             disability_male_percent_18to34 = B18101_010E / B18101_009E,
+             disability_male_percent_35to64 = B18101_013E / B18101_012E,
+             disability_male_percent_65to74 = B18101_016E / B18101_015E,
+             disability_male_percent_75andup = B18101_019E / B18101_018E,
+             disability_female_percent_under5 = B18101_023E / B18101_022E,
+             disability_female_percent_5to17 = B18101_026E / B18101_025E,
+             disability_female_percent_18to34 = B18101_029E / B18101_028E,
+             disability_female_percent_35to64 = B18101_032E / B18101_031E,
+             disability_female_percent_65to74 = B18101_035E / B18101_034E,
+             disability_female_percent_75andup = B18101_038E / B18101_037E) %>%
+      select(GEOID, survey, county, year, starts_with("disability"))
+    
+    save(disability, file = here("data", "disability.Rda"))
+    
+  } else {
+    
+    load(here("data", "disability.Rda"))
+    
+  }
   
-  race <- get_census_table_multiple_years("B02001", 2010:2018) %>%
-    left_join(var_labels("B02001")) %>%
-    make_census_table_wide() %>%
-    mutate(percent_white = estimate_B02001_002 / estimate_B02001_001,
-           percent_black = estimate_B02001_003 / estimate_B02001_001) %>%
-    select(GEOID, county, year, percent_white, percent_black)
+  # RACE
+  if(!file.exists(here("data", "race.Rda"))) {
+    
+    race <- bind_rows(get_census_table_multiple_years(2010:2018, "B02001", "acs1"),
+                      get_census_table_multiple_years(2010:2018, "B02001", "acs5")) %>%
+      mutate(percent_white = B02001_002E / B02001_001E,
+             percent_black = B02001_003E / B02001_001E) %>%
+      select(GEOID, survey, county, year, percent_white, percent_black)
+    
+    save(race, file = here("data", "race.Rda"))
+    
+  } else {
+    
+    load(here("data", "race.Rda"))
+    
+  }
   
-  income_individual <- get_census_table_multiple_years("B06011", 2010:2018) %>%
-    left_join(var_labels("B06011")) %>%
-    make_census_table_wide() %>%
-    rename(income_pc_individual = estimate_B06011_001) %>%
-    select(GEOID, county, year, income_pc_individual)
+  # MEDIAN INDIVIDUAL INCOME
+  if(!file.exists(here("data", "income_individual.Rda"))) {
+    
+    income_individual <- bind_rows(get_census_table_multiple_years(2010:2018, "B06011", "acs1"),
+                                          get_census_table_multiple_years(2010:2018, "B06011", "acs5")) %>%
+      mutate(income_individual_median = B06011_001E) %>%
+      select(GEOID, survey, county, year, income_individual_median)
+    
+    save(income_individual, file = here("data", "income_individual.Rda"))
+    
+  } else {
+    
+    load(here("data", "income_individual.Rda"))
+    
+  }
   
-  # education
-  education <- get_census_table_multiple_years("C15003", 2010:2018) %>%
-    left_join(var_labels("C15003")) %>%
-    make_census_table_wide() %>%
-    rename(population = estimate_C15003_001) %>%
-    # create the small education bins (_s_), which should add up to one
-    mutate(education_s_percent_less_than_highschool = (estimate_C15003_002 + estimate_C15003_003 + estimate_C15003_004 + estimate_C15003_005 + estimate_C15003_006 + estimate_C15003_007 + estimate_C15003_008 + estimate_C15003_009) / population,
-           education_s_percent_highschool = estimate_C15003_010 / population,
-           education_s_percent_ged = estimate_C15003_011 / population,
-           education_s_percent_some_college = (estimate_C15003_012 + estimate_C15003_013 + estimate_C15003_014) / population,
-           education_s_percent_college = estimate_C15003_015 / population,
-           education_s_percent_graduate = (estimate_C15003_016 + estimate_C15003_017 + estimate_C15003_018) / population) %>%
-    # create the big education bins (_b_), which won't add up to one because some college is excluded
-    mutate(education_b_percent_highschool_or_less = education_s_percent_less_than_highschool + education_s_percent_highschool + education_s_percent_ged,
-           education_b_percent_college_or_more = education_s_percent_college + education_s_percent_graduate) %>%
-    select(GEOID, county, year, population, starts_with("education"))
+  # MEDIAN HOUSEHOLD INCOME
+  if(!file.exists(here("data", "income_household.Rda"))) {
+    
+    income_household <- bind_rows(get_census_table_multiple_years(2010:2018, "B19013", "acs1"),
+                                  get_census_table_multiple_years(2010:2018, "B19013", "acs5")) %>%
+      mutate(income_household_median = B19013_001E) %>%
+      select(GEOID, survey, county, year, income_household_median)
+    
+    save(income_household, file = here("data", "income_household.Rda"))
+    
+  } else {
+    
+    load(here("data", "income_household.Rda"))
+    
+  }
+  
+  # EDUCATION
+  if(!file.exists(here("data", "education.Rda"))) {
+    
+    education <- bind_rows(get_census_table_multiple_years(2010:2018, "B15003", "acs1"),
+                           get_census_table_multiple_years(2012:2018, "B15003", "acs5")) %>%
+      mutate(education_percent_less_than_highschool = ((B15003_002E + B15003_003E + B15003_004E + B15003_005E + B15003_006E + B15003_007E + B15003_008E + B15003_009E + B15003_010E + B15003_011E + B15003_012E + B15003_013E + B15003_014E + B15003_015E + B15003_016E + B15003_017E + B15003_018E) / B15003_001E),
+             education_percent_some_college = ((B15003_019E + B15003_020E + B15003_021E) / B15003_001E),
+             education_percent_bachelors_or_more = ((B15003_022E + B15003_023E + B15003_024E + B15003_025E) / B15003_001E)) %>%
+      select(GEOID, survey, county, year, starts_with("education"))
+    
+    save(education, file = here("data", "education.Rda"))
+    
+  } else {
+  
+    load(here("data", "education.Rda"))  
+  }
   
   census <- left_join(disability, race) %>%
     left_join(education) %>%
     left_join(income_individual) %>%
-    mutate(year = as.numeric(year))
+    left_join(income_household)
+    mutate(year = as.numeric(year),
+           survey = as_factor(survey),
+           county = as_factor(county))
   
   # save the census data as an RDA file
   save(census, file  = here("data", "census.Rda"))
@@ -201,53 +211,62 @@ if(!file.exists(here("data", "census.Rda"))){
 ```
 
 ```{r overdoseData}
-# table sourced from https://wonder.cdc.gov/controller/datarequest/D76;jsessionid=C5396F5BBB4351ECF2A36732347C7AFB?stage=results&action=toggle&p=O_show_suppressed&v=true
-# suppressed = 9 or fewer deaths
-# county, year with suppressed rows on
-# all drug-related causes (includes alcohol and the like)
-# fix suppression with https://doi.org/10.2105/AJPH.2014.301900
-# rates per 100,000
-# citation: Centers for Disease Control and Prevention, National Center for Health Statistics. Underlying Cause of Death 1999-2018 on CDC WONDER Online Database, released in 2020. Data are from the Multiple Cause of Death Files, 1999-2018, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative Program. Accessed at http://wonder.cdc.gov/ucd-icd10.html on Apr 5, 2020 10:34:28 AM
-overdose_real <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
-  select(-Notes, -`Year Code`) %>% # na in all cases for Notes, Year Code is duplicate of Year
-  rename(GEOID = `County Code`,
-         year = Year,
-         county = County,
-         overdose_deaths = Deaths,
-         cdc_population = Population,
-         fatal_overdose_crude_rate = `Crude Rate`,
-         fatal_overdose_age_adjusted_rate = `Age Adjusted Rate`) %>%
-  # create dummies for unreliable / suppressed
-  mutate(overdose_deaths_suppressed = if_else(overdose_deaths == "Suppressed", TRUE, FALSE),
-         fatal_overdose_crude_rate_unreliable = if_else(fatal_overdose_crude_rate == "Unreliable", TRUE, FALSE),
-         fatal_overdose_crude_rate_suppressed = if_else(fatal_overdose_crude_rate == "Suppressed", TRUE, FALSE),
-         fatal_overdose_age_adjusted_rate_unreliable = if_else(fatal_overdose_age_adjusted_rate == "Unreliable", TRUE, FALSE),
-         fatal_overdose_age_adjusted_rate_suppressed = if_else(fatal_overdose_age_adjusted_rate == "Suppressed", TRUE, FALSE)) %>%
-  # parse columns with suppressed/unreliable into numbers
-  mutate(overdose_deaths = parse_number(overdose_deaths),
-         fatal_overdose_crude_rate = parse_number(fatal_overdose_crude_rate),
-         fatal_overdose_age_adjusted_rate = parse_number(fatal_overdose_age_adjusted_rate)) %>%
-  # clean county col (function relies on "Ohio" instead of "OH")
-  mutate(county = str_remove(county, " County, OH")) %>%
-  # make GEOID a character to make it easy to make it a factor after merging
-  mutate(GEOID = as.character(GEOID))
-
-# https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/
-# citation: Rossen LM, Bastian B, Warner M, Khan D, Chong Y. Drug poisoning mortality: United States, 1999–2017. National Center for Health Statistics. 2019.
-overdose_modeled <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
-  filter(State == "Ohio") %>%
-  select(GEOID = FIPS,
-         county = County,
-         year = Year,
-         fatal_overdose_modeled_rate = `Model-based Death Rate`,
-         cdc_population = Population,
-         urban_rural = `Urban/Rural Category`) %>%
-  mutate(county = str_remove(county, " County, OH"),
-         GEOID = as.character(GEOID),
-         year = as.numeric(year),
-         urban_rural = as_factor(urban_rural))
-
-overdose <- left_join(overdose_real, overdose_modeled)
+if(!file.exists(here("data", "overdose.Rda"))) {
+  
+  # table sourced from https://wonder.cdc.gov/controller/datarequest/D76;jsessionid=C5396F5BBB4351ECF2A36732347C7AFB?stage=results&action=toggle&p=O_show_suppressed&v=true
+  # suppressed = 9 or fewer deaths
+  # county, year with suppressed rows on
+  # all drug-related causes (includes alcohol and the like)
+  # fix suppression with https://doi.org/10.2105/AJPH.2014.301900
+  # rates per 100,000
+  # citation: Centers for Disease Control and Prevention, National Center for Health Statistics. Underlying Cause of Death 1999-2018 on CDC WONDER Online Database, released in 2020. Data are from the Multiple Cause of Death Files, 1999-2018, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative Program. Accessed at http://wonder.cdc.gov/ucd-icd10.html on Apr 5, 2020 10:34:28 AM
+  overdose_real <- read_tsv(here("data", "cdc_drug_overdose_deaths.txt")) %>%
+    select(-Notes, -`Year Code`) %>% # na in all cases for Notes, Year Code is duplicate of Year
+    rename(GEOID = `County Code`,
+           year = Year,
+           county = County,
+           overdose_deaths = Deaths,
+           cdc_population = Population,
+           fatal_overdose_crude_rate = `Crude Rate`,
+           fatal_overdose_age_adjusted_rate = `Age Adjusted Rate`) %>%
+    # create dummies for unreliable / suppressed
+    mutate(overdose_deaths_suppressed = if_else(overdose_deaths == "Suppressed", TRUE, FALSE),
+           fatal_overdose_crude_rate_unreliable = if_else(fatal_overdose_crude_rate == "Unreliable", TRUE, FALSE),
+           fatal_overdose_crude_rate_suppressed = if_else(fatal_overdose_crude_rate == "Suppressed", TRUE, FALSE),
+           fatal_overdose_age_adjusted_rate_unreliable = if_else(fatal_overdose_age_adjusted_rate == "Unreliable", TRUE, FALSE),
+           fatal_overdose_age_adjusted_rate_suppressed = if_else(fatal_overdose_age_adjusted_rate == "Suppressed", TRUE, FALSE)) %>%
+    # parse columns with suppressed/unreliable into numbers
+    mutate(overdose_deaths = parse_number(overdose_deaths),
+           fatal_overdose_crude_rate = parse_number(fatal_overdose_crude_rate),
+           fatal_overdose_age_adjusted_rate = parse_number(fatal_overdose_age_adjusted_rate)) %>%
+    mutate(county = str_remove(county, " County, OH")) %>%
+    # make GEOID a character to make it easy to make it a factor after merging
+    mutate(GEOID = as.character(GEOID))
+  
+  # https://www.cdc.gov/nchs/data-visualization/drug-poisoning-mortality/
+  # citation: Rossen LM, Bastian B, Warner M, Khan D, Chong Y. Drug poisoning mortality: United States, 1999–2017. National Center for Health Statistics. 2019.
+  overdose_modeled <- read_csv(here("data", "OverdoseDeathRate.csv")) %>%
+    filter(State == "Ohio") %>%
+    select(GEOID = FIPS,
+           county = County,
+           year = Year,
+           fatal_overdose_modeled_rate = `Model-based Death Rate`,
+           cdc_population = Population,
+           urban_rural = `Urban/Rural Category`) %>%
+    mutate(county = str_remove(county, " County, OH"),
+           GEOID = as.character(GEOID),
+           year = as.numeric(year),
+           urban_rural = as_factor(urban_rural))
+  
+  overdose <- left_join(overdose_real, overdose_modeled)
+  
+  save(overdose, file = here("data", "overdose.Rda"))
+  
+} else {
+  
+  load(here("data", "overdose.Rda"))
+  
+}
 ```
 
 ```{r prescribingRate}
@@ -266,12 +285,9 @@ prescriptionYear <- function(year) {
     mutate(county = str_remove(county, ", OH"))
 }
 
-# years covered in CDC data
-years <- 2006:2018
-
 if(!file.exists(here("data", "prescriptions.Rda"))) {
   
-  prescriptions <- map_dfr(years, prescriptionYear) %>%
+  prescriptions <- map_dfr(2006:2018, prescriptionYear) %>%
     mutate(county = as_factor(county),
            PrescribingRate = as.numeric(PrescribingRate),
            year = as.numeric(year))
@@ -297,25 +313,18 @@ base_map <- base_map %>%
 ```
 
 ```{r prepareDF}
-if(!file.exists(here("data", "df.Rda"))) {
+if(!file.exists(here("data", "raw_df.Rda"))) {
   
-  df <- left_join(overdose, census) %>%
-    left_join(prescriptions)
-  
-  # convert percentages to be XX.X instead of .XXX
-  df <- df %>%
-    mutate_at(vars(contains("percent")), ~ .x * 100)
-  
-  # make factors factors
-  df <- df %>%
+  raw_df <- full_join(overdose, prescriptions) %>% # full join b/c a lot of rows with data only used for making plots / not covered in sample
+    left_join(census) %>%
+    mutate_at(vars(contains("percent")), ~ .x * 100) %>% # convert percentages to be XX.X instead of .XXX
     mutate(county = as_factor(county),
            GEOID = as_factor(GEOID))
-  
-  save(df, file = here("data", "df.Rda"))
-  
+  save(raw_df, file = here("data", "raw_df.Rda"))
+
 } else {
   
-  load(here("data", "df.Rda"))
+  load(here("data", "raw_df.Rda"))
   
 }
 ```
