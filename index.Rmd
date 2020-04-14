@@ -341,44 +341,46 @@ theme_map <- theme_minimal() +
 ```
 
 ```{r recodeVariables}
-# Variable Name is the name in df
-# Category is for grouping the rows of the table
-# Label is for replacing Variable Name (it's a human-readable version)
-var_label_category <- tribble(
-  ~`Variable Name`, ~Category, ~Label,
-"OD_rate", "Overdoses", "Fatal Overdoses per 10,000",
-"income_pc_individual", "Demographics", "Individual Per Capita Income",
-"percent_white", "Race", "Percent White",
-"percent_black", "Race", "Percent Black",
-"population", "Demographics", "Population",
-"deaths", "Overdoses", "Overdose Deaths",
-"education_b_percent_highschool_or_less", "Broad Education", "Highschool or Less",
-"education_b_percent_college_or_more", "Broad Education", "Bachelor's Degree or More",
-"education_s_percent_less_than_highschool", "Education", "Less than Highschool",
-"education_s_percent_highschool", "Education", "Highschool",
-"education_s_percent_ged", "Education", "GED",
-"education_s_percent_some_college", "Education", "Some College",
-"education_s_percent_college", "Education", "College",
-"education_s_percent_graduate", "Education", "Graduate School",
-"disability_percent_under5_male", "Disability Male", "Percent 5 or Younger",
-"disability_percent_5to17_male", "Disability Male", "Percent 5 to 17",
-"disability_percent_18to34_male", "Disability Male", "Percent 18 to 34",
-"disability_percent_35to64_male", "Disability Male", "Percent 35 to 64",
-"disability_percent_65to74_male", "Disability Male", "Percent 65 to 74",
-"disability_percent_75andup_male", "Disability Male", "Percent 75 and Up",
-"disability_percent_under5_female", "Disability Female", "Percent 5 or Younger",
-"disability_percent_5to17_female", "Disability Female", "Percent 5 to 17",
-"disability_percent_18to34_female", "Disability Female", "Percent 18 to 34",
-"disability_percent_35to64_female", "Disability Female", "Percent 35 to 64",
-"disability_percent_65to74_female", "Disability Female", "Percent 65 to 74",
-"disability_percent_75andup_female", "Disability Female", "Percent 75 and Up",
-)
-recode_vars <- function(df) {
-  # relies on var_label_caetgory existing in the global env
-  # which is bad practice but will do for the 1st draft
+recodeVars <- function(df) {
   df %>%
-    left_join(var_label_category, by = c("Variable Name" = "Variable Name")) %>%
-    mutate(rawVarName = `Variable Name`,
-           `Variable Name` = Label)
+    rename(`Overdose Deaths` = overdose_deaths,
+           `Population (CDC)` = cdc_population,
+           `Fatal Overdose Crude Rate` = fatal_overdose_crude_rate,
+           `Fatal Overdose Age-Adjusted Rate` = fatal_overdose_age_adjusted_rate,
+           `Are Overdose Deaths Suppressed?` = overdose_deaths_suppressed,
+           `Is the Fatal Overdose Crude Rate Unreliable?` = fatal_overdose_crude_rate_unreliable,
+           `Is the Fatal Overdose Crude Rate Suppressed?` = fatal_overdose_crude_rate_suppressed,
+           `Is the Fatal Overdose Age-Adjusted Rate Unreliable?` = fatal_overdose_age_adjusted_rate_unreliable,
+           `Is the Fatal Overdose Age-Adjusted Suppressed?` = fatal_overdose_age_adjusted_rate_suppressed,
+           `Fatal Overdose Modeled Rate` = fatal_overdose_modeled_rate,
+           Density = urban_rural,
+           `Prescribing Rate` = PrescribingRate,
+           `Percent of Males Aged Under 5 with a Disability` = disability_male_percent_under5,
+           `Percent of Males Aged 5 to 17 with a Disability` = disability_male_percent_5to17,
+           `Percent of Males Aged 18 to 34 with a Disability` = disability_male_percent_18to34,
+           `Percent of Males Aged 35 to 64 with a Disability` = disability_male_percent_35to64,
+           `Percent of Males Aged 65 to 74 with a Disability` = disability_male_percent_65to74,
+           `Percent of Males Aged 75 and Up with a Disability` = disability_male_percent_75andup,
+           `Percent of Females Aged Under 5 with a Disability` = disability_female_percent_under5,
+           `Percent of Females Aged 5 to 17 with a Disability` = disability_female_percent_5to17,
+           `Percent of Females Aged 18 to 34 with a Disability` = disability_female_percent_18to34,
+           `Percent of Females Aged 35 to 64 with a Disability` = disability_female_percent_35to64,
+           `Percent of Females Aged 65 to 74 with a Disability` = disability_female_percent_65to74,
+           `Percent of Females Aged 75 and Up with a Disability` = disability_female_percent_75andup,
+           `Percent White` = percent_white,
+           `Percent Black` = percent_black,
+           `Percent with Highschool or Less` = education_percent_less_than_highschool,
+           `Percent with Some College` = education_percent_some_college,
+           `Percent with Bachelors or More` = education_percent_bachelors_or_more,
+           `Median Individual Income` = income_individual_median,
+           `Median Household Income` = income_household_median)
 }
+```
+
+```{r prepareDFsForModeling}
+df_acs1 <- raw_df %>%
+  filter(survey == "acs1")
+
+df_acs5 <- raw_df %>%
+  filter(survey == "acs5")
 ```
