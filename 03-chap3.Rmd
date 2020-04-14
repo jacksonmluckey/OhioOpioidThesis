@@ -2,6 +2,20 @@
 
 ```{r regressionFormula}
 regression_formula <- function(rate_variable, income_variable, fixed_effects) {
+  
+  # check that rate_variable is valid
+  if(!rate_variable %in% c("`Fatal Overdose Crude Rate`",
+                          "`Fatal Overdose Age-Adjusted Rate`",
+                          "`Fatak Overdose Modeled Rate`")) {
+    stop(rate_variable, " is not a valid fatal overdose rate variable. Did you forget to wrap it in ``s like `Fatal Overdose Crude Rate`?")
+  }
+  
+  # check that income_variable is valid
+  if(!income_variable %in% c("`Median Individual Income`",
+                             "`Median Household Income`")) {
+    stop(income_variable, " is not a valid income variable. Did you forget to wrap it in ``s like `Median Individual Income`?")
+  }
+  
   # excludes 1 from each category (currently 5 and under for both sexes, highschool or less for education)
   formula_base <- paste("`Percent of Males Aged Under 5 with a Disability`",
     "`Percent of Males Aged 5 to 17 with a Disability`",
