@@ -1,7 +1,7 @@
 # Results
 
 ```{r regressionFormula}
-regression_formula <- function(rate_variable, income_variable, fixed_effects) {
+regression_formula <- function(rate_variable, income_variable, fixed_effects=NULL) {
   
   # check that rate_variable is valid
   if(!rate_variable %in% c("`Fatal Overdose Crude Rate`",
@@ -34,6 +34,12 @@ regression_formula <- function(rate_variable, income_variable, fixed_effects) {
     "`Percent with Bachelors or More`",
     sep = " + "
   )
+  
+  regression_formula <- as.formula(paste0(rate_variable, " ~ ", formula_base, " + ", income_variable))
+  
+  # return formula
+  regression_formula
+  
 }
 ```
 
