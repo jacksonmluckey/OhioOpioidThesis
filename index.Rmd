@@ -319,7 +319,8 @@ if(!file.exists(here("data", "raw_df.Rda"))) {
     left_join(census) %>%
     mutate_at(vars(contains("percent")), ~ .x * 100) %>% # convert percentages to be XX.X instead of .XXX
     mutate(county = as_factor(county),
-           GEOID = as_factor(GEOID))
+           GEOID = as_factor(GEOID)) %>%
+    ungroup()
   save(raw_df, file = here("data", "raw_df.Rda"))
 
 } else {
@@ -343,7 +344,9 @@ theme_map <- theme_minimal() +
 ```{r recodeVariables}
 recodeVars <- function(df) {
   df %>%
-    rename(`Overdose Deaths` = overdose_deaths,
+    rename(County = county,
+           Year = year,
+           `Overdose Deaths` = overdose_deaths,
            `Population (CDC)` = cdc_population,
            `Fatal Overdose Crude Rate` = fatal_overdose_crude_rate,
            `Fatal Overdose Age-Adjusted Rate` = fatal_overdose_age_adjusted_rate,
@@ -353,7 +356,6 @@ recodeVars <- function(df) {
            `Is the Fatal Overdose Age-Adjusted Rate Unreliable?` = fatal_overdose_age_adjusted_rate_unreliable,
            `Is the Fatal Overdose Age-Adjusted Suppressed?` = fatal_overdose_age_adjusted_rate_suppressed,
            `Fatal Overdose Modeled Rate` = fatal_overdose_modeled_rate,
-           Density = urban_rural,
            `Prescribing Rate` = PrescribingRate,
            `Percent of Males Aged Under 5 with a Disability` = disability_male_percent_under5,
            `Percent of Males Aged 5 to 17 with a Disability` = disability_male_percent_5to17,
@@ -377,12 +379,20 @@ recodeVars <- function(df) {
 }
 ```
 
-```{r prepareDFsForModeling}
-df_acs1 <- raw_df %>%
-  filter(survey == "acs1") %>%
-  recodeVars()
+```{r fixUrbanRural}
+df <- raw_df %>%
+  filter(!is.na(urban_rural)) %>%
+  group_by(county) %>%
+  summarize(Density = first(urban_rural)) %>%
+  right_join(raw_df, by = c("county" = "county")) %>%
+  recodeVars() %>%
+  select(-urban_rural)
+```
 
-df_acs5 <- raw_df %>%
-  filter(survey == "acs5") %>%
-  recodeVars()
+```{r prepareDFsForModeling}
+df_acs1 <- df %>%
+  filter(survey == "acs1")
+
+df_acs5 <- df %>%
+  filter(survey == "acs5")
 ```
