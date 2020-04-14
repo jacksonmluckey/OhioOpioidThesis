@@ -379,8 +379,10 @@ recodeVars <- function(df) {
 
 ```{r prepareDFsForModeling}
 df_acs1 <- raw_df %>%
-  filter(survey == "acs1")
+  filter(survey == "acs1") %>%
+  recodeVars()
 
 df_acs5 <- raw_df %>%
-  filter(survey == "acs5")
+  filter(survey == "acs5") %>%
+  recodeVars()
 ```
