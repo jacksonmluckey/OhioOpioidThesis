@@ -1,8 +1,34 @@
 # Results
 
-```{r basicRegressionFormula}
-# formula used throughout chapter 3 as of right now
-basic_regression_formula <- formula(OD_rate ~ income_pc_individual + percent_black + education_b_percent_highschool_or_less + education_b_percent_college_or_more + disability_percent_5to17_male + disability_percent_18to34_male + disability_percent_35to64_male + disability_percent_65to74_male + disability_percent_5to17_female + disability_percent_18to34_female + disability_percent_35to64_female + disability_percent_65to74_female)
+```{r regressionFormula}
+regression_formula <- function(rate_variable, income_variable, fixed_effects) {
+  # excludes 1 from each category (currently 5 and under for both sexes, highschool or less for education)
+  formula_base <- paste("`Percent of Males Aged Under 5 with a Disability`",
+    "`Percent of Males Aged 5 to 17 with a Disability`",
+    "`Percent of Males Aged 18 to 34 with a Disability`",
+    "`Percent of Males Aged 35 to 64 with a Disability`",
+    "`Percent of Males Aged 65 to 74 with a Disability`",
+    "`Percent of Males Aged 75 and Up with a Disability`",
+    "`Percent of Females Aged Under 5 with a Disability`",
+    "`Percent of Females Aged 5 to 17 with a Disability`",
+    "`Percent of Females Aged 18 to 34 with a Disability`",
+    "`Percent of Females Aged 35 to 64 with a Disability`",
+    "`Percent of Females Aged 65 to 74 with a Disability`",
+    "`Percent of Females Aged 75 and Up with a Disability`",
+    "`Percent Black`",
+    "`Percent with Some College`",
+    "`Percent with Bachelors or More`",
+    sep = " + "
+  )
+}
+```
+
+Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
+
+```{r generateYearFixedEffects}
+```
+
+```{r generateCountyFixedEffects}
 ```
 
 ## Ordinary Least Squares Multiple Regression
