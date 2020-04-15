@@ -103,7 +103,7 @@ stargazer(
 )
 ```
 
-```{r crudeRateHouseholdIncomeNoFixedEffects, results="asis"}
+```{r crudeRateHouseholdIncome, results="asis"}
 crude_rate_household <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`")
 crude_rate_household_FE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`", "Year")
 stargazer(lm(crude_rate_household, df_acs1),
@@ -279,14 +279,15 @@ stargazer(censReg(crude_rate_household, data = df_acs1, logLikOnly = FALSE),
           header = FALSE)
 ```
 
-```{r ageAdjustedRateHouseholdIncomeCountyFixedEffects, results="asis"}
-crude_rate_household <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`")
+```{r countyFixedEffects, results="asis"}
+crude_rate_indivudal_FE <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Individual Income`", "County")
 crude_rate_household_FE <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`", "County")
-stargazer(lm(crude_rate_household, df_acs1),
-          lm(crude_rate_household, df_acs5),
+stargazer(lm(crude_rate_individual_FE, df_acs1),
+          lm(crude_rate_individual_FE, df_acs5),
           lm(crude_rate_household_FE, df_acs1),
           lm(crude_rate_household_FE, df_acs5),
           covariate.labels = c(
+    "Median Individual Income",
     "Median Household Income",
     "Prescribing Rate",
     "Density: Small Metro",
@@ -314,7 +315,7 @@ stargazer(lm(crude_rate_household, df_acs1),
           dep.var.caption = "Fatal Overdose Rate (Age-Adjusted)",
           omit = "County",
           column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
-          add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
+          add.lines = list(c("Fixed Effects?", "Yes", "Yes", "Yes", "Yes")),
           single.row = TRUE,
           sep.width = 0,
           font.size = "small",
