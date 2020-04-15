@@ -70,6 +70,25 @@ The change in physicians' attitudes towards opioids was accelerated by several f
 
 ### The Introduction of OxyContin
 
+
+```{r}
+df %>%
+  filter(Year > 2005,
+         Year < 2017) %>%
+  group_by(County, Year) %>%
+  summarize(PopAdjustedRate = mean(`Prescribing Rate`, na.rm = TRUE) * mean(`Population (CDC)`, na.rm = TRUE)) %>%
+  ungroup() %>%
+  group_by(Year) %>%
+  summarize(PopAdjustedRate = sum(PopAdjustedRate, na.rm = TRUE)) %>%
+  ggplot(aes(x = Year, y = PopAdjustedRate)) +
+  geom_point() +
+  geom_line() +
+  theme_classic() +
+  labs(title = "Opioid Prescriptions in Ohio by Year",
+       y = "Prescriptions",
+       x = "Year")
+```
+
 OxyContin is a prescription opioid painkiller brought to market by Purdue Pharmaceuticals in 1996 [@alpertSupplySideDrugPolicy2017; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. It is made from oxycodone, a derivative of opium, and can rival morphine in strength [@meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. OxyContin was unlike previous prescription painkillers in several aspects. In contrast to previous medications such as Vicodin, OxyContin was not blended with additional substances such as acetaminophen, which made it much easier to snort and inject. Furthermore, it was available in up to 160 milligram doses, whereas previous painkillers were capped at five to ten milligrams [@quinonesDreamlandTrueTale2016]. Finally, OxyContin featured a time-delay release mechanism, which the FDA allowed Purdue to market as an abuse deterrent, leading to the perception that OxyContin was non-addictive despite a complete lack of clinical studies demonstrating that this was the case [@alpertSupplySideDrugPolicy2017; @eschHowOneSentence2017; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016; @vanzeePromotionMarketingOxyContin2009].
 
 More specifically, OxyContin's original label stated "Delayed absorption as provided by OxyContin tablets, is believed to reduce the abuse liability of a drug" [@eschHowOneSentence2017; @quinonesDreamlandTrueTale2016, 27]. In addition to encouraging more prescriptions from physicians, this label quelled the concerns of pharmacists seeing a huge uptake in opioid prescriptions in the late 1990s. Furthermore, Purdue Pharmaceuticals sponsored continuing medical education for physicians that minimized the risk of opioid addiction. The seminars lauded a supposed study by Porter and Jick, claiming that it demonstrated that less than one percent of patients could become addicted to opioids[^4]. In reality, the "study" was a brief letter that simply provided summary statistics on opioid use from a database that only covered inpatient care, but the gambit was effective at encouraging wanton prescribing of OxyContin [@haneyDoctorWhoWrote; @meierPainKillerEmpire2018; @porterAddictionRarePatients1980; @quinonesDreamlandTrueTale2016; @vanzeePromotionMarketingOxyContin2009; @zhangOneParagraphLetter19802017]. By the turn of the century, however, some activists, physicians, and pharmacists had noticed a major rise in opioid addictions in their communities, and began to warn others [@meierPainKillerEmpire2018].
@@ -80,17 +99,21 @@ Warning signs of the current opioid crisis first arose in Appalachia, where phys
 
 ```{r OhioOpioidTimeseriesGraph, fig.cap="Annual fatal drug overdoses in Ohio counties included in sample"}
 df %>%
-  filter(!is.na(deaths)) %>%
-  group_by(year) %>%
-  summarize(overdoses = sum(deaths)) %>%
-  ggplot(aes(x = year, y = overdoses)) +
+  filter(Year > 1999,
+         Year < 2019) %>%
+  group_by(County, Year) %>%
+  summarize(deaths = mean(`Overdose Deaths`, na.rm = TRUE)) %>%
+  ungroup() %>%
+  group_by(Year) %>%
+  summarize(deaths = sum(deaths, na.rm = TRUE)) %>%
+  ggplot(aes(x = Year, y = deaths)) +
     geom_point() +
     geom_line() +
     theme_classic() +
     labs(x = "Year",
          y = "Annual Fatal Drug Overdoses",
          title = "Overdose Deaths by Year",
-         subtitle = "in Ohio counties included in sample")
+         subtitle = "Excludes Counties Reporting Fewer than Ten Fatal Overdoses in that Year")
 ```
 
 Despite the warnings, opioid prescriptions continued to rise throughout the 2000s and early 2010s [@macyDopesickDealersDoctors2018; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. In total, there was a 356% increase in prescriptions from 1999 to 2015 [@kruegerWhereHaveAll2017]. In fact, some communities received more prescription painkillers than there were people who could use them, which highlights the high level of diversion of prescription opioids for non-medical use during this period [@alpertSupplySideDrugPolicy2017; @quinonesDreamlandTrueTale2016]. While many doctors treated OxyContin and similar prescription painkillers as routine pharmaceuticals, their impact on patients was more similar to heroin than statins. Approximately one in every 550 patients started on opioid therapy dies from an opioid-related cause, with most deaths occurring within three years of the initial prescription [@friedenReducingRisksRelief2016; @kruegerWhereHaveAll2017]. Furthermore, prescription painkillers often lead to heroin use; approximately 75% of heroin users first misused prescription opioids [@odonnellTrendsDeathsInvolving2017]. OxyContin's devastation would continue unrestrained until its reformulation in the early 2010s [@quinonesDreamlandTrueTale2016].
