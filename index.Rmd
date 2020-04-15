@@ -379,14 +379,20 @@ recodeVars <- function(df) {
 }
 ```
 
-```{r fixUrbanRural}
+```{r prepareFinalDF}
 df <- raw_df %>%
+  # fix urban rural
   filter(!is.na(urban_rural)) %>%
   group_by(county) %>%
   summarize(Density = first(urban_rural)) %>%
+  ungroup() %>%
   right_join(raw_df, by = c("county" = "county")) %>%
   recodeVars() %>%
-  select(-urban_rural)
+  select(-urban_rural) %>%
+  # calculate crude rate when it is not provided
+  mutate(`Fatal Overdose Crude Rate` = if_else(is.na(`Fatal Overdose Crude Rate`),
+                                               `Fatal Overdose Crude Rate`,
+                                               (`Overdose Deaths` / `Population (CDC)`) * 100000))
 ```
 
 ```{r prepareDFsForModeling}

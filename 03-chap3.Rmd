@@ -17,7 +17,10 @@ regression_formula <- function(rate_variable, income_variable, fixed_effects=NUL
   }
   
   # excludes 1 from each category (currently 5 and under for both sexes, highschool or less for education)
-  formula_base <- paste("`Percent of Males Aged Under 5 with a Disability`",
+  formula_base <- paste(
+    "`Prescribing Rate`",
+    "`Density",
+    "`Percent of Males Aged Under 5 with a Disability`",
     "`Percent of Males Aged 5 to 17 with a Disability`",
     "`Percent of Males Aged 18 to 34 with a Disability`",
     "`Percent of Males Aged 35 to 64 with a Disability`",
