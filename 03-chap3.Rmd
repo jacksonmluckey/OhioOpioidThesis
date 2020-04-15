@@ -66,7 +66,7 @@ stargazer(
   lm(crude_rate_individual, df_acs5),
   lm(crude_rate_individual_FE, df_acs1),
   lm(crude_rate_individual_FE, df_acs5),
-  title = "Crude Rate ~ Individual Income",
+  title = "Crude Rate on Individual Income with and without Year Fixed Effects",
   covariate.labels = c(
     "Median Individual Income",
     "Prescribing Rate",
@@ -97,20 +97,48 @@ stargazer(
   add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
   single.row = TRUE,
   float.env = "sidewaystable",
-  # rotates table 90
   header = FALSE
 )
 ```
 
 ```{r crudeRateHouseholdIncomeNoFixedEffects, results="asis"}
-crude_rate_household_noFE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`")
-stargazer(lm(crude_rate_household_noFE, df_acs1),
-          lm(crude_rate_household_noFE, df_acs5),
-          title = "Crude Rate ~ Household Income",
+crude_rate_household <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`")
+crude_rate_household_FE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`", "Year")
+stargazer(lm(crude_rate_household, df_acs1),
+          lm(crude_rate_household, df_acs5),
+          lm(crude_rate_household_FE, df_acs1),
+          lm(crude_rate_household_FE, df_acs5),
+          covariate.labels = c(
+    "Median Household Income",
+    "Prescribing Rate",
+    "Density: Small Metro",
+    "Density: Micropolitan",
+    "Density: Large Fring Metro",
+    "Density: Medium Metro",
+    "Density: Large Central Metro",
+    "\\% Black",
+    "\\% with Some College",
+    "\\% with Bachelors or More`",
+    "\\% Disabled: Males Under 5",
+    "\\% Disabled: Males 5 to 17",
+    "\\% Disabled: Males 18 to 34",
+    "\\% Disabled: Males 35 to 64",
+    "\\% Disabled: Males 65 to 74",
+    "\\% Disabled: Males 75 and Up",
+    "\\% Disabled: Females Under 5",
+    "\\% Disabled: Females 5 to 17",
+    "\\% Disabled: Females 18 to 34",
+    "\\% Disabled: Females 35 to 64",
+    "\\% Disabled: Females 65 to 74",
+    "\\% Disabled: Females 75 and Up"
+  ),
+          title = "Crude Rate on Household Income with and without Year Fixed Effects",
           dep.var.caption = "Fatal Overdose Rate (Crude)",
-          column.labels = c("ACS1", "ACS5"),
-          add.lines = list(c("Fixed Effects?", "No", "No")),
+          omit = "Year",
+          column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
+          add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
           single.row = TRUE,
+          float.env = "sidewaystable",
           header = FALSE)
 ```
 
