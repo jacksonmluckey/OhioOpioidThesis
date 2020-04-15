@@ -49,6 +49,9 @@ Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression
 crude_rate_individual_noFE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`")
 stargazer(lm(crude_rate_individual_noFE, df_acs1),
           lm(crude_rate_individual_noFE, df_acs5),
+          column.labels = c("ACS1", "ACS5"),
+          add.lines = list(c("Fixed Effects?", "No", "No")),
+          single.row = TRUE,
           header = FALSE)
 ```
 
@@ -56,6 +59,9 @@ stargazer(lm(crude_rate_individual_noFE, df_acs1),
 crude_rate_household_noFE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`")
 stargazer(lm(crude_rate_household_noFE, df_acs1),
           lm(crude_rate_household_noFE, df_acs5),
+          column.labels = c("ACS1", "ACS5"),
+          add.lines = list(c("Fixed Effects?", "No", "No")),
+          single.row = TRUE,
           header = FALSE)
 ```
 
