@@ -97,6 +97,8 @@ stargazer(
   add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
   single.row = TRUE,
   float.env = "sidewaystable",
+  sep.width = 0.1,
+  font.size = "small",
   header = FALSE
 )
 ```
@@ -138,6 +140,8 @@ stargazer(lm(crude_rate_household, df_acs1),
           column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
           add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
           single.row = TRUE,
+          sep.width = 0.1,
+          font.size = "small",
           float.env = "sidewaystable",
           header = FALSE)
 ```
@@ -180,6 +184,8 @@ stargazer(
   column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
   add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
   single.row = TRUE,
+  sep.width = 0.1,
+  font.size = "small",
   float.env = "sidewaystable",
   header = FALSE
 )
@@ -222,11 +228,14 @@ stargazer(lm(crude_rate_household, df_acs1),
           column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
           add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
           single.row = TRUE,
+          sep.width = 0.1,
+          font.size = "small",
           float.env = "sidewaystable",
           header = FALSE)
 ```
 
 ```{r tobit, eval=FALSE}
+# disabled because no censored regressions
 crude_rate_household <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`")
 crude_rate_household_FE <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`", "Year")
 # picked left basically at random to get rid of "there are no censored observations" error
@@ -264,6 +273,8 @@ stargazer(censReg(crude_rate_household, data = df_acs1, logLikOnly = FALSE),
           column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
           add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
           single.row = TRUE,
+          sep.width = 0.1,
+          font.size = "small",
           float.env = "sidewaystable",
           header = FALSE)
 ```
@@ -305,6 +316,8 @@ stargazer(lm(crude_rate_household, df_acs1),
           column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
           add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
           single.row = TRUE,
+          sep.width = 0.1,
+          font.size = "small",
           float.env = "sidewaystable",
           header = FALSE)
 ```
