@@ -45,10 +45,18 @@ regression_formula <- function(rate_variable, income_variable, fixed_effects=NUL
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
 
-```{r generateYearFixedEffects}
+```{r crudeRateIndividualIncomeNoFixedEffects}
+crude_rate_individual_noFE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`")
+stargazer(lm(crude_rate_individual_noFE, df_acs1),
+          lm(crude_rate_individual_noFE, df_acs5),
+          header = FALSE)
 ```
 
-```{r generateCountyFixedEffects}
+```{r crudeRateHouseholdIncomeNoFixedEffects}
+crude_rate_household_noFE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`")
+stargazer(lm(crude_rate_household_noFE, df_acs1),
+          lm(crude_rate_household_noFE, df_acs5),
+          header = FALSE)
 ```
 
 ## Ordinary Least Squares Multiple Regression
