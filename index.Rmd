@@ -390,9 +390,13 @@ df <- raw_df %>%
   recodeVars() %>%
   select(-urban_rural) %>%
   # calculate crude rate when it is not provided
-  mutate(`Fatal Overdose Crude Rate` = if_else(is.na(`Fatal Overdose Crude Rate`),
+  mutate(`Fatal Overdose Crude Rate` = if_else(!is.na(`Fatal Overdose Crude Rate`),
                                                `Fatal Overdose Crude Rate`,
-                                               (`Overdose Deaths` / `Population (CDC)`) * 100000))
+                                               (`Overdose Deaths` / `Population (CDC)`) * 100000)) %>%
+  # create combined fatal overdose rate that includes imputed values
+  mutate(`Fatal Overdose Rate (Includes Imputed)` = if_else(is.na(`Fatal Overdose Crude Rate`),
+                                                            `Fatal Overdose Modeled Rate`,
+                                                            `Fatal Overdose Crude Rate`))
 ```
 
 ```{r prepareDFsForModeling}

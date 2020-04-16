@@ -6,7 +6,8 @@ regression_formula <- function(rate_variable, income_variable, fixed_effects=NUL
   # check that rate_variable is valid
   if(!rate_variable %in% c("`Fatal Overdose Crude Rate`",
                           "`Fatal Overdose Age-Adjusted Rate`",
-                          "`Fatak Overdose Modeled Rate`")) {
+                          "`Fatak Overdose Modeled Rate`",
+                          "`Fatal Overdose Rate (Includes Imputed)`")) {
     stop(rate_variable, " is not a valid fatal overdose rate variable. Did you forget to wrap it in ``s like `Fatal Overdose Crude Rate`?")
   }
   
@@ -316,6 +317,49 @@ stargazer(lm(crude_rate_individual_FE, df_acs1),
           omit = "County",
           column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
           add.lines = list(c("Fixed Effects?", "Yes", "Yes", "Yes", "Yes")),
+          single.row = TRUE,
+          sep.width = 0,
+          font.size = "small",
+          float.env = "sidewaystable",
+          header = FALSE)
+```
+
+```{r allRateHouseholdIncome, results="asis"}
+all_rate_household <- regression_formula("`Fatal Overdose Rate (Includes Imputed)`", "`Median Household Income`")
+all_rate_household_FE <- regression_formula("`Fatal Overdose Rate (Includes Imputed)`", "`Median Household Income`", "Year")
+stargazer(lm(all_rate_household, df_acs1),
+          lm(all_rate_household, df_acs5),
+          lm(all_rate_household_FE, df_acs1),
+          lm(all_rate_household_FE, df_acs5),
+          covariate.labels = c(
+    "Median Household Income",
+    "Prescribing Rate",
+    "Density: Small Metro",
+    "Density: Micropolitan",
+    "Density: Large Fring Metro",
+    "Density: Medium Metro",
+    "Density: Large Central Metro",
+    "\\% Black",
+    "\\% with Some College",
+    "\\% with Bachelors or More",
+    "\\% Disabled: Males Under 5",
+    "\\% Disabled: Males 5 to 17",
+    "\\% Disabled: Males 18 to 34",
+    "\\% Disabled: Males 35 to 64",
+    "\\% Disabled: Males 65 to 74",
+    "\\% Disabled: Males 75 and Up",
+    "\\% Disabled: Females Under 5",
+    "\\% Disabled: Females 5 to 17",
+    "\\% Disabled: Females 18 to 34",
+    "\\% Disabled: Females 35 to 64",
+    "\\% Disabled: Females 65 to 74",
+    "\\% Disabled: Females 75 and Up"
+  ),
+          title = "Fatal Overdose Rate (Including Imputed) on Household Income with and without Year Fixed Effects",
+          dep.var.caption = "Fatal Overdose Rate (Including Imputed Values)",
+          omit = "Year",
+          column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
+          add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
           single.row = TRUE,
           sep.width = 0,
           font.size = "small",
