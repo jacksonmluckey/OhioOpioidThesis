@@ -55,13 +55,27 @@ regression_formula <- function(rate_variable, income_variable, fixed_effects=NUL
   regression_formula
   
 }
+
+# crude rate
+crude_rate_individual_formula <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`", "Year")
+crude_rate_individual_acs1 <- lm(crude_rate_individual_formula, df_acs1)
+crude_rate_individual_acs5 <- lm(crude_rate_individual_formula, df_acs5)
+
+# age adjusted rate
+age_adjusted_rate_individual_formula <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Individual Income`", "Year")
+age_adjusted_rate_individual_acs1 <- lm()
+
+# with imputed values
+
+# show that household and individual are not significantly different
+
+# with county Fixed Effects
 ```
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
 
 ```{r crudeRateIndividualIncome, results="asis"}
-crude_rate_individual <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`")
-crude_rate_individual_FE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`", "Year")
+
 stargazer(
   lm(crude_rate_individual, df_acs1),
   lm(crude_rate_individual, df_acs5),
