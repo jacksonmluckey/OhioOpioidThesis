@@ -257,7 +257,7 @@ stargazer(
 Table 3.6 examines whether or not including county fixed effects improves the model. Going off the R squared values, including county fixed effects increases the explanatory power of the model by a little over 50%. As before, the five year estimates have greater explanatory power than the one year estimates. Including fixed effects dramatically increases the protective effect of living in a "Medium Metro", but makes all other density levels insignificant. "Percent Black" is only significant with five year estimates without county fixed effects. Fixed effects increase the protective effect of education, but "bachelors or more" is always statistically insignificant, and "some college" is only significant with one year estimates. Looking at five year estimates, county fixed effects significantly increase the protective effect of a high disability rate among older males. Finally, female disability rates are insignificant with one year estimates coupled with fixed effects, and only significant for those under five or between 35 and 64 when using five year estimates. Since the explanatory power of the model is much greater with county fixed effects, they will be used in the final implementation of the model.
 
 
-```{r finalRegressionModel}
+```{r finalRegressionModel, results="asis"}
 stargazer(
   county_FE_acs5,
   covariate.labels = c(
@@ -290,6 +290,12 @@ stargazer(
   header = FALSE
 )
 ```
+
+The final regression model can be found on table 3.8. The model uses American Community five year estimates, household income, county fixed effects, population density, prescribing rate, racial demographics, education levels, and disability rates. Of these, seven are statistically significant: being a small metropolitian area, a micropolitan area, or a medium metropolitan area, disability rates among males aged 35 to 64 and 65 to 74, and disability rates among females aged under 5 or between 35 and 64. Being in an area with a relatively low population density has a protective effect. Disability rates other than that of females aged 35 to 64 also have a protective effect. An increase in the disability rate of females aged 35 to 64 is associated with a greater fatal overdose rate, however. Overall, this model explains more than 80% of the variation between observations in the crude fatal overdose rate.
+
+In order to address potential data censoring, I also tried running a tobit model, which is a form of censored regression. I was unable to get tobit estimates, however, due to the large number of independent variables relative to the number of observations.
+
+Heteroskedacity test.
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
 
