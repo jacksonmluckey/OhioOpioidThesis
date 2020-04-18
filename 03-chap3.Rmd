@@ -69,7 +69,7 @@ age_adjusted_rate_acs1 <- lm(age_adjusted_rate_formula, df_acs1)
 age_adjusted_rate_acs5 <- lm(age_adjusted_rate_formula, df_acs5)
 
 # with imputed values
-imputed_formula <- regression_forumula("`Fatal Overdose Rate (Includes Imputed)`", "`Median Household Income`", "Year")
+imputed_formula <- regression_formula("`Fatal Overdose Rate (Includes Imputed)`", "`Median Household Income`", "Year")
 imputed_acs1 <- lm(imputed_formula, df_acs1)
 imputed_acs5 <- lm(imputed_formula, df_acs5)
 
@@ -126,6 +126,23 @@ stargazer(
   single.row = TRUE,
   float.env = "sidewaystable",
   sep.width = 0.5,
+  font.size = "small",
+  header = FALSE
+)
+```
+
+```{r doCountyFixedEffectsMatter, results="asis"}
+stargazer(
+  crude_rate_acs1,
+  county_FE_acs1,
+  crude_rate_acs5,
+  county_FE_acs5,
+  title = "Do county fixed effects improve the model?",
+  omit = "Year",
+  column.labels = c("ACS1 without FE", "ACS1 with FE", "ACS5 without FE", "ACS5 with FE"),
+  single.row = TRUE,
+  float.env = "sidewaystable",
+  sep.width = 0,
   font.size = "small",
   header = FALSE
 )
