@@ -84,7 +84,7 @@ county_FE_acs1 <- lm(county_FE_formula, df_acs1)
 county_FE_acs5 <- lm(county_FE_formula, df_acs5)
 ```
 
-```{r showThatHouseholdAndIndividualIncomeNotDifferent}
+```{r doHouseholdAndIndividualIncomeDiffer, results="asis"}
 # show that household and individual are not significantly different
 stargazer(
   crude_rate_acs1,
@@ -102,17 +102,39 @@ stargazer(
 )
 ```
 
+```{r doACS1ACS5Differ, results="asis"}
+stargazer(
+  crude_rate_acs1,
+  crude_rate_acs5,
+  title = "Do ACS1 and ACS5 Produce Comparable Results?",
+  omit = "Year",
+  column.labels = c("ACS1", "ACS5"),
+  single.row = TRUE,
+  font.size = "small",
+  header = FALSE
+)
+```
+
+```{r doCrudeAgeImputedDifferACS1, results="asis"}
+stargazer(
+  crude_rate_acs1,
+  age_adjusted_rate_acs1,
+  imputed_acs1,
+  title = "How does the type of overdose rate metric influence the results?",
+  omit = "Year",
+  column.labels = c("Crude", "Age-Adjusted", "Imputed"),
+  single.row = TRUE,
+  float.env = "sidewaystable",
+  sep.width = 0.5,
+  font.size = "small",
+  header = FALSE
+)
+```
+
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
 
-```{r crudeRateIndividualIncome, results="asis"}
-
-stargazer(
-  lm(crude_rate_individual, df_acs1),
-  lm(crude_rate_individual, df_acs5),
-  lm(crude_rate_individual_FE, df_acs1),
-  lm(crude_rate_individual_FE, df_acs5),
-  title = "Crude Rate on Individual Income with and without Year Fixed Effects",
-  covariate.labels = c(
+```{r deprecatedCovariateLabels}
+covariate.labels = c(
     "Median Individual Income",
     "Prescribing Rate",
     "Density: Small Metro",
@@ -135,148 +157,7 @@ stargazer(
     "\\% Disabled: Females 35 to 64",
     "\\% Disabled: Females 65 to 74",
     "\\% Disabled: Females 75 and Up"
-  ),
-  omit = "Year",
-  dep.var.caption = "Fatal Overdose Rate (Crude)",
-  column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
-  add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
-  single.row = TRUE,
-  float.env = "sidewaystable",
-  sep.width = 0,
-  font.size = "small",
-  header = FALSE
-)
-```
-
-```{r crudeRateHouseholdIncome, results="asis"}
-crude_rate_household <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`")
-crude_rate_household_FE <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`", "Year")
-stargazer(lm(crude_rate_household, df_acs1),
-          lm(crude_rate_household, df_acs5),
-          lm(crude_rate_household_FE, df_acs1),
-          lm(crude_rate_household_FE, df_acs5),
-          covariate.labels = c(
-    "Median Household Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  ),
-          title = "Crude Fatal Overdose Rate on Household Income with and without Year Fixed Effects",
-          dep.var.caption = "Fatal Overdose Rate (Crude)",
-          omit = "Year",
-          column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
-          add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
-          single.row = TRUE,
-          sep.width = 0,
-          font.size = "small",
-          float.env = "sidewaystable",
-          header = FALSE)
-```
-
-```{r ageAdjustedRateIndividualIncome, results="asis"}
-crude_rate_individual <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Individual Income`")
-crude_rate_individual_FE <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Individual Income`", "Year")
-stargazer(
-  lm(crude_rate_individual, df_acs1),
-  lm(crude_rate_individual, df_acs5),
-  lm(crude_rate_individual_FE, df_acs1),
-  lm(crude_rate_individual_FE, df_acs5),
-  title = "Age-Adjusted Fatal Overdose Rate on Individual Income with and without Year Fixed Effects",
-  covariate.labels = c(
-    "Median Individual Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  ),
-  omit = "Year",
-  dep.var.caption = "Fatal Overdose Rate (Age-Adjusted)",
-  column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
-  add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
-  single.row = TRUE,
-  sep.width = 0,
-  font.size = "small",
-  float.env = "sidewaystable",
-  header = FALSE
-)
-```
-
-```{r ageAdjustedRateHouseholdIncome, results="asis"}
-crude_rate_household <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`")
-crude_rate_household_FE <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`", "Year")
-stargazer(lm(crude_rate_household, df_acs1),
-          lm(crude_rate_household, df_acs5),
-          lm(crude_rate_household_FE, df_acs1),
-          lm(crude_rate_household_FE, df_acs5),
-          covariate.labels = c(
-    "Median Household Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  ),
-          title = "Age-Adjusted Rate on Household Income with and without Year Fixed Effects",
-          dep.var.caption = "Fatal Overdose Rate (Age-Adjusted)",
-          omit = "Year",
-          column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
-          add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
-          single.row = TRUE,
-          sep.width = 0,
-          font.size = "small",
-          float.env = "sidewaystable",
-          header = FALSE)
+  )
 ```
 
 ```{r tobit, eval=FALSE}
@@ -314,93 +195,6 @@ stargazer(censReg(crude_rate_household, data = df_acs1, logLikOnly = FALSE),
   ),
           title = "Tobit: Age-Adjusted Rate on Household Income with and without Year Fixed Effects",
           dep.var.caption = "Fatal Overdose Rate (Age-Adjusted)",
-          omit = "Year",
-          column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
-          add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
-          single.row = TRUE,
-          sep.width = 0,
-          font.size = "small",
-          float.env = "sidewaystable",
-          header = FALSE)
-```
-
-```{r countyFixedEffects, results="asis"}
-crude_rate_indivudal_FE <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Individual Income`", "County")
-crude_rate_household_FE <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`", "County")
-stargazer(lm(crude_rate_individual_FE, df_acs1),
-          lm(crude_rate_individual_FE, df_acs5),
-          lm(crude_rate_household_FE, df_acs1),
-          lm(crude_rate_household_FE, df_acs5),
-          covariate.labels = c(
-    "Median Individual Income",
-    "Median Household Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  ),
-          title = "Age-Adjusted Rate on Household Income with and without County Fixed Effects",
-          dep.var.caption = "Fatal Overdose Rate (Age-Adjusted)",
-          omit = "County",
-          column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
-          add.lines = list(c("Fixed Effects?", "Yes", "Yes", "Yes", "Yes")),
-          single.row = TRUE,
-          sep.width = 0,
-          font.size = "small",
-          float.env = "sidewaystable",
-          header = FALSE)
-```
-
-```{r allRateHouseholdIncome, results="asis"}
-all_rate_household <- regression_formula("`Fatal Overdose Rate (Includes Imputed)`", "`Median Household Income`")
-all_rate_household_FE <- regression_formula("`Fatal Overdose Rate (Includes Imputed)`", "`Median Household Income`", "Year")
-stargazer(lm(all_rate_household, df_acs1),
-          lm(all_rate_household, df_acs5),
-          lm(all_rate_household_FE, df_acs1),
-          lm(all_rate_household_FE, df_acs5),
-          covariate.labels = c(
-    "Median Household Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  ),
-          title = "Fatal Overdose Rate (Including Imputed) on Household Income with and without Year Fixed Effects",
-          dep.var.caption = "Fatal Overdose Rate (Including Imputed Values)",
           omit = "Year",
           column.labels = c("ACS1", "ACS5", "ACS1 with FE", "ACS5 with FE"),
           add.lines = list(c("Fixed Effects?", "No", "No", "Yes", "Yes")),
