@@ -127,7 +127,7 @@ stargazer(
 )
 ```
 
-Table 3.1 examines how the model changes when individual income is substituted for household income. While the coefficients and significance levels change slightly between the two models, the overall results stay the same. Replacing household income with individual income appears to slightly decrease the impact of the prescribing rate and increase the impact of disability rates. The model changes more between surveys than between household and individual income.
+Table 3.1 examines how the model changes when individual income is substituted for household income. While the coefficients and significance levels change slightly between the two models, the overall results stay the same. Replacing household income with individual income appears to slightly decrease the impact of the prescribing rate and increase the impact of disability rates. The model changes more between surveys than between household and individual income. Due to household income intuitively seeming more relevant than indidividual income, future models will use household income.
 
 
 ```{r doACS1ACS5Differ, results="asis"}
@@ -210,7 +210,7 @@ stargazer(
 )
 ```
 
-Table 3.4 shows the differences between using the crude fatal overdose rate, the age-adjusted fatal overdose rate, and the imputed overdose rate. While there are minor differences between these model specifications, they all return very similar results. Adjusting the fatal overdose rate for age decreases the signficiance of the prescribing rate to the 10% level from the 1% level. Using the age-adjusted fatal overdose rate increases the protective effect of population density on fatal overdoses. This probably means that there is correlation between the age distribution of a county and its population density. Using the age-adjusted rate makes all male disability rates insignificant, and increases the impact of female disability rates. This is likely due to the fact that the disability rates are broken down into age bins. The imputed rate produces results are almost identical to the crude rate results. This is unsuprising, as the imputed rate is simply the crude rate with a few more observations.
+Table 3.4 shows the differences between using the crude fatal overdose rate, the age-adjusted fatal overdose rate, and the imputed overdose rate. While there are minor differences between these model specifications, they all return very similar results. Adjusting the fatal overdose rate for age decreases the signficiance of the prescribing rate to the 10% level from the 1% level. Using the age-adjusted fatal overdose rate increases the protective effect of population density on fatal overdoses. This probably means that there is correlation between the age distribution of a county and its population density. Using the age-adjusted rate makes all male disability rates insignificant, and increases the impact of female disability rates. This is likely due to the fact that the disability rates are broken down into age bins. The imputed rate produces results are almost identical to the crude rate results. This is unsuprising, as the imputed rate is simply the crude rate with a few more observations. Given that using the age-adjusted rate reduces the number of observations significantly, and the imputed rate only provides two more observations while significantly complicating the dependent variable, the rest of this thesis will use the crude rate.
 
 
 ```{r doCountyFixedEffectsMatter, results="asis"}
@@ -255,6 +255,41 @@ stargazer(
 ```
 
 Table 3.6 examines whether or not including county fixed effects improves the model. Going off the R squared values, including county fixed effects increases the explanatory power of the model by a little over 50%. As before, the five year estimates have greater explanatory power than the one year estimates. Including fixed effects dramatically increases the protective effect of living in a "Medium Metro", but makes all other density levels insignificant. "Percent Black" is only significant with five year estimates without county fixed effects. Fixed effects increase the protective effect of education, but "bachelors or more" is always statistically insignificant, and "some college" is only significant with one year estimates. Looking at five year estimates, county fixed effects significantly increase the protective effect of a high disability rate among older males. Finally, female disability rates are insignificant with one year estimates coupled with fixed effects, and only significant for those under five or between 35 and 64 when using five year estimates. Since the explanatory power of the model is much greater with county fixed effects, they will be used in the final implementation of the model.
+
+
+```{r finalRegressionModel}
+stargazer(
+  county_FE_acs5,
+  covariate.labels = c(
+    "Median Household Income",
+    "Prescribing Rate",
+    "Density: Small Metro",
+    "Density: Micropolitan",
+    "Density: Large Fring Metro",
+    "Density: Medium Metro",
+    "Density: Large Central Metro",
+    "\\% Black",
+    "\\% with Some College",
+    "\\% with Bachelors or More",
+    "\\% Disabled: Males Under 5",
+    "\\% Disabled: Males 5 to 17",
+    "\\% Disabled: Males 18 to 34",
+    "\\% Disabled: Males 35 to 64",
+    "\\% Disabled: Males 65 to 74",
+    "\\% Disabled: Males 75 and Up",
+    "\\% Disabled: Females Under 5",
+    "\\% Disabled: Females 5 to 17",
+    "\\% Disabled: Females 18 to 34",
+    "\\% Disabled: Females 35 to 64",
+    "\\% Disabled: Females 65 to 74",
+    "\\% Disabled: Females 75 and Up"
+  ),
+  title = "Final Regression Model",
+  omit = c("Year", "County", "Constant"),
+  single.row = TRUE,
+  header = FALSE
+)
+```
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
 
