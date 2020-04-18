@@ -127,18 +127,46 @@ stargazer(
 )
 ```
 
+Table 3.1 examines how the model changes when individual income is substituted for household income. While the coefficients and significance levels change slightly between the two models, the overall results stay the same. Replacing household income with individual income appears to slightly decrease the impact of the prescribing rate and increase the impact of disability rates. The model changes more between surveys than between household and individual income.
+
 ```{r doACS1ACS5Differ, results="asis"}
 stargazer(
   crude_rate_acs1,
   crude_rate_acs5,
+  covariate.labels = c(
+    "Median Household Income",
+    "Prescribing Rate",
+    "Density: Small Metro",
+    "Density: Micropolitan",
+    "Density: Large Fring Metro",
+    "Density: Medium Metro",
+    "Density: Large Central Metro",
+    "\\% Black",
+    "\\% with Some College",
+    "\\% with Bachelors or More",
+    "\\% Disabled: Males Under 5",
+    "\\% Disabled: Males 5 to 17",
+    "\\% Disabled: Males 18 to 34",
+    "\\% Disabled: Males 35 to 64",
+    "\\% Disabled: Males 65 to 74",
+    "\\% Disabled: Males 75 and Up",
+    "\\% Disabled: Females Under 5",
+    "\\% Disabled: Females 5 to 17",
+    "\\% Disabled: Females 18 to 34",
+    "\\% Disabled: Females 35 to 64",
+    "\\% Disabled: Females 65 to 74",
+    "\\% Disabled: Females 75 and Up"
+  ),
   title = "Do ACS1 and ACS5 Produce Comparable Results?",
-  omit = "Year",
+  omit = c("Year", "Constant"),
   column.labels = c("ACS1", "ACS5"),
   single.row = TRUE,
   font.size = "small",
   header = FALSE
 )
 ```
+
+Table 3.3 examines the differences between modeling American Community Survey one year and five year estimates. "ACS1" refers to the one year estimates, whereas "ACS5" refers to the five year estimates. There are several signfiicant changes that occur when switching between one and five year estimates. For one, the coefficient for the prescribing rate goes down slightly, although to a degree that is almost unnoticable. The significance and impact of the density level dummies changes as well. This is likely due to the five year estimates containing more small, rural counties. The coefficient of "Percent Black" more than doubles when the five year estimates are used, and is only significant with them. Five year estimates increase the protective effect of a high disability rate among older males, and change the coefficients of the female disability rates in an ambigious fashion. Finally, the five year estimates have greater explanatory power than the one year estimates.
 
 ```{r doCrudeAgeImputedDifferACS1, results="asis"}
 stargazer(
