@@ -1,6 +1,6 @@
 # Results
 
-```{r regressionFormula}
+```{r regressionFormulaFunction}
 regression_formula <- function(rate_variable, income_variable, fixed_effects=NULL) {
   
   # check that rate_variable is valid
@@ -55,7 +55,9 @@ regression_formula <- function(rate_variable, income_variable, fixed_effects=NUL
   regression_formula
   
 }
+```
 
+```{r produceRegressionFormulas}
 # crude rate
 crude_rate_formula <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`", "Year")
 crude_rate_acs1 <- lm(crude_rate_formula, df_acs1)
@@ -72,7 +74,6 @@ imputed_acs1 <- lm(imputed_formula, df_acs1)
 imputed_acs5 <- lm(imputed_formula, df_acs5)
 
 # individual income
-# show that household and individual are not significantly different
 crude_rate_formula_individual_income <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`", "Year")
 crude_rate_individual_acs1 <- lm(crude_rate_formula_individual_income, df_acs1)
 crude_rate_individual_acs5 <- lm(crude_rate_formula_individual_income, df_acs5)
@@ -81,6 +82,24 @@ crude_rate_individual_acs5 <- lm(crude_rate_formula_individual_income, df_acs5)
 county_FE_formula <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`", "Year + County")
 county_FE_acs1 <- lm(county_FE_formula, df_acs1)
 county_FE_acs5 <- lm(county_FE_formula, df_acs5)
+```
+
+```{r showThatHouseholdAndIndividualIncomeNotDifferent}
+# show that household and individual are not significantly different
+stargazer(
+  crude_rate_acs1,
+  crude_rate_individual_acs1,
+  crude_rate_acs5,
+  crude_rate_individual_acs5,
+  title = "Does Individual vs Household Income Significantly Change the Model?",
+  omit = "Year",
+  column.labels = c("ACS1 Household", "ACS1 Individual", "ACS5 Household", "ACS5 Individual"),
+  single.row = TRUE,
+  float.env = "sidewaystable",
+  sep.width = 0,
+  font.size = "small",
+  header = FALSE
+)
 ```
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
