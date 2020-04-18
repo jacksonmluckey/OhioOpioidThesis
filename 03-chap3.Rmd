@@ -258,33 +258,6 @@ Table 3.6 examines whether or not including county fixed effects improves the mo
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
 
-```{r deprecatedCovariateLabels}
-covariate.labels = c(
-    "Median Individual Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  )
-```
-
 ```{r tobit, eval=FALSE}
 # disabled because no censored regressions
 crude_rate_household <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`")
@@ -330,25 +303,7 @@ stargazer(censReg(crude_rate_household, data = df_acs1, logLikOnly = FALSE),
           header = FALSE)
 ```
 
-## Ordinary Least Squares Multiple Regression
-
-```{r prepareBasicOLS, eval=FALSE}
-# deprecated?
-basic_model <- lm(basic_regression_formula, df)
-
-df_no_cle <- df %>%
-  filter(county != "Cuyahoga")
-
-basic_model_no_cle <- lm(basic_regression_formula, df_no_cle)
-```
-
-```{r stargazerOLS, results="asis", eval=FALSE}
-# deprecated?
-stargazer(basic_model, basic_model_no_cle,
-          title = "OLS Multiple Regression With (1) and Without (2) Cuyahoga County",
-          single.row = TRUE,
-          header = FALSE)
-```
+# Deprecated text
 
 The ordinary least squares multiple regression models in table 3.1 explain just under 30% of the variation in the fatal opioid overdose rate. Regardless of whether or not Cuyahoga county is included in the sample, the same four explanatory variables are statistically significant: individual income per capita, percent black, bachelors degree or more, and the percent of females between the ages 35 and 64 with a disability. As income increases, so do overdoses. This could be explained by increased capacity to purchase opioids, which can cost over $100 a day [@macyDopesickDealersDoctors2018; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016]. As the percentage of the county population that is black increases, opioid overdoses increase. This juxtaposes the literature, which suggested that opioid addiction is primarily a rural and suburban white phenomena. It is possible that the counties excluded from the sample are responsible for this effect. As the percentage of the adult population of a county that has a bachelors degree or higher rises, opioid overdoses fall. There are several possible explanations for this, including education providing job opportunities that prevent deaths of despair, education helping individuals make informed health decision, or education changing individual's social networks in a way that makes opioids harder to access. Finally, as the percentage of women between the ages 35 and 64 with a disability increases, opioid overdoses increase. While the literature stated that disabilities increase opioid use, it generally emphasized disabilities in men, especially in men with a blue-collar occupation.
 
@@ -357,21 +312,3 @@ Excluding Cuyahoga county from the samle increases the explanatory power of the 
 ## Tobit Model
 
 For the Tobit model, I used the minimum value of OD_rate across the entire dataset as my left limit for the censored variable as instructed to by Denise. According to Denise, if tobit coefficients are very similar to simple linear regression coefficients, then censoring is not a big issue [@hareThesisMeetings2019]. As shown in table 3.3, there does not appear to be a significant difference between the censored regression model estimate parameters and the ordinary least squares multiple regression model estimate parameters. Therefore, we can assume that censoring is not a significant issue with the current data. Table 3.2 shows that excluding Cuyahoga county has similar effects on both the tobit and OLS model.
-
-```{r stargazerTobit, results = "asis", eval=FALSE}
-# deprecated?
-tobit_with_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df, logLikOnly = FALSE)
-tobit_without_cle <- censReg(basic_regression_formula, left = 0.5066819, data = df_no_cle, logLikOnly = FALSE)
-stargazer(tobit_with_cle, tobit_without_cle,
-          title = "Tobit Model With (1) and Without (2) Cuyahoga County",
-          single.row = TRUE,
-          header = FALSE)
-```
-
-```{r stargazerTobitOLS, results = "asis", eval=FALSE}
-# deprecated?
-stargazer(basic_model, tobit_with_cle,
-          title = "OLS Multiple Regression (1) vs Tobit (2)",
-          single.row = TRUE,
-          header = FALSE)
-```
