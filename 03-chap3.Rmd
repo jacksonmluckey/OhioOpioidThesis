@@ -57,19 +57,30 @@ regression_formula <- function(rate_variable, income_variable, fixed_effects=NUL
 }
 
 # crude rate
-crude_rate_individual_formula <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`", "Year")
-crude_rate_individual_acs1 <- lm(crude_rate_individual_formula, df_acs1)
-crude_rate_individual_acs5 <- lm(crude_rate_individual_formula, df_acs5)
+crude_rate_formula <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`", "Year")
+crude_rate_acs1 <- lm(crude_rate_formula, df_acs1)
+crude_rate_acs5 <- lm(crude_rate_formula, df_acs5)
 
 # age adjusted rate
-age_adjusted_rate_individual_formula <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Individual Income`", "Year")
-age_adjusted_rate_individual_acs1 <- lm()
+age_adjusted_rate_formula <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`", "Year")
+age_adjusted_rate_acs1 <- lm(age_adjusted_rate_formula, df_acs1)
+age_adjusted_rate_acs5 <- lm(age_adjusted_rate_formula, df_acs5)
 
 # with imputed values
+imputed_formula <- regression_forumula("`Fatal Overdose Rate (Includes Imputed)`", "`Median Household Income`", "Year")
+imputed_acs1 <- lm(imputed_formula, df_acs1)
+imputed_acs5 <- lm(imputed_formula, df_acs5)
 
+# individual income
 # show that household and individual are not significantly different
+crude_rate_formula_individual_income <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Individual Income`", "Year")
+crude_rate_individual_acs1 <- lm(crude_rate_formula_individual_income, df_acs1)
+crude_rate_individual_acs5 <- lm(crude_rate_formula_individual_income, df_acs5)
 
 # with county Fixed Effects
+county_FE_formula <- regression_formula("`Fatal Overdose Crude Rate`", "`Median Household Income`", "Year + County")
+county_FE_acs1 <- lm(county_FE_formula, df_acs1)
+county_FE_acs5 <- lm(county_FE_formula, df_acs5)
 ```
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
