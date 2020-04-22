@@ -1,5 +1,7 @@
 # Results
 
+## Model Design
+
 ```{r regressionFormulaFunction}
 regression_formula <- function(rate_variable, income_variable, fixed_effects=NULL) {
   
@@ -84,6 +86,8 @@ county_FE_acs1 <- lm(county_FE_formula, df_acs1)
 county_FE_acs5 <- lm(county_FE_formula, df_acs5)
 ```
 
+### Household vs Individual Income
+
 ```{r doHouseholdAndIndividualIncomeDiffer, results="asis"}
 # show that household and individual are not significantly different
 stargazer(
@@ -129,6 +133,7 @@ stargazer(
 
 Table 3.1 examines how the model changes when individual income is substituted for household income. While the coefficients and significance levels change slightly between the two models, the overall results stay the same. Replacing household income with individual income appears to slightly decrease the impact of the prescribing rate and increase the impact of disability rates. The model changes more between surveys than between household and individual income. Due to household income intuitively seeming more relevant than indidividual income, future models will use household income.
 
+### One Year vs Five Year Estimates
 
 ```{r doACS1ACS5Differ, results="asis"}
 stargazer(
@@ -169,6 +174,7 @@ stargazer(
 
 Table 3.3 examines the differences between modeling American Community Survey one year and five year estimates. "ACS1" refers to the one year estimates, whereas "ACS5" refers to the five year estimates. There are several signfiicant changes that occur when switching between one and five year estimates. For one, the coefficient for the prescribing rate goes down slightly, although to a degree that is almost unnoticable. The significance and impact of the density level dummies changes as well. This is likely due to the five year estimates containing more small, rural counties. The coefficient of "Percent Black" more than doubles when the five year estimates are used, and is only significant with them. Five year estimates increase the protective effect of a high disability rate among older males, and change the coefficients of the female disability rates in an ambigious fashion. Finally, the five year estimates have greater explanatory power than the one year estimates. Due to the increased explanatory power, I will be using the five year estimates throughout the rest of my thesis.
 
+### Fatal Overdose Rate Metrics
 
 ```{r doCrudeAgeImputedDifferACS5, results="asis"}
 stargazer(
@@ -212,6 +218,7 @@ stargazer(
 
 Table 3.4 shows the differences between using the crude fatal overdose rate, the age-adjusted fatal overdose rate, and the imputed overdose rate. While there are minor differences between these model specifications, they all return very similar results. Adjusting the fatal overdose rate for age decreases the signficiance of the prescribing rate to the 10% level from the 1% level. Using the age-adjusted fatal overdose rate increases the protective effect of population density on fatal overdoses. This probably means that there is correlation between the age distribution of a county and its population density. Using the age-adjusted rate makes all male disability rates insignificant, and increases the impact of female disability rates. This is likely due to the fact that the disability rates are broken down into age bins. The imputed rate produces results are almost identical to the crude rate results. This is unsuprising, as the imputed rate is simply the crude rate with a few more observations. Given that using the age-adjusted rate reduces the number of observations significantly, and the imputed rate only provides two more observations while significantly complicating the dependent variable, the rest of this thesis will use the crude rate.
 
+### County Fixed Effects
 
 ```{r doCountyFixedEffectsMatter, results="asis"}
 stargazer(
@@ -256,6 +263,7 @@ stargazer(
 
 Table 3.6 examines whether or not including county fixed effects improves the model. Going off the R squared values, including county fixed effects increases the explanatory power of the model by a little over 50%. As before, the five year estimates have greater explanatory power than the one year estimates. Including fixed effects dramatically increases the protective effect of living in a "Medium Metro", but makes all other density levels insignificant. "Percent Black" is only significant with five year estimates without county fixed effects. Fixed effects increase the protective effect of education, but "bachelors or more" is always statistically insignificant, and "some college" is only significant with one year estimates. Looking at five year estimates, county fixed effects significantly increase the protective effect of a high disability rate among older males. Finally, female disability rates are insignificant with one year estimates coupled with fixed effects, and only significant for those under five or between 35 and 64 when using five year estimates. Since the explanatory power of the model is much greater with county fixed effects, they will be used in the final implementation of the model.
 
+## Final Model
 
 ```{r finalRegressionModel, results="asis"}
 stargazer(
@@ -293,9 +301,30 @@ stargazer(
 
 The final regression model can be found on table 3.8. The model uses American Community five year estimates, household income, county fixed effects, population density, prescribing rate, racial demographics, education levels, and disability rates. Of these, seven are statistically significant: being a small metropolitian area, a micropolitan area, or a medium metropolitan area, disability rates among males aged 35 to 64 and 65 to 74, and disability rates among females aged under 5 or between 35 and 64. Being in an area with a relatively low population density has a protective effect. Disability rates other than that of females aged 35 to 64 also have a protective effect. An increase in the disability rate of females aged 35 to 64 is associated with a greater fatal overdose rate, however. Overall, this model explains more than 80% of the variation between observations in the crude fatal overdose rate.
 
-In order to address potential data censoring, I also tried running a tobit model, which is a form of censored regression. I was unable to get tobit estimates, however, due to the large number of independent variables relative to the number of observations.
+## Further Testing
 
-Heteroskedacity test.
+In order to address potential data censoring, I also tried running a Tobit model, which is a form of censored regression. I was unable to get tobit estimates, however, due to the large number of independent variables relative to the number of observations. Regressions ran with fewer variables did converge, however, and showed no signficiant differences between an OLS and censored regression model. This indicates that there is little to no censoring in the data.
+
+obtain the squared OLS residuals
+replace dependent variable with squared residuals
+squared residuals = estimate of variance of each observation
+looking to see if variance is significantly associated with any variables in underlying model
+heteroskedacity = variance associated with variables
+in an ideal world, there are no significant t-statistics with this
+otherwise, there is heteroskedacity
+take the R^2 from 2nd regression and multiply by number of observations
+that becomes LM statistic
+which is distributed chi^2 with K degrees of freedom
+estimating 22 parameters including constant (K degrees of freedom)
+if R2 * 160 >  then reject null hypothesis of homoskedastic errors
+test is valid under the null (null = absence of pathology)
+reject the null => accept the pathology
+cluster SE at level of county (look into how to do with R)
+   -> subset of robust SE
+   -> controls for some counties having more predictable overdose deaths
+with 160 observations and K-DoF of 22
+
+Heteroskedacity test. Robust standard errors (clustered).
 
 Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
 
@@ -343,3 +372,5 @@ stargazer(censReg(crude_rate_household, data = df_acs1, logLikOnly = FALSE),
           float.env = "sidewaystable",
           header = FALSE)
 ```
+
+## Policy Implications
