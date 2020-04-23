@@ -172,7 +172,7 @@ stargazer(
 )
 ```
 
-Table 3.3 examines the differences between modeling American Community Survey one year and five year estimates. "ACS1" refers to the one year estimates, whereas "ACS5" refers to the five year estimates. There are several signfiicant changes that occur when switching between one and five year estimates. For one, the coefficient for the prescribing rate goes down slightly, although to a degree that is almost unnoticable. The significance and impact of the density level dummies changes as well. This is likely due to the five year estimates containing more small, rural counties. The coefficient of "Percent Black" more than doubles when the five year estimates are used, and is only significant with them. Five year estimates increase the protective effect of a high disability rate among older males, and change the coefficients of the female disability rates in an ambigious fashion. Finally, the five year estimates have greater explanatory power than the one year estimates. Due to the increased explanatory power, I will be using the five year estimates throughout the rest of my thesis.
+Table 3.3 examines the differences between modeling American Community Survey one year and five year estimates. "ACS1" refers to the one year estimates, whereas "ACS5" refers to the five year estimates. There are several significant changes that occur when switching between one and five year estimates. For one, the coefficient for the prescribing rate goes down slightly, although to a degree that is almost unnoticable. The significance and impact of the density level dummies changes as well. This is likely due to the five year estimates containing more small, rural counties. The coefficient of "Percent Black" more than doubles when the five year estimates are used, and is only significant with them. Five year estimates increase the protective effect of a high disability rate among older males, and change the coefficients of the female disability rates in an ambigious fashion. Finally, the five year estimates have greater explanatory power than the one year estimates. Due to the increased explanatory power, I will be using the five year estimates throughout the rest of my thesis.
 
 ### Fatal Overdose Rate Metrics
 
@@ -262,6 +262,8 @@ stargazer(
 ```
 
 Table 3.6 examines whether or not including county fixed effects improves the model. Going off the R squared values, including county fixed effects increases the explanatory power of the model by a little over 50%. As before, the five year estimates have greater explanatory power than the one year estimates. Including fixed effects dramatically increases the protective effect of living in a "Medium Metro", but makes all other density levels insignificant. "Percent Black" is only significant with five year estimates without county fixed effects. Fixed effects increase the protective effect of education, but "bachelors or more" is always statistically insignificant, and "some college" is only significant with one year estimates. Looking at five year estimates, county fixed effects significantly increase the protective effect of a high disability rate among older males. Finally, female disability rates are insignificant with one year estimates coupled with fixed effects, and only significant for those under five or between 35 and 64 when using five year estimates. Since the explanatory power of the model is much greater with county fixed effects, they will be used in the final implementation of the model.
+
+#### Test for County Joint Significance
 
 ## Final Model
 
