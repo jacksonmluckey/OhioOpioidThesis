@@ -270,43 +270,6 @@ Table 3.6 examines whether or not including county fixed effects improves the mo
 
 #### Test for County Joint Significance
 
-## Final Model
-
-```{r finalRegressionModel, results="asis", include=FALSE}
-# removed because Denise recommended drawing final conclusions off table 3.6 (3.6 with the messed up numbering, not the "real" numbering)
-stargazer(
-  county_FE_acs5,
-  covariate.labels = c(
-    "Median Household Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  ),
-  title = "Final Regression Model",
-  omit = c("Year", "County", "Constant"),
-  single.row = TRUE,
-  header = FALSE
-)
-```
-
 The final regression model can be found on table 3.8. The model uses American Community five year estimates, household income, county fixed effects, population density, prescribing rate, racial demographics, education levels, and disability rates. Of these, seven are statistically significant: being a small metropolitian area, a micropolitan area, or a medium metropolitan area, disability rates among males aged 35 to 64 and 65 to 74, and disability rates among females aged under 5 or between 35 and 64. Being in an area with a relatively low population density has a protective effect. Disability rates other than that of females aged 35 to 64 also have a protective effect. An increase in the disability rate of females aged 35 to 64 is associated with a greater fatal overdose rate, however. Overall, this model explains more than 80% of the variation between observations in the crude fatal overdose rate.
 
 ## Further Testing
