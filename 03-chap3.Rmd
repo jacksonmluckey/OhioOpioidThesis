@@ -272,7 +272,8 @@ Table 3.6 examines whether or not including county fixed effects improves the mo
 
 ## Final Model
 
-```{r finalRegressionModel, results="asis"}
+```{r finalRegressionModel, results="asis", include=FALSE}
+# removed because Denise recommended drawing final conclusions off table 3.6 (3.6 with the messed up numbering, not the "real" numbering)
 stargazer(
   county_FE_acs5,
   covariate.labels = c(
