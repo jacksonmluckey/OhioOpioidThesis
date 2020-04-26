@@ -139,47 +139,9 @@ Table 3.1 examines how the model changes when individual income is substituted f
 
 In all four model specifications, an increase in the opioid prescribing rate is associated with an increase in the fatal opioid overdose rate.
 
-
 ### One Year vs Five Year Estimates
 
-```{r doACS1ACS5Differ, results="asis"}
-stargazer(
-  crude_rate_acs1,
-  crude_rate_acs5,
-  covariate.labels = c(
-    "Median Household Income",
-    "Prescribing Rate",
-    "Density: Small Metro",
-    "Density: Micropolitan",
-    "Density: Large Fring Metro",
-    "Density: Medium Metro",
-    "Density: Large Central Metro",
-    "\\% Black",
-    "\\% with Some College",
-    "\\% with Bachelors or More",
-    "\\% Disabled: Males Under 5",
-    "\\% Disabled: Males 5 to 17",
-    "\\% Disabled: Males 18 to 34",
-    "\\% Disabled: Males 35 to 64",
-    "\\% Disabled: Males 65 to 74",
-    "\\% Disabled: Males 75 and Up",
-    "\\% Disabled: Females Under 5",
-    "\\% Disabled: Females 5 to 17",
-    "\\% Disabled: Females 18 to 34",
-    "\\% Disabled: Females 35 to 64",
-    "\\% Disabled: Females 65 to 74",
-    "\\% Disabled: Females 75 and Up"
-  ),
-  title = "Do ACS1 and ACS5 Produce Comparable Results?",
-  omit = c("Year", "Constant"),
-  column.labels = c("ACS1", "ACS5"),
-  single.row = TRUE,
-  font.size = "small",
-  header = FALSE
-)
-```
-
-Table 3.3 examines the differences between modeling with American Community Survey one year and five year estimates. `ACS1` refers to the one year estimates, whereas `ACS5` refers to the five year estimates. There are several significant changes that occur when switching between one and five year estimates. For one, the coefficient for the `prescribing rate` goes down slightly when using five year estimates, although to a degree that is almost unnoticable. In both cases the `prescribing rate` is staistically significant at the 1% level. The significance and impact of the density level dummies changes as well. With one year estimates, medium density areas are associated with a significantly higher overdose rate. In contrast, density has a statistically significant protective effect when using five year estimates. This is likely due to the five year estimates containing more small, rural counties, which the literature suggested have the highest overdose rates in Ohio. The coefficient of "Percent Black" more than doubles when the five year estimates are used, and is only significant with that dataset. While the coefficient for `percent with a bachelors degree or more` is close to zero and statistically insignificant with one year estimates, it has a statistically significant protective effect when using five year estimates. With five year estimates, as the `percent of males aged 18 to 34 with a disability` rises, the fatal opioid overdose rate rises. The protective effect of the `percent of males aged 36 to 64 with a disability` increases in both magnitude and statistical significance when using five year estimates instead of one year estimates. With five year estimates, the `percent of males aged 65 to 74 with a disability` is associated with increased overdose deaths. Switching from one year to five year estimates increases the magnitude and statistical significance of the protective effect of disabilities among females aged under five and five to 17. Furthermore, using five year estimates increases the coefficient and significance of the `percent of females aged 35 to 64 with a disability` variable. Finally, the five year estimates have greater explanatory power than the one year estimates. Due to the increased explanatory power, I will be using the five year estimates throughout the rest of my thesis.
+Columns 2 and 4 in table 3.1 examines the differences between modeling with American Community Survey one year and five year estimates. `ACS1` refers to the one year estimates, whereas `ACS5` refers to the five year estimates. There are several significant changes that occur when switching between one and five year estimates. For one, the coefficient for the `prescribing rate` goes down slightly when using five year estimates, although to a degree that is almost unnoticable. In both cases the `prescribing rate` is staistically significant at the 1% level. The significance and impact of the density level dummies changes as well. With one year estimates, medium density areas are associated with a significantly higher overdose rate. In contrast, density has a statistically significant protective effect when using five year estimates. This is likely due to the five year estimates containing more small, rural counties, which the literature suggested have the highest overdose rates in Ohio. The coefficient of "Percent Black" more than doubles when the five year estimates are used, and is only significant with that dataset. While the coefficient for `percent with a bachelors degree or more` is close to zero and statistically insignificant with one year estimates, it has a statistically significant protective effect when using five year estimates. With five year estimates, as the `percent of males aged 18 to 34 with a disability` rises, the fatal opioid overdose rate rises. The protective effect of the `percent of males aged 36 to 64 with a disability` increases in both magnitude and statistical significance when using five year estimates instead of one year estimates. With five year estimates, the `percent of males aged 65 to 74 with a disability` is associated with increased overdose deaths. Switching from one year to five year estimates increases the magnitude and statistical significance of the protective effect of disabilities among females aged under five and five to 17. Furthermore, using five year estimates increases the coefficient and significance of the `percent of females aged 35 to 64 with a disability` variable. Finally, the five year estimates have greater explanatory power than the one year estimates. Due to the increased explanatory power, I will be using the five year estimates throughout the rest of my thesis.
 
 ### Fatal Overdose Rate Metrics
 
