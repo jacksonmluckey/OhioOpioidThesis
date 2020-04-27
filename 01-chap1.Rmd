@@ -52,10 +52,12 @@ df %>%
   filter(Year > 2005,
          Year < 2017) %>%
   group_by(County, Year) %>%
-  summarize(PopAdjustedRate = mean(`Prescribing Rate`, na.rm = TRUE) * mean(`Population (CDC)`, na.rm = TRUE)) %>%
+  summarize(PopAdjustedRate = mean(`Prescribing Rate`, na.rm = TRUE) * mean(`Population (CDC)`, na.rm = TRUE),
+            Deaths = mean(`Overdose Deaths`, na.rm = TRUE)) %>%
   ungroup() %>%
   group_by(Year) %>%
-  summarize(PopAdjustedRate = sum(PopAdjustedRate, na.rm = TRUE)) %>%
+  summarize(PopAdjustedRate = sum(PopAdjustedRate, na.rm = TRUE),
+            Deaths = mean(Deaths, na.rm = TRUE)) %>%
   ggplot(aes(x = Year, y = PopAdjustedRate)) +
   geom_point() +
   geom_line() +
