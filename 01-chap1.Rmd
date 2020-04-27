@@ -28,32 +28,6 @@ Each model of addiction suggests different policies. Under the imperfectly ratio
 
 ## History of the Opioid Epidemic
 
-### Timeline
-
-1980s: Last physicians from first opioid epidemic retire
-
-1995: Pain becomes fifth vital sign in physician guidelines
-
-1996: Oxycontin is brought to market by Purdue Pharmaceuticals
-
-1999: VA adopts pain as fifth vital sign [@jonesBriefHistoryOpioid2018]
-
-2001: First major book on prescription painkiller abuse is written (Meier's *Painkiller*)
-
-2000s: Heroin from Nayarit available in most cities
-
-2007: Purdue (the Oxycontin manufacturers) pleads guilty to misbranding the drug [@jonesBriefHistoryOpioid2018; @quinonesDreamlandTrueTale2016]
-
-2010: Oxycontin is reformulated
-
-2010s: Fentanyl and other synthetic opioids enter the black market supply chain
-
-2016: FDA begins to require CME for physicians prescribing opioids [@jonesBriefHistoryOpioid2018]
-
-2017: US government labels the epidemic as a public health emergency[@jonesBriefHistoryOpioid2018]
-
-2019: HEALing Communities Study announced by the National Institute of Health
-
 ### What are Opioids?
 
 Opioids are a group of powerful analgesic drugs [@kastinHandbookBiologicallyActive2013]. They both alleviate pain and create intense euphoria, and are considered highly addictive [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Opioids generate this effects via activating opioid receptors [@kastinHandbookBiologicallyActive2013]. Opium--the original opioid--is processed liquid from opium poppies, and has been used for pleasure, pain alleviation, and controlling dysentry for thousands of years. In the early 1800s, opium was first purified into morphine, which was later transformed into heroin in the 1870s. More opium derivatives, as well as fully synthetic opioids, were developed in the 1900s. Today, the family of opioids includes heroin, morphine, fentanyl, oxycodone, hydrocodone, buprenorphine, and methadone. Unfortunately, these new stronger opioids increased the risk of overdose, which is when a high dose of opioids causes respiratory failure among other things. While opioids are highly addictive and considered dangerous, they remain uniquely effective at treating severe pain [@brummettManagingPainEssentials2013; @rastegarAmericanSocietyAddiction2015].

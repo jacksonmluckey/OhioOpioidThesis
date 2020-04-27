@@ -20,3 +20,29 @@ If you feel it necessary to include an appendix, it goes here.
 
 ```{r ref.label='include_packages_2', results='hide', echo = TRUE}
 ```
+
+# Timeline
+
+1980s: Last physicians from first opioid epidemic retire
+
+1995: Pain becomes fifth vital sign in physician guidelines
+
+1996: Oxycontin is brought to market by Purdue Pharmaceuticals
+
+1999: VA adopts pain as fifth vital sign [@jonesBriefHistoryOpioid2018]
+
+2001: First major book on prescription painkiller abuse is written (Meier's *Painkiller*)
+
+2000s: Heroin from Nayarit available in most cities
+
+2007: Purdue (the Oxycontin manufacturers) pleads guilty to misbranding the drug [@jonesBriefHistoryOpioid2018; @quinonesDreamlandTrueTale2016]
+
+2010: Oxycontin is reformulated
+
+2010s: Fentanyl and other synthetic opioids enter the black market supply chain
+
+2016: FDA begins to require CME for physicians prescribing opioids [@jonesBriefHistoryOpioid2018]
+
+2017: US government labels the epidemic as a public health emergency[@jonesBriefHistoryOpioid2018]
+
+2019: HEALing Communities Study announced by the National Institute of Health
