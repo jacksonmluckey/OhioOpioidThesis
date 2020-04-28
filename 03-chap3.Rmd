@@ -2,8 +2,6 @@
 
 This chapter proceeds with the models described in the previous chapter. The regression tables resulting from the models will be interepted, which leads into policy recommendations. All models include year fixed effects.
 
-(the wonky table count is due to the the random "missing" tables)
-
 ## Model Design
 
 ```{r regressionFormulaFunction}
