@@ -51,27 +51,24 @@ The majority of my independent variables were sourced from the census American C
 
 The fatal overdose rate, prescribing rate, and density level all come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is available as a crude rate, an age-adjusted rate, and an imputed rate. The model will be tested on all three independent variables. The density level is a qualitative categorical variable ranging from "noncore" to "large central metro". The prescribing rate is indexed to 100. The data was paired with the census and overdose data using the FIPS code, which is a GEOID [@calgaryNCHSDrugPoisoning].
 
-```{r mapCountiesIncludedInSample, fig.cap="Counties included in the data", eval=FALSE}
-# eval=FALSE because it needs to be updated to work with my improved dataset
+```{r mapCountiesIncludedInSample, fig.cap="Counties included in the data"}
 counties_included <- df %>%
-  group_by(county, GEOID) %>%
-  summarize(population = mean(population),
-            year_count = n()) %>%
+  mutate(is_acs1 = if_else(survey == "acs1", TRUE, FALSE),
+         is_acs5 = if_else(survey == "acs5", TRUE, FALSE)) %>%
+  group_by(County, GEOID) %>%
+  summarize(acs1 = sum(is_acs1, na.rm = TRUE),
+            acs5 = sum(is_acs5, na.rm = TRUE)) %>%
+  filter(!is.na(GEOID)) %>%
   ungroup() %>%
-  mutate(included_at_least_once = !is.na(population)) %>%
-  mutate(included_every_year = if_else(year_count == 7, TRUE, FALSE)) %>%
-  mutate(included = case_when(included_at_least_once == FALSE ~ "No",
-                              included_every_year == TRUE ~ "Yes",
-                              included_at_least_once == TRUE & included_every_year == FALSE ~ "Some years")) %>%
-  select(GEOID, included)
+  mutate(included = if_else(acs1 > 0, TRUE, FALSE))
 
 base_map %>%
   left_join(counties_included, by = c("GEOID" = "GEOID")) %>%
-  mutate(included = if_else(is.na(included), "No", included)) %>%
   ggplot(aes(geometry = geometry, fill = included)) +
   geom_sf() +
-  labs(fill = "Included in Sample?",
-       title = "Counties Included in Sample",
+  labs(fill = "Included?",
+       title = "Counties Included in ACS1 Sample",
+       subtitle = "All counties included in ACS5",
        x = "",
        y = "") +
   theme_map +
