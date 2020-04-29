@@ -47,7 +47,6 @@ library(thesisdown)
 ```{r loadPackages, include=FALSE}
 # Load the libraries and data used in this Rmd file
 library(tidyverse)
-library(tidycensus)
 library(broom) # for manipulating regression output
 library(here)
 library(knitr) # for kable
@@ -58,6 +57,7 @@ library(rvest)
 library(glue)
 library(censReg)
 library(stargazer) # for regression output
+library(tidycensus) # putting this last stops the intermittent st_drivers() error
 options(knitr.table.format.args = list(scientific = FALSE,
         big.mark = ",",
         digits = 5),
