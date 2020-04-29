@@ -252,8 +252,6 @@ In order to address potential data censoring, I also tried running a Tobit model
 
 [^2]: the `censReg` package returns "Error: there are no censored observations" unless I engage in data-hacking
 
-Fixed effects: https://www.econometrics-with-r.org/10-3-fixed-effects-regression.html
-
 ```{r tobit, eval=FALSE}
 # disabled because no censored regressions
 crude_rate_household <- regression_formula("`Fatal Overdose Age-Adjusted Rate`", "`Median Household Income`")
