@@ -79,6 +79,12 @@ base_map %>%
 
 ```{r results="asis"}
 as.data.frame(df_acs1) %>%
+  mutate(`Density: Noncore` = if_else(Density == "Noncore", TRUE, FALSE),
+         `Density: Small Metro` = if_else(Density == "Small Metro", TRUE, FALSE),
+         `Density: Micropolitan` = if_else(Density == "Micropolitan", TRUE, FALSE),
+         `Density: Large Fringe Metro` = if_else(Density == "Large Fringe Metro", TRUE, FALSE),
+         `Density: Medium Metro` = if_else(Density == "Medium Metro", TRUE, FALSE),
+         `Density: Large Central Metro` = if_else(Density == "Large Central Metro", TRUE, FALSE)) %>%
   select(-Year,
          -GEOID,
          -`Population (CDC)`,
@@ -92,9 +98,15 @@ as.data.frame(df_acs1) %>%
          -`Fatal Overdose Modeled Rate`) %>%
   select(`Fatal Overdose Crude Rate`,
          `Fatal Overdose Age-Adjusted Rate`,
-         `Fatal Overdose Rate (Includes Imputed)`,
-         `Prescribing Rate`,
+         `Fatal Overdose Imputed Rate` = `Fatal Overdose Rate (Includes Imputed)`,
          `% Black` = `Percent Black`,
+         `Density: Noncore`,
+         `Density: Small Metro`,
+         `Density: Micropolitan`,
+         `Density: Large Fringe Metro`,
+         `Density: Medium Metro`,
+         `Density: Large Central Metro`,
+         `Prescribing Rate`,
          `Median Individual Income`,
          `Median Household Income`,
          `% with Highschool or Less` = `Percent with Highschool or Less`,
@@ -112,7 +124,65 @@ as.data.frame(df_acs1) %>%
          `% Disabled: Females 35 to 64` = `Percent of Females Aged 35 to 64 with a Disability`,
          `% Disabled: Females 65 to 74` = `Percent of Females Aged 65 to 74 with a Disability`,
          `% Disabled: Females 75 and Up` = `Percent of Females Aged 75 and Up with a Disability`) %>%
-  stargazer(header = FALSE)
+  stargazer(header = FALSE,
+            summary.stat = c("mean", "median", "sd", "min", "max"),
+            title = "One Year Estimates (218 Observations)",
+            font.size = "small",
+            digits = 2)
+```
+
+```{r results="asis"}
+as.data.frame(df_acs5) %>%
+  mutate(`Density: Noncore` = if_else(Density == "Noncore", TRUE, FALSE),
+         `Density: Small Metro` = if_else(Density == "Small Metro", TRUE, FALSE),
+         `Density: Micropolitan` = if_else(Density == "Micropolitan", TRUE, FALSE),
+         `Density: Large Fringe Metro` = if_else(Density == "Large Fringe Metro", TRUE, FALSE),
+         `Density: Medium Metro` = if_else(Density == "Medium Metro", TRUE, FALSE),
+         `Density: Large Central Metro` = if_else(Density == "Large Central Metro", TRUE, FALSE)) %>%
+  select(-Year,
+         -GEOID,
+         -`Population (CDC)`,
+         -`Overdose Deaths`,
+         -survey,
+         -`Are Overdose Deaths Suppressed?`,
+         -`Is the Fatal Overdose Crude Rate Unreliable?`,
+         -`Is the Fatal Overdose Crude Rate Suppressed?`,
+         -`Is the Fatal Overdose Age-Adjusted Rate Unreliable?`,
+         -`Is the Fatal Overdose Age-Adjusted Suppressed?`,
+         -`Fatal Overdose Modeled Rate`) %>%
+  select(`Fatal Overdose Crude Rate`,
+         `Fatal Overdose Age-Adjusted Rate`,
+         `Fatal Overdose Imputed Rate` = `Fatal Overdose Rate (Includes Imputed)`,
+         `% Black` = `Percent Black`,
+         `Density: Noncore`,
+         `Density: Small Metro`,
+         `Density: Micropolitan`,
+         `Density: Large Fringe Metro`,
+         `Density: Medium Metro`,
+         `Density: Large Central Metro`,
+         `Prescribing Rate`,
+         `Median Individual Income`,
+         `Median Household Income`,
+         `% with Highschool or Less` = `Percent with Highschool or Less`,
+         `% with Some College` = `Percent with Some College`,
+         `% with Bachelors or More` = `Percent with Bachelors or More`,
+         `% Disabled: Males Under 5` = `Percent of Males Aged Under 5 with a Disability`,
+         `% Disabled: Males 5 to 17` = `Percent of Males Aged 5 to 17 with a Disability`,
+         `% Disabled: Males 17 to 34` = `Percent of Males Aged 18 to 34 with a Disability`,
+         `% Disabled: Males 35 to 64` = `Percent of Males Aged 35 to 64 with a Disability`,
+         `% Disabled: Males 65 to 74` = `Percent of Males Aged 65 to 74 with a Disability`,
+         `% Disabled: Males 75 and Up` = `Percent of Males Aged 75 and Up with a Disability`,
+         `% Disabled: Females Under 5` = `Percent of Females Aged Under 5 with a Disability`,
+         `% Disabled: Females 5 to 17` = `Percent of Females Aged 5 to 17 with a Disability`,
+         `% Disabled: Females 17 to 34` = `Percent of Females Aged 18 to 34 with a Disability`,
+         `% Disabled: Females 35 to 64` = `Percent of Females Aged 35 to 64 with a Disability`,
+         `% Disabled: Females 65 to 74` = `Percent of Females Aged 65 to 74 with a Disability`,
+         `% Disabled: Females 75 and Up` = `Percent of Females Aged 75 and Up with a Disability`) %>%
+  stargazer(header = FALSE,
+            summary.stat = c("mean", "median", "sd", "min", "max"),
+            title = "Five Year Estimates (257 Observations)",
+            font.size = "small",
+            digits = 2)
 ```
 
 For the education variables, "_s_" refers to small bins (e.g. 11th grade education, 12th grade education), whereas "_b_" refers to the aggregation of multiple small bins (e.g. high school or less, college or more). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree. The original data was provided as a raw count for each education level (i.e. number of people with an 11th grade education, number of people with a 12th grade education, and so on). To convert it into percentages, I divided each raw count by the total population of the county and assumed that all individuals would be included in one--and only one--column.
