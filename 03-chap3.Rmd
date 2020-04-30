@@ -133,8 +133,6 @@ stargazer(
 )
 ```
 
-\hypertarget{household-vs-individual-income}{%
-\subsection{Household vs Individual Income}\label{household-vs-individual-income}}
 \begin{sidewaystable}[!htbp] \centering 
   \caption{Does Individual vs Household Income Significantly Change the Model?} 
   \label{} 
@@ -234,8 +232,6 @@ stargazer(
 )
 ```
 
-\hypertarget{fatal-overdose-rate-metrics}{%
-\subsection{Fatal Overdose Rate Metrics}\label{fatal-overdose-rate-metrics}}
 \begin{sidewaystable}[!htbp] \centering 
   \caption{How does the type of overdose rate metric influence the results (AS5)?} 
   \label{} 
@@ -325,8 +321,6 @@ stargazer(
 )
 ```
 
-\hypertarget{county-fixed-effects}{%
-\subsection{County Fixed Effects}\label{county-fixed-effects}}
 \begin{sidewaystable}[!htbp] \centering 
   \caption{Final Models} 
   \label{} 

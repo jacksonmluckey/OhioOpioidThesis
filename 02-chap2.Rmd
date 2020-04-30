@@ -187,20 +187,6 @@ as.data.frame(df_acs5) %>%
 
 We will now examine tables 2.1 and 2.2. The five year estimates include more observations than the one year estimates. The majority of variables are in percentage form in order to isolate the role of county population on the fatal drug overdose rate.. These variables are identified by the "%" in their name. Percentages are calculated dividing the raw count from the Census/CDC by the total population of the county that year. Percentages are stored in the format XX.X%, rather than .XXX%.
 
-The three fatal overdose rate measures have fairly similar values, but the age-adjusted rate is higher than the other two. This makes sense, as it factors how fatal overdose often occurs at ages where other causes of death are uncommon. A typical county in the one year estimates has around 28 people die of an overdose per 100,000. With five year estimates, that number increases to 32. The worst hit counties have approximately three times that death rate, with just over 100 people dying per year per 100,000. The least hit counties have under 10 deaths per year per 100,000. Overall, the overdose death rate is systemically higher with the five year estimates, which suggests that smaller counties have higher overdose rates.
-
-Race is included as the variable percent black. Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, percent black seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998]. The average county is approximately 4% black in the five year estimates, and 8% in the one year estimates. Some counties report zero black residents. The highest percentage of residents that are black is just over 30%.
-
-Density levels vary significantly between the one year and five year estimates. In the one year estimates, no counties are "noncore", whereas 27% are in the five year estimates. This makes sense, as "noncore" counties are very low in population, and therefore are not included in the one year estimates. The rest of this paragraph will use the five year estimates, since they are representative of Ohio as a whole. Excluding "noncore" counties, most counties in Ohio range from medium sized towns to medium sized cities, with over 60% being "micropolitan", "large fringe metro", or "medium metro". The few remaining counties are either small towns or the seats of Cleveland or Columbus.
-
-There is massive variation in the prescribing rate. Prescribing rates are higher and vary less in the one year estimates. In the five year estimates, prescribing rates vary by over 20,000%, which is shocking. With those estimates, a typical county has roughly half the maximum number of prescriptions, and almost hundred times the minimum number of prescriptions.
-
-Income levels do not vary between the one year and five year estimates. This suggests that there is little correlation between income levels and low county population, and that the richest counties appear in both samples. Indidivual income is consistently just over half of household income. The wealthiest counties have over three times the level of income as the poorest counties.
-
-There is significant variation in education levels between counties. While in some counties less than ten percent of the adult population has a college degree, in others more than half of the population does. Education levels are higher in the one year estimates, suggesting that rural, low population counties are less educated on average.
-
-Disability is broken into age and sex bins. These bins are kept small because in order to aggregate them, I would need each county-year pair's population broken down into age and sex bins. The type of disability was ignored, as the literature suggested that painful, physical disabilities would have the greatest impact, and the census-provided disability bins only seperated out deafness and blindness. Unsuprisingly, it appears that disability rates soar after the age of 65. This might be because of individuals gaining access to healthcare through Medicare coverage, and therefore getting a formal diagnosis. Male disability rates are consistently higher than female disability rates until the age of 75. Disability rates are slightly higher in the five year estimates, suggesting that rural, low population counties have higher disability rates than average countues.
-
 ```{r overdoseRateDistribution, fig.cap="Distribution of drug overdose rate"}
 df %>%
   filter(!is.na(`Fatal Overdose Crude Rate`),
@@ -216,7 +202,23 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hillPrinciplesEconometrics2011]. If it is occuring, however, the censoring is fairly minimal. Overall, the overdose rate is higher with the five year estimates.
+The three fatal overdose rate measures have fairly similar values, but the age-adjusted rate is higher than the other two. This makes sense, as it factors how fatal overdose often occurs at ages where other causes of death are uncommon. A typical county in the one year estimates has around 28 people die of an overdose per 100,000. With five year estimates, that number increases to 32. The worst hit counties have approximately three times that death rate, with just over 100 people dying per year per 100,000. The least hit counties have under 10 deaths per year per 100,000. Overall, the overdose death rate is systemically higher with the five year estimates, which suggests that smaller counties have higher overdose rates.
+
+As shown in figure 2.2, the distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hillPrinciplesEconometrics2011]. If it is occuring, however, the censoring is fairly minimal. Overall, the overdose rate is higher with the five year estimates. Figure 3.3 shows that the overdose rate varies geographically. In southern Ohio, overdoses appear to be systematically more common. This meshes with the less academic literature, which generally claimed that former coal and steel counties were the most affected by opioid addiction and overdose [@meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016].
+
+```{r mapODrate, fig.cap="Map of Ohio counties by overdose rate"}
+df %>%
+  group_by(County, GEOID) %>%
+  summarize(`Fatal Overdose Crude Rate` = mean(`Fatal Overdose Crude Rate`, na.rm = TRUE)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+  ggplot(aes(fill = `Fatal Overdose Crude Rate`, geometry = geometry)) +
+  geom_sf() +
+  theme_map +
+  scale_fill_viridis_c() +
+  labs(title = "Crude Fatal Overdose Rate by County Averaged Across Years",
+       subtitle = "Grey = 9 or Fewer Overdoses Across All Years",
+       fill = "Rate")
+```
 
 ```{r raceDistribution, fig.cap="Distribution of percent black by county"}
 df %>%
@@ -233,7 +235,90 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-The distribution of percent black by county does not indicate any data issues when using one year estimates. While observations do not occur in a perfect Gaussian bell curve, there is no reason to believe that the data is censored. With five year estimates, there is a massive cluster of counties between zero and ten percent black.
+Race is included as the variable percent black. Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, percent black seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998]. The average county is approximately 4% black in the five year estimates, and 8% in the one year estimates. Some counties report zero black residents. The highest percentage of residents that are black is just over 30%.
+
+Figure 2.4 shows that the distribution of percent black by county with one year estimates is fairly even. While observations do not occur in a perfect Gaussian bell curve, there is no reason to believe that the data is censored. With five year estimates, however, there is a massive cluster of counties between zero and ten percent black.
+
+```{r mapPercentBlack, fig.cap="Map of Ohio counties by percent of the county's population that is black"}
+df %>%
+  group_by(County, GEOID) %>%
+  summarize(`Percent Black` = mean(`Percent Black`, na.rm = TRUE)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+  ggplot(aes(fill = `Percent Black`, geometry = geometry)) +
+  geom_sf() +
+  theme_map +
+  scale_fill_viridis_c() +
+  labs(title = "Percent Black by County",
+       fill = "% Black")
+```
+
+Figure 2.5 is a map of Ohio by percent black. The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only region in Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
+
+```{r mapDensity, fig.cap="Map of Ohio counties by density type", eval=FALSE}
+# Error in if (type == "point") { : argument is of length zero
+df %>%
+  filter(!is.na(GEOID)) %>%
+  group_by(County, GEOID) %>%
+  summarize(Density = last(Density)) %>%
+  mutate(Density = as.character(Density)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+  ggplot(aes(fill = Density, geometry = geometry)) +
+  geom_sf() +
+  theme_map +
+  scale_fill_viridis_d() +
+  labs(title = "Density by County",
+       fill = "Type")
+```
+
+Density levels vary significantly between the one year and five year estimates. In the one year estimates, no counties are "noncore", whereas 27% are in the five year estimates. This makes sense, as "noncore" counties are very low in population, and therefore are not included in the one year estimates. The rest of this paragraph will use the five year estimates, since they are representative of Ohio as a whole. Excluding "noncore" counties, most counties in Ohio range from medium sized towns to medium sized cities, with over 60% being "micropolitan", "large fringe metro", or "medium metro". The few remaining counties are either small towns or the seats of Cleveland or Columbus.
+
+```{r prescribingDistribution, fig.cap="Distribution of prescribing rates"}
+df %>%
+  filter(!is.na(survey)) %>%
+  ggplot(aes(x = `Prescribing Rate`)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() +
+  labs(title = "Distribution of Prescribing Rate",
+       x = "Prescribing Rate",
+       y = "") +
+  facet_wrap(~survey) +
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5))
+```
+
+```{r mapPrescribingRate, fig.cap="Map of Ohio counties by prescribing rate"}
+# Error in if (type == "point") { : argument is of length zero
+df %>%
+  filter(!is.na(GEOID)) %>%
+  group_by(County, GEOID) %>%
+  summarize(`Prescribing Rate` = mean(`Prescribing Rate`, na.rm = TRUE)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+  ggplot(aes(fill = `Prescribing Rate`, geometry = geometry)) +
+  geom_sf() +
+  theme_map +
+  scale_fill_viridis_c() +
+  labs(title = "Prescribing Rate by County",
+       fill = "Rate")
+```
+
+There is massive variation in the prescribing rate. Prescribing rates are higher and vary less in the one year estimates. In the five year estimates, prescribing rates vary by over 20,000%, which is shocking. With those estimates, a typical county has roughly half the maximum number of prescriptions, and almost hundred times the minimum number of prescriptions. Figure 2.6 shows that prescribing rates are distributed in an almost perfectly gaussian manner. Figure 2.7 shows that prescribing rates are higher in southern Ohio. This confirms the common narrative that the Appalachian region of Ohio had higher rates of prescription painkiller use, which potentially lead into opioid abuse, addiction, and fatal overdose [@macyDopesickDealersDoctors2018; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016].
+
+```{r mapHouseholdIncome, fig.cap="Map of Ohio counties by household income"}
+# Error in if (type == "point") { : argument is of length zero
+df %>%
+  filter(!is.na(GEOID)) %>%
+  group_by(County, GEOID) %>%
+  summarize(Income = mean(`Median Household Income`, na.rm = TRUE)) %>%
+  full_join(base_map, by = c("GEOID" = "GEOID")) %>%
+  ggplot(aes(fill = Income, geometry = geometry)) +
+  geom_sf() +
+  theme_map +
+  scale_fill_viridis_c() +
+  labs(title = "Median Household Income by County",
+       fill = "Household Income ($)")
+```
+
+Income levels do not vary between the one year and five year estimates. This suggests that there is little correlation between income levels and low county population, and that the richest counties appear in both samples. Indidivual income is consistently just over half of household income. The wealthiest counties have over three times the level of income as the poorest counties. Figure 2.8 shows that median household income is distributed geographically inequally. The Appalachian portion of Ohio is systemically poorer.
 
 ```{r bachelorsDegreeeDistribution, fig.cap="Distribution of percent with a bachelors degree or more by county"}
 df %>%
@@ -250,22 +335,22 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-There are no apparent data issues with the variable percent with a bachelors degree or more. As seen with the race variable, the five year estimates have a large cluster towards the lower end of the distribution.
-
-```{r mapPercentBlack, fig.cap="Map of Ohio counties by percent black"}
+```{r mapPercentBachelorsOrMore, fig.cap="Map of Ohio counties by percent with bachelors or more"}
 df %>%
   group_by(County, GEOID) %>%
-  summarize(`Percent Black` = mean(`Percent Black`, na.rm = TRUE)) %>%
+  summarize(`Percent with Bachelors or More` = mean(`Percent with Bachelors or More`, na.rm = TRUE)) %>%
   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
-  ggplot(aes(fill = `Percent Black`, geometry = geometry)) +
+  ggplot(aes(fill = `Percent with Bachelors or More`, geometry = geometry)) +
   geom_sf() +
   theme_map +
   scale_fill_viridis_c() +
-  labs(title = "Percent Black by County",
-       fill = "% Black")
+  labs(title = "Percent with a Bachelors Degree or More by County",
+       fill = "%")
 ```
 
-The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only region in Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
+There is significant variation in education levels between counties. While in some counties less than ten percent of the adult population has a college degree, in others more than half of the population does. Education levels are higher in the one year estimates, suggesting that rural, low population counties are less educated on average. There are no apparent data issues with the variable percent with a bachelors degree or more. As seen with the race variable, the five year estimates have a large cluster towards the lower end of the distribution. This cluster can be seen in figure 2.9. Figure 2.10 shows that like with income and opioid prescriptions, the Appalachian region of Ohio is worse off than the rest of the state.
+
+Disability is broken into age and sex bins. These bins are kept small because in order to aggregate them, I would need each county-year pair's population broken down into age and sex bins. The type of disability was ignored, as the literature suggested that painful, physical disabilities would have the greatest impact, and the census-provided disability bins only seperated out deafness and blindness. Unsuprisingly, it appears that disability rates soar after the age of 65. This might be because of individuals gaining access to healthcare through Medicare coverage, and therefore getting a formal diagnosis. Male disability rates are consistently higher than female disability rates until the age of 75. Disability rates are slightly higher in the five year estimates, suggesting that rural, low population counties have higher disability rates than average countues.
 
 ## Methods
 
