@@ -193,67 +193,6 @@ Disability is broken into age and sex bins. These bins are kept small because in
 
 The majority of variables are in percentage form. These variables, excluding "OD_rate", have the term "percentage" in their name. Percentages are calculated using the raw population for that year, and are stored in the format XX.X%, rather than .XXX%. Percentage, or per capita, form is used to isolate the role of county population on the fatal drug overdose rate.
 
-```{r summaryStatsPrep, include=FALSE, eval=FALSE}
-# eval=FALSE because it needs to be updated to work with my improved dataset
-summary_stats <- df %>%
-  select(-GEOID, -county, -year) %>%
-  select(all_of(master_variable_ordering)) %>%
-  summarize_all(list(min, max, mean, sd), na.rm = TRUE) %>%
-  pivot_longer(everything()) %>% # turns into a 2 column df
-  mutate(func = str_match(name, "_fn([1-4])")[,2]) %>% # func identifies which transformation was used
-  mutate(func = case_when(func == 1 ~ "Min", # converts func into a meaninful label
-                          func == 2 ~ "Max",
-                          func == 3 ~ "Mean",
-                          func == 4 ~ "SD")) %>%
-  mutate(name = str_remove(name, "_fn[1-4]")) %>% # strips the suffix which was turned into func
-  pivot_wider(names_from = func, values_from = "value") %>% # untidies but makes easy to use
-  mutate(`Variable Name` = name, # make the variable name label better
-         name = NULL) %>%
-  select(`Variable Name`, everything()) %>% # gets the variable name in front
-  mutate(`CoV` = SD / Mean) %>%
-  recode_vars() %>%
-  select(-rawVarName, -Label) %>%
-  arrange(Category)
-
-build_group_vars_category_tibble <- function(df) {
-  df %>%
-    mutate(row_num = 1:n()) %>%
-    group_by(Category) %>%
-    summarize(first_row = first(row_num)) %>%
-    arrange(first_row)
-}
-
-summary_stats_index <- build_group_vars_category_tibble(summary_stats)
-
-group_rows_by_tibble <- function(kable_table, tibble) {
-  for (i in 1:nrow(tibble)) {
-    # handles the out of bounds for i+1 issue
-    if (i != nrow(tibble)) {
-      kable_table <- kable_table %>%
-        pack_rows(group_label = tibble[[i,1]], start_row = tibble[[i,2]], end_row = (tibble[[i+1,2]] - 1))
-    } else {
-      kable_table <- kable_table %>%
-        pack_rows(group_label = tibble[[i,1]], start_row = tibble[[i,2]], end_row = nrow(tibble))
-    }
-  }
-  kable_table
-}
-```
-
-```{r summaryStatsAllVariables, results="asis", eval = FALSE}
-# eval=FALSE because it needs to be updated to work with my improved dataset
-summary_stats %>%
-  select(-Category) %>%
-  kable(caption = "Variable Summary Statistics",
-        format.args = list(scientific = FALSE,
-                           big.mark = ",",
-                           digits = 3),
-        format = "pandoc",
-        booktabs = T) %>%
-  group_rows_by_tibble(summary_stats_index) %>%
-  kable_styling(latex_options="scale_down")
-```
-
 In general, it appears that the coefficient of variation of the disability variables decreases as the age bin increases. This makes intuitive sense, as disability rates presumably increase as age increases, so there would be less variability as age increases, especially in counties with a smaller population. The presence of observations with zero children under the age of five with disabilities confirms this intuition. Unsuprisingly, it appears that disability rates soar after the age of 65. This might be because of individuals gaining access to healthcare through Medicare coverage, and therefore getting a formal diagnosis. Interestingly, the male disability rate is consistently higher than the female disability rate until the age of 75.
 
 The opioid overdose death rate varied significantly between observations. In fact, the counties with the highest rate had almost thirty times as many deaths per capita than the counties with the lowest rate. Furthermore, the sample excludes many counties in Ohio, meaning that the variability of the overdose death rate could be even higher. The mean overdose death rate is approximately 3.75 deaths per year per 10,000 people.
