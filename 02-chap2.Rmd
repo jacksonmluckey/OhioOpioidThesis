@@ -49,7 +49,7 @@ The modeling function was designed off of the literature review. Many commentato
 
 The majority of my independent variables were sourced from the census American Community Survey. The American Community Survey, or ACS, "provides a detailed portrait of the social, economic, housing, and demographic characteristics of America’s communities" [@UnderstandingACSBasics2020]. ACS data is available on a geographic hierarchy, going from census tracts to the United States as a whole, with areas with a higher population level appearing in more surveys. This thesis uses ACS data aggregated at the county level [@GeographicAreasCovered2020]. While the one-year survey is preferrable for time series modeling, it only includes counties with a population of 65,000 or greater, which eliminates many Ohio counties [@UnderstandingACSBasics2020; @GeographicAreasCovered2020]. In fact, the one-year survey only includes 39 out of Ohio's 88 counties. Since the counties are selected for inclusion based on county population, there is selection bias in the sample. This means that the results may be an inaccurate reflection of reality if there is correlation between a county's population and the county's fatal drug overdose rate. Given that the literature suggests that rural areas have suffered from greater increases in overdose rates, it is likely that there is correlation between county population and the overdose rate, meaning that there is probably significant selection bias in the one-year survey dataset. Therefore, this thesis will run the same models with both the one-year and five-year surveys.
 
-The fatal overdose rate, prescribing rate, and density level all come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is available as a crude rate, an age-adjusted rate, and an imputed rate. The model will be tested on all three independent variables. The density level is a qualitative categorical variable ranging from "noncore" to "large central metro". The prescribing rate is indexed to 100. The data was paired with the census and overdose data using the FIPS code, which is a GEOID [@calgaryNCHSDrugPoisoning].
+The fatal overdose rate, prescribing rate, and density level all come from CDC data. They are sourced from the "Drug Poisoning Mortality by County" dataset, which is published by the National Center for Health Statistics. The death rate is available as a crude rate, an age-adjusted rate, and an imputed rate. The model will be tested on all three independent variables. The density level is a qualitative categorical variable ranging from "noncore" to "large central metro". The prescribing rate is indexed to 100. The data was paired with the census and overdose data using the FIPS code, which uniquely identifies counties [@calgaryNCHSDrugPoisoning].
 
 ```{r mapCountiesIncludedInSample, fig.cap="Counties included in the data"}
 counties_included <- df %>%
@@ -185,7 +185,7 @@ as.data.frame(df_acs5) %>%
             digits = 2)
 ```
 
-We will now examine tables 2.1 and 2.2. The five year estimates include more observations than the one year estimates. The majority of variables are in percentage form in order to isolate the role of county population on the fatal drug overdose rate.. These variables are identified by the "%" in their name. Percentages are calculated dividing the raw count from the Census/CDC by the total population of the county that year. Percentages are stored in the format XX.X%, rather than .XXX%.
+We will now examine tables 2.1 and 2.2. The five year estimates include more observations than the one year estimates. The majority of variables are in percentage form in order to isolate the role of county population on the fatal drug overdose rate. These variables are identified by the "%" in their name. Percentages are calculated dividing the raw count from the Census/CDC by the total population of the county that year. Percentages are stored in the format XX.X%, rather than .XXX%.
 
 ```{r overdoseRateDistribution, fig.cap="Distribution of drug overdose rate"}
 df %>%
@@ -235,7 +235,7 @@ df %>%
         plot.title = element_text(hjust = 0.5))
 ```
 
-Race is included as the variable percent black. Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, percent black seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998]. The average county is approximately 4% black in the five year estimates, and 8% in the one year estimates. Some counties report zero black residents. The highest percentage of residents that are black is just over 30%.
+Race is included as the variable percent black. Racial demographic data is represented this way because census demographic data that distinguishes between Cacausian and Latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, percent black seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998]. The average county is approximately 4% black in the five year estimates, and 8% in the one year estimates. Some counties report zero black residents. The highest percentage of residents that are black is just over 30%.
 
 Figure 2.4 shows that the distribution of percent black by county with one year estimates is fairly even. While observations do not occur in a perfect Gaussian bell curve, there is no reason to believe that the data is censored. With five year estimates, however, there is a massive cluster of counties between zero and ten percent black.
 
@@ -254,23 +254,22 @@ df %>%
 
 Figure 2.5 is a map of Ohio by percent black. The yellow county is Cuyahoga County, which contains the city of Cleveland. Before the 1990s, Cleveland was considered to be the only region in Ohio to contain a significant heroin market [@quinonesDreamlandTrueTale2016]. Therefore, we would expect Cleveland to have started off with an above average drug overdose death rate. With the rise of the Xalisco boys and the introduction of OxyContin, heroin markets spread across the state [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016]. Hence, we would expect Cleveland, and therefore Cuyahoga County, to have a higher than average overdose rate prior to the mid 90s, and for other counties to have a larger increase in their overdose death rate.
 
-```{r mapDensity, fig.cap="Map of Ohio counties by density type", eval=FALSE}
+```{r mapDensity, fig.cap="Map of Ohio counties by density type"}
 # Error in if (type == "point") { : argument is of length zero
 df %>%
   filter(!is.na(GEOID)) %>%
   group_by(County, GEOID) %>%
   summarize(Density = last(Density)) %>%
-  mutate(Density = as.character(Density)) %>%
   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
-  ggplot(aes(fill = Density, geometry = geometry)) +
-  geom_sf() +
+  ggplot() +
+  geom_sf(aes(fill = Density, geometry = geometry), show.legend = "polygon") +
   theme_map +
   scale_fill_viridis_d() +
   labs(title = "Density by County",
        fill = "Type")
 ```
 
-Density levels vary significantly between the one year and five year estimates. In the one year estimates, no counties are "noncore", whereas 27% are in the five year estimates. This makes sense, as "noncore" counties are very low in population, and therefore are not included in the one year estimates. The rest of this paragraph will use the five year estimates, since they are representative of Ohio as a whole. Excluding "noncore" counties, most counties in Ohio range from medium sized towns to medium sized cities, with over 60% being "micropolitan", "large fringe metro", or "medium metro". The few remaining counties are either small towns or the seats of Cleveland or Columbus.
+Density levels vary significantly between the one year and five year estimates. In the one year estimates, no counties are "noncore", whereas 27% are in the five year estimates. This makes sense, as "noncore" counties are very low in population, and therefore are not included in the one year estimates. The rest of this paragraph will use the five year estimates, since they are representative of Ohio as a whole. Excluding "noncore" counties, most counties in Ohio range from medium sized towns to medium sized cities, with over 60% being "micropolitan", "large fringe metro", or "medium metro". The few remaining counties are either small towns or the seats of Cleveland, Columbus, or Cincinnati, as shown in figure 2.6. Figure 2.6 also shows that the lowest density counties are concentrated in the Appalachian region of Ohio.
 
 ```{r prescribingDistribution, fig.cap="Distribution of prescribing rates"}
 df %>%
@@ -301,7 +300,7 @@ df %>%
        fill = "Rate")
 ```
 
-There is massive variation in the prescribing rate. Prescribing rates are higher and vary less in the one year estimates. In the five year estimates, prescribing rates vary by over 20,000%, which is shocking. With those estimates, a typical county has roughly half the maximum number of prescriptions, and almost hundred times the minimum number of prescriptions. Figure 2.6 shows that prescribing rates are distributed in an almost perfectly gaussian manner. Figure 2.7 shows that prescribing rates are higher in southern Ohio. This confirms the common narrative that the Appalachian region of Ohio had higher rates of prescription painkiller use, which potentially lead into opioid abuse, addiction, and fatal overdose [@macyDopesickDealersDoctors2018; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016].
+There is massive variation in the prescribing rate. Prescribing rates are higher and vary less in the one year estimates. In the five year estimates, prescribing rates vary by over 20,000%, which is shocking. With those estimates, a typical county has roughly half the maximum number of prescriptions, and almost hundred times the minimum number of prescriptions. Figure 2.7 shows that prescribing rates are distributed in an almost perfectly gaussian manner. Figure 2.8 shows that prescribing rates are higher in southern Ohio. This confirms the common narrative that the Appalachian region of Ohio had higher rates of prescription painkiller use, which potentially lead into opioid abuse, addiction, and fatal overdose [@macyDopesickDealersDoctors2018; @meierPainKillerEmpire2018; @quinonesDreamlandTrueTale2016].
 
 ```{r mapHouseholdIncome, fig.cap="Map of Ohio counties by household income"}
 # Error in if (type == "point") { : argument is of length zero
@@ -318,7 +317,7 @@ df %>%
        fill = "Household Income ($)")
 ```
 
-Income levels do not vary between the one year and five year estimates. This suggests that there is little correlation between income levels and low county population, and that the richest counties appear in both samples. Indidivual income is consistently just over half of household income. The wealthiest counties have over three times the level of income as the poorest counties. Figure 2.8 shows that median household income is distributed geographically inequally. The Appalachian portion of Ohio is systemically poorer.
+Income levels do not vary between the one year and five year estimates. This suggests that there is little correlation between income levels and low county population, and that the richest counties appear in both samples. Indidivual income is consistently just over half of household income. The wealthiest counties have over three times the level of income as the poorest counties. Figure 2.9 shows that median household income is distributed geographically inequally. The Appalachian portion of Ohio is systemically poorer.
 
 ```{r bachelorsDegreeeDistribution, fig.cap="Distribution of percent with a bachelors degree or more by county"}
 df %>%
@@ -348,7 +347,7 @@ df %>%
        fill = "%")
 ```
 
-There is significant variation in education levels between counties. While in some counties less than ten percent of the adult population has a college degree, in others more than half of the population does. Education levels are higher in the one year estimates, suggesting that rural, low population counties are less educated on average. There are no apparent data issues with the variable percent with a bachelors degree or more. As seen with the race variable, the five year estimates have a large cluster towards the lower end of the distribution. This cluster can be seen in figure 2.9. Figure 2.10 shows that like with income and opioid prescriptions, the Appalachian region of Ohio is worse off than the rest of the state.
+There is significant variation in education levels between counties. While in some counties less than ten percent of the adult population has a college degree, in others more than half of the population does. Education levels are higher in the one year estimates, suggesting that rural, low population counties are less educated on average. There are no apparent data issues with the variable percent with a bachelors degree or more. As seen with the race variable, the five year estimates have a large cluster towards the lower end of the distribution. This cluster can be seen in figure 2.10. Figure 2.11 shows that like with income and opioid prescriptions, the Appalachian region of Ohio is worse off than the rest of the state.
 
 Disability is broken into age and sex bins. These bins are kept small because in order to aggregate them, I would need each county-year pair's population broken down into age and sex bins. The type of disability was ignored, as the literature suggested that painful, physical disabilities would have the greatest impact, and the census-provided disability bins only seperated out deafness and blindness. Unsuprisingly, it appears that disability rates soar after the age of 65. This might be because of individuals gaining access to healthcare through Medicare coverage, and therefore getting a formal diagnosis. Male disability rates are consistently higher than female disability rates until the age of 75. Disability rates are slightly higher in the five year estimates, suggesting that rural, low population counties have higher disability rates than average countues.
 
