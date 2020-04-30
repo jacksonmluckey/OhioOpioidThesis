@@ -77,6 +77,44 @@ base_map %>%
 
 ### Variable Summary Statistics
 
+```{r results="asis"}
+as.data.frame(df_acs1) %>%
+  select(-Year,
+         -GEOID,
+         -`Population (CDC)`,
+         -`Overdose Deaths`,
+         -survey,
+         -`Are Overdose Deaths Suppressed?`,
+         -`Is the Fatal Overdose Crude Rate Unreliable?`,
+         -`Is the Fatal Overdose Crude Rate Suppressed?`,
+         -`Is the Fatal Overdose Age-Adjusted Rate Unreliable?`,
+         -`Is the Fatal Overdose Age-Adjusted Suppressed?`,
+         -`Fatal Overdose Modeled Rate`) %>%
+  select(`Fatal Overdose Crude Rate`,
+         `Fatal Overdose Age-Adjusted Rate`,
+         `Fatal Overdose Rate (Includes Imputed)`,
+         `Prescribing Rate`,
+         `% Black` = `Percent Black`,
+         `Median Individual Income`,
+         `Median Household Income`,
+         `% with Highschool or Less` = `Percent with Highschool or Less`,
+         `% with Some College` = `Percent with Some College`,
+         `% with Bachelors or More` = `Percent with Bachelors or More`,
+         `% Disabled: Males Under 5` = `Percent of Males Aged Under 5 with a Disability`,
+         `% Disabled: Males 5 to 17` = `Percent of Males Aged 5 to 17 with a Disability`,
+         `% Disabled: Males 17 to 34` = `Percent of Males Aged 18 to 34 with a Disability`,
+         `% Disabled: Males 35 to 64` = `Percent of Males Aged 35 to 64 with a Disability`,
+         `% Disabled: Males 65 to 74` = `Percent of Males Aged 65 to 74 with a Disability`,
+         `% Disabled: Males 75 and Up` = `Percent of Males Aged 75 and Up with a Disability`,
+         `% Disabled: Females Under 5` = `Percent of Females Aged Under 5 with a Disability`,
+         `% Disabled: Females 5 to 17` = `Percent of Females Aged 5 to 17 with a Disability`,
+         `% Disabled: Females 17 to 34` = `Percent of Females Aged 18 to 34 with a Disability`,
+         `% Disabled: Females 35 to 64` = `Percent of Females Aged 35 to 64 with a Disability`,
+         `% Disabled: Females 65 to 74` = `Percent of Females Aged 65 to 74 with a Disability`,
+         `% Disabled: Females 75 and Up` = `Percent of Females Aged 75 and Up with a Disability`) %>%
+  stargazer(header = FALSE)
+```
+
 For the education variables, "_s_" refers to small bins (e.g. 11th grade education, 12th grade education), whereas "_b_" refers to the aggregation of multiple small bins (e.g. high school or less, college or more). The big bins are calculated by aggregating the smaller bins, and exclude individuals with some amount of college education but less than a bachelors-level degree. The original data was provided as a raw count for each education level (i.e. number of people with an 11th grade education, number of people with a 12th grade education, and so on). To convert it into percentages, I divided each raw count by the total population of the county and assumed that all individuals would be included in one--and only one--column.
 
 Race is included as the variable "percent_black". Racial demographic data is represented this way because census demographic data that distinguishes between cacausian and latinx is significantly more challenging to work with, as the categories provided do not neatly add up the total population of the county. Since heroin was considered an urban black drug from the late 1930s until recently, "percent_black" seemed an effective enough variable for assesing the role of race in drug overdose rates [@macyDopesickDealersDoctors2018; @quinonesDreamlandTrueTale2016; @whiteSlayingDragonHistory1998].
