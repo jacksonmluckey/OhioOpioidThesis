@@ -201,50 +201,67 @@ There is significant variation in education levels between counties. While in so
 
 Disability is broken into age and sex bins. These bins are kept small because in order to aggregate them, I would need each county-year pair's population broken down into age and sex bins. The type of disability was ignored, as the literature suggested that painful, physical disabilities would have the greatest impact, and the census-provided disability bins only seperated out deafness and blindness. Unsuprisingly, it appears that disability rates soar after the age of 65. This might be because of individuals gaining access to healthcare through Medicare coverage, and therefore getting a formal diagnosis. Male disability rates are consistently higher than female disability rates until the age of 75. Disability rates are slightly higher in the five year estimates, suggesting that rural, low population counties have higher disability rates than average countues.
 
-```{r overdoseRateDistribution, fig.cap="Distribution of drug overdose rate", eval=FALSE}
-# eval=FALSE because it needs to be updated to work with my improved dataset
+```{r overdoseRateDistribution, fig.cap="Distribution of drug overdose rate"}
 df %>%
-  filter(!is.na(OD_rate)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
-  ggplot(aes(x = OD_rate)) +
+  filter(!is.na(`Fatal Overdose Crude Rate`),
+         !is.na(survey)) %>% # drop the NA rows that occur because of the missing 2018 deaths data
+  ggplot(aes(x = `Fatal Overdose Crude Rate`)) +
   geom_histogram(bins = 25) +
   theme_minimal() +
-  ggtitle("Distribution of Overdose Rate") +
-  labs(y = "", x = "Overdose Rate (Deaths per 10,000)") +
+  facet_wrap(~survey) +
+  labs(y = "",
+       x = "Overdose Rate (Deaths per 100,000)",
+       title = "Distribution of Overdose Rate") +
   theme(axis.text.y = element_blank(),
         plot.title = element_text(hjust = 0.5))
 ```
 
-The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hareThesisMeetings2019]. Furthermore, no observations reach zero, further suggesting data censoring [@hillPrinciplesEconometrics2011].
+The distribution of the fatal drug overdose rate between counties suggests that censoring may be occuring from the bottom. This is because the right-side tail is significantly longer and fatter than the left-side tail [@hillPrinciplesEconometrics2011]. If it is occuring, however, the censoring is fairly minimal. Overall, the overdose rate is higher with the five year estimates.
 
-```{r raceDistribution, fig.cap="Distribution of percent black by county", eval=FALSE}
-# eval=FALSE because it needs to be updated to work with my improved dataset
+```{r raceDistribution, fig.cap="Distribution of percent black by county"}
 df %>%
-  ggplot(aes(x = percent_black)) +
+  filter(!is.na(survey)) %>%
+  ggplot(aes(x = `Percent Black`)) +
   geom_histogram(bins = 20) +
   theme_minimal() +
-  ggtitle("Distribution of Percent Black") +
-  labs(x = "Percent Black", y = "") +
+  labs(title = "Distribution of Percent Black",
+       x = "Percent Black",
+       y = "") +
+  facet_wrap(~survey) +
   scale_x_continuous(labels = function(x) paste0(x, "%")) + # adds percentage signs; scales::percent assumes .XXX format, while I have XX.X
   theme(axis.text.y = element_blank(),
         plot.title = element_text(hjust = 0.5))
 ```
 
-The distribution of percent black by county does not indicate any data issues. While observations do not occur in a perfect Gaussian bell curve, there is no reason to believe that the data is censored.
+The distribution of percent black by county does not indicate any data issues when using one year estimates. While observations do not occur in a perfect Gaussian bell curve, there is no reason to believe that the data is censored. With five year estimates, there is a massive cluster of counties between zero and ten percent black.
 
-### Maps
-
-```{r mapPercentBlack, fig.cap="Map of Ohio counties by percent black", eval=FALSE}
-# eval=FALSE because it needs to be updated to work with my improved dataset
+```{r bachelorsDegreeeDistribution, fig.cap="Distribution of percent with a bachelors degree or more by county"}
 df %>%
-  group_by(county, GEOID) %>%
-  summarize(percent_black = mean(percent_black, na.rm = TRUE)) %>%
+  filter(!is.na(survey)) %>%
+  ggplot(aes(x = `Percent with Bachelors or More`)) +
+  geom_histogram(bins = 20) +
+  theme_minimal() +
+  labs(title = "Distribution of Percent with a Bachelors Degree or More",
+       x = "Percent with Bachelors or More",
+       y = "") +
+  facet_wrap(~survey) +
+  scale_x_continuous(labels = function(x) paste0(x, "%")) + # adds percentage signs; scales::percent assumes .XXX format, while I have XX.X
+  theme(axis.text.y = element_blank(),
+        plot.title = element_text(hjust = 0.5))
+```
+
+There are no apparent data issues with the variable percent with a bachelors degree or more. As seen with the race variable, the five year estimates have a large cluster towards the lower end of the distribution.
+
+```{r mapPercentBlack, fig.cap="Map of Ohio counties by percent black"}
+df %>%
+  group_by(County, GEOID) %>%
+  summarize(`Percent Black` = mean(`Percent Black`, na.rm = TRUE)) %>%
   full_join(base_map, by = c("GEOID" = "GEOID")) %>%
-  ggplot(aes(fill = percent_black, geometry = geometry)) +
+  ggplot(aes(fill = `Percent Black`, geometry = geometry)) +
   geom_sf() +
   theme_map +
   scale_fill_viridis_c() +
-  labs(subtitle = "Grey means excluded from sample",
-       title = "Percent Black by County",
+  labs(title = "Percent Black by County",
        fill = "% Black")
 ```
 
