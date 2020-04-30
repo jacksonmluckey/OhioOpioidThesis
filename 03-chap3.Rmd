@@ -90,7 +90,7 @@ county_FE_acs5 <- lm(county_FE_formula, df_acs5)
 
 ### Household vs Individual Income
 
-```{r doHouseholdAndIndividualIncomeDiffer, results="asis", eval=FALSE}
+```{r doHouseholdAndIndividualIncomeDiffer, results="asis"}
 # show that household and individual are not significantly different
 stargazer(
   crude_rate_acs1,
@@ -133,56 +133,6 @@ stargazer(
 )
 ```
 
-$$\hypertarget{household-vs-individual-income}{%
-\subsection{Household vs Individual Income}\label{household-vs-individual-income}}
-\begin{sidewaystable}[!htbp] \centering 
-  \caption{Does Individual vs Household Income Significantly Change the Model?} 
-  \label{} 
-\small 
-\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{`Fatal Overdose Crude Rate`} \\ 
- & ACS1 Household & ACS1 Individual & ACS5 Household & ACS5 Individual \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
-\hline \\[-1.8ex] 
- Median Household Income & $-$0.0003 (0.0002) &  & $-$0.00000 (0.0002) &  \\ 
-  Median Individual Income &  & 0.0003 (0.0004) &  & 0.00004 (0.0004) \\ 
-  Prescribing Rate & 0.149$^{***}$ (0.050) & 0.133$^{**}$ (0.052) & 0.140$^{***}$ (0.041) & 0.132$^{***}$ (0.042) \\ 
-  Density: Small Metro &  &  & $-$12.923$^{***}$ (3.370) & $-$13.029$^{***}$ (3.644) \\ 
-  Density: Micropolitan & 4.198 (3.073) & 4.722 (3.053) & $-$6.822$^{**}$ (2.743) & $-$7.758$^{***}$ (2.915) \\ 
-  Density: Large Fring Metro & 11.548$^{***}$ (3.028) & 10.151$^{***}$ (3.148) & $-$0.460 (3.125) & $-$1.360 (3.155) \\ 
-  Density: Medium Metro & 6.776$^{**}$ (2.783) & 7.908$^{***}$ (2.690) & $-$5.250$^{*}$ (3.085) & $-$6.030$^{*}$ (3.305) \\ 
-  Density: Large Central Metro & 2.440 (4.811) & 3.362 (4.768) & $-$14.706$^{***}$ (5.324) & $-$16.757$^{***}$ (5.389) \\ 
-  \% Black & 0.316 (0.194) & 0.485$^{***}$ (0.174) & 0.887$^{***}$ (0.187) & 0.896$^{***}$ (0.172) \\ 
-  \% with Some College & $-$0.145 (0.258) & $-$0.155 (0.260) & $-$0.381 (0.251) & $-$0.396 (0.252) \\ 
-  \% with Bachelors or More & $-$0.019 (0.220) & $-$0.374$^{**}$ (0.184) & $-$0.451$^{**}$ (0.189) & $-$0.445$^{***}$ (0.153) \\ 
-  \% Disabled: Males Under 5 & $-$0.387 (0.322) & $-$0.339 (0.323) & $-$0.406 (0.531) & $-$0.555 (0.534) \\ 
-  \% Disabled: Males 5 to 17 & 0.253 (0.266) & 0.220 (0.266) & 0.326 (0.367) & 0.175 (0.370) \\ 
-  \% Disabled: Males 18 to 34 & 0.299 (0.282) & 0.285 (0.283) & 0.999$^{**}$ (0.403) & 0.877$^{**}$ (0.422) \\ 
-  \% Disabled: Males 35 to 64 & $-$0.466$^{*}$ (0.281) & $-$0.286 (0.295) & $-$0.869$^{**}$ (0.440) & $-$0.949$^{**}$ (0.471) \\ 
-  \% Disabled: Males 65 to 74 & 0.007 (0.137) & 0.013 (0.137) & 0.492$^{**}$ (0.194) & 0.371$^{*}$ (0.196) \\ 
-  \% Disabled: Males 75 and Up & 0.053 (0.098) & 0.049 (0.099) & $-$0.051 (0.159) & $-$0.101 (0.173) \\ 
-  \% Disabled: Females Under 5 & 0.814 (0.513) & 0.870$^{*}$ (0.515) & 0.432 (0.620) & 0.460 (0.622) \\ 
-  \% Disabled: Females 5 to 17 & $-$0.307 (0.304) & $-$0.354 (0.304) & $-$2.115$^{***}$ (0.538) & $-$2.161$^{***}$ (0.539) \\ 
-  \% Disabled: Females 18 to 34 & $-$0.525$^{*}$ (0.294) & $-$0.569$^{*}$ (0.293) & $-$0.810$^{**}$ (0.399) & $-$0.998$^{**}$ (0.415) \\ 
-  \% Disabled: Females 35 to 64 & 0.619$^{*}$ (0.331) & 0.638$^{*}$ (0.332) & 0.815$^{**}$ (0.410) & 1.224$^{***}$ (0.433) \\ 
-  \% Disabled: Females 65 to 74 & 0.222 (0.141) & 0.223 (0.141) & 0.265 (0.255) & 0.377 (0.264) \\ 
-  \% Disabled: Females 75 and Up & 0.005 (0.109) & 0.049 (0.110) & 0.028 (0.195) & 0.084 (0.194) \\ 
- \hline \\[-1.8ex] 
-Observations & 218 & 218 & 257 & 244 \\ 
-R$^{2}$ & 0.528 & 0.525 & 0.561 & 0.578 \\ 
-Adjusted R$^{2}$ & 0.475 & 0.471 & 0.518 & 0.534 \\ 
-Residual Std. Error & 8.806 (df = 195) & 8.839 (df = 195) & 8.769 (df = 233) & 8.523 (df = 220) \\ 
-F Statistic & 9.928$^{***}$ (df = 22; 195) & 9.790$^{***}$ (df = 22; 195) & 12.967$^{***}$ (df = 23; 233) & 13.105$^{***}$ (df = 23; 220) \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{sidewaystable}$$
-
 Table 3.1 examines how the model changes when individual income is substituted for household income. As will be seen throughout this chapter, changing between the American Community Survey one year and five year estimates has the greatest impact on results. The coefficients for household and individual income point in opposite directions, but given the lack of statistical significance and the incredibly low magnitudes of the coefficients, it almost certainly meaningless. In general, switching between income types has minimal effects on the coefficients within a survey. Moving from household to individual income makes percent black significant for one year estimates, but percent black is significant with both five year estimate models. The same is true for the percent with a bachelors degree or more variable. The percent of males aged 35 to 64 with a disability is significant with household and not individual income for one year estimates, but is significant with both income measures when using five year estimates. Due to household income intuitively seeming more relevant than indidividual income and there not being a clear statistical advantage of either variable, future models will use household income.
 
 In all four model specifications, an increase in the opioid prescribing rate is associated with an increase in the fatal opioid overdose rate.
@@ -193,7 +143,7 @@ Columns 2 and 4 in table 3.1 examines the differences between modeling with Amer
 
 ### Fatal Overdose Rate Metrics
 
-```{r doCrudeAgeImputedDifferACS5, results="asis", eval=FALSE}
+```{r doCrudeAgeImputedDifferACS5, results="asis"}
 stargazer(
   crude_rate_acs5,
   age_adjusted_rate_acs5,
@@ -234,57 +184,11 @@ stargazer(
 )
 ```
 
-$$\hypertarget{fatal-overdose-rate-metrics}{%
-\subsection{Fatal Overdose Rate Metrics}\label{fatal-overdose-rate-metrics}}
-\begin{sidewaystable}[!htbp] \centering 
-  \caption{How does the type of overdose rate metric influence the results (AS5)?} 
-  \label{} 
-\small 
-\begin{tabular}{@{\extracolsep{5pt}}lccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
-\\[-1.8ex] & Crude & Age-Adjusted & Imputed \\ 
-\\[-1.8ex] & (1) & (2) & (3)\\ 
-\hline \\[-1.8ex] 
- Median Household Income & $-$0.00000 (0.0002) & 0.0001 (0.0004) & 0.00001 (0.0002) \\ 
-  Prescribing Rate & 0.140$^{***}$ (0.041) & 0.151$^{*}$ (0.077) & 0.135$^{***}$ (0.041) \\ 
-  Density: Small Metro & $-$12.923$^{***}$ (3.370) & $-$13.567 (9.824) & $-$11.136$^{***}$ (3.330) \\ 
-  Density: Micropolitan & $-$6.822$^{**}$ (2.743) & $-$13.202 (8.821) & $-$4.985$^{*}$ (2.674) \\ 
-  Density: Large Fring Metro & $-$0.460 (3.125) & $-$9.749 (8.603) & 1.067 (3.097) \\ 
-  Density: Medium Metro & $-$5.250$^{*}$ (3.085) & $-$13.169 (8.684) & $-$3.485 (3.036) \\ 
-  Density: Large Central Metro & $-$14.706$^{***}$ (5.324) & $-$23.284$^{**}$ (10.181) & $-$12.960$^{**}$ (5.331) \\ 
-  \% Black & 0.887$^{***}$ (0.187) & 0.744$^{**}$ (0.313) & 0.906$^{***}$ (0.188) \\ 
-  \% with Some College & $-$0.381 (0.251) & $-$0.646 (0.414) & $-$0.384 (0.252) \\ 
-  \% with Bachelors or More & $-$0.451$^{**}$ (0.189) & $-$0.327 (0.402) & $-$0.440$^{**}$ (0.188) \\ 
-  \% Disabled: Males Under 5 & $-$0.406 (0.531) & $-$0.890 (0.930) & $-$0.282 (0.533) \\ 
-  \% Disabled: Males 5 to 17 & 0.326 (0.367) & 1.076 (0.674) & 0.353 (0.367) \\ 
-  \% Disabled: Males 18 to 34 & 0.999$^{**}$ (0.403) & $-$0.775 (0.732) & 0.978$^{**}$ (0.403) \\ 
-  \% Disabled: Males 35 to 64 & $-$0.869$^{**}$ (0.440) & $-$1.082 (0.889) & $-$0.766$^{*}$ (0.441) \\ 
-  \% Disabled: Males 65 to 74 & 0.492$^{**}$ (0.194) & 0.552 (0.343) & 0.492$^{**}$ (0.193) \\ 
-  \% Disabled: Males 75 and Up & $-$0.051 (0.159) & 0.284 (0.337) & 0.034 (0.157) \\ 
-  \% Disabled: Females Under 5 & 0.432 (0.620) & 3.801$^{***}$ (1.391) & 0.599 (0.622) \\ 
-  \% Disabled: Females 5 to 17 & $-$2.115$^{***}$ (0.538) & $-$2.938$^{***}$ (0.982) & $-$2.101$^{***}$ (0.539) \\ 
-  \% Disabled: Females 18 to 34 & $-$0.810$^{**}$ (0.399) & 0.374 (0.820) & $-$0.765$^{*}$ (0.402) \\ 
-  \% Disabled: Females 35 to 64 & 0.815$^{**}$ (0.410) & 1.928$^{**}$ (0.805) & 0.718$^{*}$ (0.412) \\ 
-  \% Disabled: Females 65 to 74 & 0.265 (0.255) & 0.259 (0.437) & 0.284 (0.257) \\ 
-  \% Disabled: Females 75 and Up & 0.028 (0.195) & $-$0.725$^{*}$ (0.385) & $-$0.065 (0.193) \\ 
- \hline \\[-1.8ex] 
-Observations & 257 & 142 & 259 \\ 
-R$^{2}$ & 0.561 & 0.665 & 0.552 \\ 
-Adjusted R$^{2}$ & 0.518 & 0.599 & 0.508 \\ 
-Residual Std. Error & 8.769 (df = 233) & 9.016 (df = 118) & 8.854 (df = 235) \\ 
-F Statistic & 12.967$^{***}$ (df = 23; 233) & 10.168$^{***}$ (df = 23; 118) & 12.591$^{***}$ (df = 23; 235) \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{sidewaystable}$$
-
 Table 3.3 shows the differences between using the crude fatal overdose rate, the age-adjusted fatal overdose rate, and the imputed overdose rate when working with American Community Survey five year estimates. While there are minor differences between these model specifications, they all return very similar results. The crude and imputed models include approximately 100 more observations than the age-adjusted model, which makes it difficult to separate out the influence of using an age-adjusted rate from the influence of decreased observations. Adjusting the fatal overdose rate for age decreases the signficiance of the prescribing rate to the 10% level from the 1% level. With all three models, the prescribing rate has a small, but significant, protective effect. Using the age-adjusted fatal overdose rate increases the protective effect of population density on fatal overdoses, but decreases the significance of that effect. This probably means that there is correlation between the age distribution of a county and its population density. Using the age-adjusted rate makes all male disability rates insignificant, and increases the impact of female disability rates. This may be correlated with the disability rates being broken down into age bins. The imputed rate produces results are almost identical to the crude rate results. This is unsuprising, as the imputed rate is simply the crude rate with a few more observations. Given that using the age-adjusted rate reduces the number of observations significantly, and the imputed rate only provides two more observations while significantly complicating the dependent variable, the rest of this thesis will use the crude rate.
 
 ### County Fixed Effects
 
-```{r doCountyFixedEffectsMatter, eval=FALSE}
+```{r doCountyFixedEffectsMatter, results="asis"}
 stargazer(
   crude_rate_acs1,
   county_FE_acs1,
@@ -324,56 +228,6 @@ stargazer(
   header = FALSE
 )
 ```
-
-$$\hypertarget{county-fixed-effects}{%
-\subsection{County Fixed Effects}\label{county-fixed-effects}}
-\begin{verbatim}
-\begin{sidewaystable}[!htbp] \centering 
-  \caption{Final Models} 
-  \label{} 
-\small 
-\begin{tabular}{@{\extracolsep{5pt}}lcccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{`Fatal Overdose Crude Rate`} \\ 
- & ACS1 without FE & ACS1 with FE & ACS5 without FE & ACS5 with FE \\ 
-\\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
-\hline \\[-1.8ex] 
- Median Household Income & $-$0.0003 (0.0002) & $-$0.0004$^{*}$ (0.0002) & $-$0.00000 (0.0002) & 0.001 (0.001) \\ 
-  Prescribing Rate & 0.149$^{***}$ (0.050) & $-$0.408$^{***}$ (0.102) & 0.140$^{***}$ (0.041) & $-$0.123 (0.134) \\ 
-  Density: Small Metro &  &  & $-$12.923$^{***}$ (3.370) & $-$29.700$^{*}$ (17.938) \\ 
-  Density: Micropolitan & 4.198 (3.073) & $-$6.711 (13.355) & $-$6.822$^{**}$ (2.743) & $-$50.607$^{**}$ (20.359) \\ 
-  Density: Large Fring Metro & 11.548$^{***}$ (3.028) & $-$1.070 (15.212) & $-$0.460 (3.125) & $-$70.650 (45.792) \\ 
-  Density: Medium Metro & 6.776$^{**}$ (2.783) & $-$28.356$^{**}$ (13.922) & $-$5.250$^{*}$ (3.085) & $-$66.210$^{*}$ (34.950) \\ 
-  Density: Large Central Metro & 2.440 (4.811) & 11.532 (15.372) & $-$14.706$^{***}$ (5.324) & 48.020 (75.896) \\ 
-  \% Black & 0.316 (0.194) & $-$0.380 (0.987) & 0.887$^{***}$ (0.187) & $-$3.835 (2.658) \\ 
-  \% with Some College & $-$0.145 (0.258) & 0.924$^{**}$ (0.388) & $-$0.381 (0.251) & 0.595 (1.008) \\ 
-  \% with Bachelors or More & $-$0.019 (0.220) & 0.377 (0.484) & $-$0.451$^{**}$ (0.189) & 0.136 (1.401) \\ 
-  \% Disabled: Males Under 5 & $-$0.387 (0.322) & $-$0.113 (0.277) & $-$0.406 (0.531) & $-$0.128 (0.701) \\ 
-  \% Disabled: Males 5 to 17 & 0.253 (0.266) & 0.500$^{**}$ (0.226) & 0.326 (0.367) & 0.748 (0.566) \\ 
-  \% Disabled: Males 18 to 34 & 0.299 (0.282) & 0.397$^{*}$ (0.231) & 0.999$^{**}$ (0.403) & 0.227 (0.563) \\ 
-  \% Disabled: Males 35 to 64 & $-$0.466$^{*}$ (0.281) & $-$0.165 (0.250) & $-$0.869$^{**}$ (0.440) & $-$1.490$^{**}$ (0.728) \\ 
-  \% Disabled: Males 65 to 74 & 0.007 (0.137) & 0.036 (0.116) & 0.492$^{**}$ (0.194) & $-$0.880$^{**}$ (0.348) \\ 
-  \% Disabled: Males 75 and Up & 0.053 (0.098) & 0.038 (0.080) & $-$0.051 (0.159) & 0.158 (0.252) \\ 
-  \% Disabled: Females Under 5 & 0.814 (0.513) & 0.457 (0.426) & 0.432 (0.620) & $-$1.985$^{**}$ (0.939) \\ 
-  \% Disabled: Females 5 to 17 & $-$0.307 (0.304) & 0.122 (0.256) & $-$2.115$^{***}$ (0.538) & 0.370 (0.806) \\ 
-  \% Disabled: Females 18 to 34 & $-$0.525$^{*}$ (0.294) & $-$0.086 (0.255) & $-$0.810$^{**}$ (0.399) & $-$0.392 (0.533) \\ 
-  \% Disabled: Females 35 to 64 & 0.619$^{*}$ (0.331) & 0.075 (0.311) & 0.815$^{**}$ (0.410) & 1.624$^{*}$ (0.833) \\ 
-  \% Disabled: Females 65 to 74 & 0.222 (0.141) & 0.191 (0.116) & 0.265 (0.255) & $-$0.139 (0.355) \\ 
-  \% Disabled: Females 75 and Up & 0.005 (0.109) & 0.057 (0.092) & 0.028 (0.195) & $-$0.122 (0.265) \\ 
- \hline \\[-1.8ex] 
-Observations & 218 & 218 & 257 & 257 \\ 
-R$^{2}$ & 0.528 & 0.786 & 0.561 & 0.809 \\ 
-Adjusted R$^{2}$ & 0.475 & 0.712 & 0.518 & 0.716 \\ 
-Residual Std. Error & 8.806 (df = 195) & 6.522 (df = 161) & 8.769 (df = 233) & 6.730 (df = 172) \\ 
-F Statistic & 9.928$^{***}$ (df = 22; 195) & 10.584$^{***}$ (df = 56; 161) & 12.967$^{***}$ (df = 23; 233) & 8.690$^{***}$ (df = 84; 172) \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{sidewaystable}$$
 
 Among other things, table 3.5 examines what changes occur in the model when county fixed effects are included. Including county fixed effects increases the R-squareds by a little over 50%. This is unsurprising, as adding cross-sectional unit fixed effects typically causes a significant increase in the R-squared. As before, the five year estimates explain more of the variance in the sample than the one year estimates. With five year estimates and county fixed effects, the model is able to explain over 80% of the variation in the fatal overdose rate. Including fixed effects changes the coefficients to the point of reversing the signs in some cases. These changes will be examined in the following paragraphs.
 
