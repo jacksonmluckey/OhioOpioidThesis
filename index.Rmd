@@ -14,21 +14,21 @@ output:
 abstract: |
   `r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = '\n  ')`
 acknowledgements: |
-  First of all, I would like to thank my thesis advisor, Denise Hare, for supporting me throughout the thesis process. I would also like to thank Nick Wilson for being my first reader, giving me invaluable feedback throughout the thesis project, and for teaching me health economics.
+  First of all, I would like to thank my thesis advisor, Denise Hare, for supporting me throughout the thesis process. Her advising has carried my though the thesis process, and I would not gotten nearly as far without her. I would also like to thank Nick Wilson for being my first reader, giving me invaluable feedback throughout the thesis project, and for teaching me health economics.
 
   Reed staff have been just as important as faculty in supporting my thesis. In particular, I would like to thank Kristin Bott and Mahria Lebow. I learned the R skills that provided the backbone of this thesis primarily through working for Kristin in Reed's mLab. Furthermore, she has connected me with resources at Reed as I ran into issues working through my thesis. Reed's data services librarian, Mahria Lebow, helped me navigate census data and saved me countless hours of futile struggling with the census API. Without their help, I would likely still be trying to gather my data.
 
-  I would like to thank my father, Bill Luckey, for introducing me to public health policy and the study of addiction. Without his influence in my life, I would not have gone down this path. I'd also like to thank my mom for helping me get through my years at Reed.
+  I would like to thank my father, Bill Luckey, for introducing me to public health policy and the study of addiction. Without his influence in my life, I would not have gone down this path. I'd also like to thank my mom for helping me get through my years at Reed, and giving me a safe place to stay during the 2019-2020 coronavirus pandemic. Without her, I never would have finished my thesis--or my degree.
 
   I would also like to thank Arnie Aldridge, Brendan Wedehase, and Gary Zarkin for their invaluable role in my thesis. Without their guidance during my internship at RTI, I would have never developed the technical skills nor background knowledge that was necessary for producing this document.
   
-  Finally, I would like to thank everyone at FEI for helping me introduce me to substance use disorder policy and treatment research.
+  Finally, I would like to thank everyone at FEI for introducing me to the current state of substance use disorder policy and treatment research.
 # Specify the location of the bibliography below
 bibliography: bib/thesis.bib
 # Download your specific csl file and refer to it in the line below.
 csl: csl/chicago-fullnote-bibliography.csl
 lot: true
-lof: true # the figure captions are fucky
+lof: true
 header-includes:
   \usepackage{tikz}
 ---
@@ -72,7 +72,7 @@ opts_chunk$set(include = TRUE,
 
 The current opioid epidemic is the worst drug epidemic in US history. While opioids are a legitimate medical treatment for acute pain, they are highly addictive and come with the risk of abuse, dependence, and fatal overdose [@aliprantisOpioidsLaborMarket2018]. Abuse of and dependence on opioids has serious consequences. Since 2016, drug overdoses have been the leading cause of accidental death in the United States [@maguireOpioidCrisisAppalachia2019]. Overdoses kill more people than gun violence, motor vehicle incidents, or the HIV/AIDS epidemic did at its peak [@quinonesDreamlandTrueTale2016; @ciccaroneFentanylUSHeroin2017; @alpertSupplySideDrugPolicy2017]. In fact, the scourge of opioid overdoses is so severe that it has lead to an increase in all-cause mortality for white Americans despite mortality decreasing for all other Americans and citizens of comparably developed countries [@caseMortalityMorbidity21st2017]. Reducing the number of deaths due to opioids is essential to reversing this trend, increasing the labor supply, and improving outcomes for millions of Americans.
 
-In this thesis, I will start by reviewing the literature. The literature review will open by defining rationality in the context of economics. I will follow this up by examining the different models of addiction and how they approach rationality, and what these models say about opioid addiction policy. I will then examine the history of the opioid epidemic. I will open this by defining opioids, then provide a brief timeline, and then discuss the first American opioid epidemic (which occurs shortly after the Chinese opioid epidemic). Next, I will discuss the factors that led to the current opioid epidemic, such as changes in physician attitudes towards opioids and the introduction of Oxycontin. I will then describe the transition from prescription painkillers to heroin and synthetic opioids, and how they became available across the United States. I will briefly discuss opioid addiction treatment and naloxone, and then give a quick rundown on the state of Ohio. I end the literature review by classifying explanations as either supply side or demand side. In my data and methods chapter, I provide summary statistics of my data, describe how I acquired it from the U.S. Census and the CDC, and then explain my choice of statistical methods in chapter 3. In my results chapter, I run Tobit and ordinary least squares regressions, and then briefly describe the results. Finally, I provide a conclusion and a copy of some of the code I used to produce this thesis.
+In this thesis, I will start by reviewing the literature. The literature review will open by defining rationality in the context of economics. I will follow this up by examining the different models of addiction and how they approach rationality, and what these models say about opioid addiction policy. I will then examine the history of the opioid epidemic. I will open this by defining opioids, then provide a brief timeline, and then discuss the first American opioid epidemic (which occurs shortly after the Chinese opioid epidemic). Next, I will discuss the factors that led to the current opioid epidemic, such as changes in physician attitudes towards opioids and the introduction of Oxycontin. I will then describe the transition from prescription painkillers to heroin and synthetic opioids, and how they became available across the United States. I will briefly discuss opioid addiction treatment and naloxone, and then give a quick rundown on the state of Ohio. I end the literature review by classifying explanations as either supply side or demand side. In my data and methods chapter, I explain my model, provide summary statistics and visalizations of my data, describe my data sources, and then finally explain my choice of statistical methods. In my results chapter, I run Tobit and ordinary least squares regressions, and then briefly describe the results. Finally, I provide a conclusion and a copy of some of the code I used to produce this thesis.
 
 ```{r censusFunctions}
 get_census_table <- function(year, table, survey = "acs1") { # defaults to "acs1" to support legacy code
@@ -302,14 +302,24 @@ if(!file.exists(here("data", "prescriptions.Rda"))) {
 ```
 
 ```{r grabCountyGeometry, echo=FALSE, message=FALSE, warning=FALSE}
-base_map <- get_acs("county",
-                    state = "OH",
-                    table = "B02001",
-                    geometry = TRUE,
-                    output = "wide")
-# reduce down to GEOID and geometry
-base_map <- base_map %>%
-  select(GEOID, geometry, county = NAME)
+if(!file.exists(here("data", "basemap.Rda"))) {
+  
+  base_map <- get_acs("county",
+                      state = "OH",
+                      table = "B02001",
+                      geometry = TRUE,
+                      output = "wide")
+  
+  # reduce down to GEOID and geometry
+  base_map <- base_map %>%
+    select(GEOID, geometry, county = NAME)
+  
+  save(base_map, file = here("data", "basemap.Rda"))
+  
+} else {
+  
+  load(here("data", "basemap.Rda"))
+}
 ```
 
 ```{r prepareDF}
