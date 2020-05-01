@@ -14,7 +14,7 @@ output:
 abstract: |
   `r if(knitr:::is_latex_output()) paste(readLines("00-abstract.Rmd"), collapse = '\n  ')`
 acknowledgements: |
-  First of all, I would like to thank my thesis advisor, Denise Hare, for supporting me throughout the thesis process. Her advising has carried my though the thesis process, and I would not gotten nearly as far without her. I would also like to thank Nick Wilson for being my first reader, giving me invaluable feedback throughout the thesis project, and for teaching me health economics.
+  First of all, I would like to thank my thesis adviser, Denise Hare, for supporting me throughout the thesis process. Her advising has carried my though the thesis process, and I would not gotten nearly as far without her. I would also like to thank Nick Wilson for being my first reader, giving me invaluable feedback throughout the thesis project, and for teaching me health economics.
 
   Reed staff have been just as important as faculty in supporting my thesis. In particular, I would like to thank Kristin Bott and Mahria Lebow. I learned the R skills that provided the backbone of this thesis primarily through working for Kristin in Reed's mLab. Furthermore, she has connected me with resources at Reed as I ran into issues working through my thesis. Reed's data services librarian, Mahria Lebow, helped me navigate census data and saved me countless hours of futile struggling with the census API. Without their help, I would likely still be trying to gather my data.
 
@@ -70,20 +70,20 @@ opts_chunk$set(include = TRUE,
 
 # List of Abbreviations and Terms {.unnumbered}
 
- 
- 
 ACS: American Community Survey
 
- 
+Appalachia: A region ranging from southern New York to northern Alabama that has been traditionally been associated with coal mining and poverty.
 
 CDC: Center for Disease Control
 
- 
+Fentanyl: A synthetic opioid that is extremely strong relative to traditional opioids.
 
 MAT: Medication-Assisted Treatment
 
- 
- 
+Opioids: A class of powerful analgesic drugs that activate opioid receptors that are either derived from opium or synthesized.
+
+OxyContin: Brand name version of oxycondone (an opioid)
+
 Pill Mills: Physician-owned opioid distributors masquerading as pain management clinics. They are effectively semi-legal drug dealers.
 
 # Introduction {.unnumbered}
