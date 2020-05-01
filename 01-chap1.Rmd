@@ -58,7 +58,7 @@ Despite the warnings, opioid prescriptions continued to rise throughout the 2000
 
 ### OxyContin Reformulation
 
-```{r prescriptionGraph, fig.cap="Opioid prescribing rate in Ohio from 2006 to 2016}
+```{r prescriptionGraph, fig.cap="Opioid prescribing rate in Ohio from 2006 to 2016"}
 df %>%
   filter(Year > 2005,
          Year < 2017) %>%

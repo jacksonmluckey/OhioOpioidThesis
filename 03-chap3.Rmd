@@ -134,7 +134,7 @@ stargazer(
 ```
 
 \begin{sidewaystable}[!htbp] \centering 
-  \caption{Individual versus Household Income with One and Five Year Estimates?} 
+  \caption{Individual versus Household Income with One and Five Year Estimates} 
   \label{} 
 \small 
 \begin{tabular}{@{\extracolsep{5pt}}lcccc} 

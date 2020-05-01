@@ -26,7 +26,7 @@ acknowledgements: |
 # Specify the location of the bibliography below
 bibliography: bib/thesis.bib
 # Download your specific csl file and refer to it in the line below.
-csl: csl/chicago-fullnote-bibliography.csl
+csl: csl/chicago-note-bib.csl
 lot: true
 lof: true
 header-includes:
@@ -70,10 +70,20 @@ opts_chunk$set(include = TRUE,
 
 # List of Abbreviations and Terms {.unnumbered}
 
+ 
+ 
+ACS: American Community Survey
+
+ 
+
 CDC: Center for Disease Control
+
+ 
 
 MAT: Medication-Assisted Treatment
 
+ 
+ 
 Pill Mills: Physician-owned opioid distributors masquerading as pain management clinics. They are effectively semi-legal drug dealers.
 
 # Introduction {.unnumbered}
