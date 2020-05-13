@@ -1,14 +1,17 @@
-# Preliminary Content {-}
+## List of Terms and Abbreviations {-}
 
-## Acknowledgements {-}
+ACS: American Community Survey
 
-## Preface {-}
+Appalachia: A region ranging from southern New York to northern Alabama that has been traditionally been associated with coal mining and poverty.
 
-This is an example of a thesis setup to use the reed thesis document class
-(for LaTeX) and the R bookdown package, in general.
+CDC: Center for Disease Control
 
-## Dedication {-}
+Fentanyl: A synthetic opioid that is extremely strong relative to traditional opioids.
 
-You can have a dedication here if you wish. 
+MAT: Medication-Assisted Treatment
 
-`r if(!knitr:::is_latex_output()) '## Abstract {-}'`
+Opioids: A class of powerful analgesic drugs that activate opioid receptors that are either derived from opium or synthesized.
+
+OxyContin: Brand name version of oxycodone (an opioid)
+
+Pill Mills: Physician-owned opioid distributors masquerading as pain management clinics. They are effectively semi-legal drug dealers.

@@ -23,6 +23,8 @@ acknowledgements: |
   I would also like to thank Arnie Aldridge, Brendan Wedehase, and Gary Zarkin for their invaluable role in my thesis. Without their guidance during my internship at RTI, I would have never developed the technical skills nor background knowledge that was necessary for producing this document.
   
   Finally, I would like to thank everyone at FEI for introducing me to the current state of substance use disorder policy and treatment research.
+preface: |
+  `r if(knitr:::is_latex_output()) paste(readLines("00--prelim.Rmd"), collapse = '\n  ')`
 # Specify the location of the bibliography below
 bibliography: bib/thesis.bib
 # Download your specific csl file and refer to it in the line below.
@@ -67,24 +69,6 @@ opts_chunk$set(include = TRUE,
                message = FALSE,
                warning = FALSE) # have R code only appear in appendix
 ```
-
-# List of Abbreviations and Terms {.unnumbered}
-
-ACS: American Community Survey
-
-Appalachia: A region ranging from southern New York to northern Alabama that has been traditionally been associated with coal mining and poverty.
-
-CDC: Center for Disease Control
-
-Fentanyl: A synthetic opioid that is extremely strong relative to traditional opioids.
-
-MAT: Medication-Assisted Treatment
-
-Opioids: A class of powerful analgesic drugs that activate opioid receptors that are either derived from opium or synthesized.
-
-OxyContin: Brand name version of oxycodone (an opioid)
-
-Pill Mills: Physician-owned opioid distributors masquerading as pain management clinics. They are effectively semi-legal drug dealers.
 
 # Introduction {.unnumbered}
 
