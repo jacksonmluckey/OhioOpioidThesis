@@ -386,9 +386,7 @@ Finally, I will look at density. The models using the one year estimates do not 
 
 ### Censored Regression
 
-In order to address potential data censoring, I also tried running a Tobit model, which is a form of censored regression. I was unable to get Tobit estimates, however, due to the large number of independent variables relative to the number of observations, as well as ambiguous censoring[^2]. Regressions ran with one year estimates, fewer variables, and neither county nor year fixed effects did converge, however, and showed no significant differences between an OLS and censored regression model. This indicates that there is little to no censoring in the data.
-
-[^2]: the `censReg` package returns "Error: there are no censored observations" unless I engage in data-hacking
+In order to address potential data censoring, I also tried running a Tobit model, which is a form of censored regression. I was unable to get Tobit estimates, however, as the `censReg` package returns "Error: there are no censored observations". This is likely due to the large number of independent variables relative to the number of observations, as well as ambiguous censoring. Regressions ran with one year estimates, fewer variables, and neither county nor year fixed effects did converge, however, and showed no significant differences between an OLS and censored regression model. This indicates that there is little to no censoring in the data.
 
 ```{r tobit, eval=FALSE}
 # disabled because no censored regressions
