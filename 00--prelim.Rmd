@@ -1,4 +1,4 @@
-## List of Terms and Abbreviations {-}
+## List of Terms {-}
 
 ACS: American Community Survey
 

@@ -136,7 +136,7 @@ stargazer(
 \begin{sidewaystable}[!htbp] \centering 
   \caption{Individual versus Household Income with One and Five Year Estimates} 
   \label{} 
-\small 
+\footnotesize 
 \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -235,7 +235,7 @@ stargazer(
 \begin{sidewaystable}[!htbp] \centering 
   \caption{How does the type of overdose rate metric influence the results (AS5)?} 
   \label{} 
-\small 
+\footnotesize
 \begin{tabular}{@{\extracolsep{5pt}}lccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
@@ -324,7 +324,7 @@ stargazer(
 \begin{sidewaystable}[!htbp] \centering 
   \caption{Final Models} 
   \label{} 
-\small 
+\footnotesize 
 \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
